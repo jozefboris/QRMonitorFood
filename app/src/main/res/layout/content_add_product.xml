@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".AddProductActivity"
+    tools:showIn="@layout/activity_add_product">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nazov produktu"
+            android:gravity="top"
+            android:inputType="text"
+            />
+
+
+
+
+
+
+        <EditText
+            android:id="@+id/date_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Datum výroby"
+            android:gravity="top"
+            android:inputType="date"/>
+
+        <EditText
+            android:id="@+id/date2_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Datum spotreby"
+            android:gravity="top"
+            android:inputType="date"/>
+        <EditText
+            android:id="@+id/count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Šarš"
+            android:gravity="top"
+            android:inputType="number"/>
+        <EditText
+            android:id="@+id/producer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Výrobca"
+            android:gravity="top"
+            android:inputType="textUri"/>
+        <EditText
+            android:id="@+id/decription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Popis"
+            android:gravity="top"
+            android:inputType="text"/>
+
+      <Button
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="Add"
+          android:id="@+id/btn_addqr"/>
+
+
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
