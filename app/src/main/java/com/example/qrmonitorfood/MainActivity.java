@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openTry(View view){
-        Intent intent = new Intent(this, TryActivity.class);
+        Intent intent = new Intent(this, ScrollingActivity.class);
 
         startActivity(intent);
 

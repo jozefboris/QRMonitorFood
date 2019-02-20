@@ -25,7 +25,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class TryActivity extends AppCompatActivity {
     private LinearLayout parentLinearLayout;
-    private EditText kkk;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,11 @@ public class TryActivity extends AppCompatActivity {
 
     }
     public void onAddField(View v) {
-        final Activity activity = this;
-        IntentIntegrator integrator = new IntentIntegrator(activity);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        integrator.setPrompt("Naskenujte QR kod vyrobku");
-        integrator.setCameraId(0);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.initiateScan();
 
+
+          LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.field, null);
+         parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
 
 
 
@@ -55,36 +51,9 @@ public class TryActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null){
-            if(result.getContents()==null){
-                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-            }
-            else {
-              //  qr_result.setText(result.getContents());
-                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View rowView = inflater.inflate(R.layout.field, null);
-                // Add the new row before the add field button.
-                parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
 
 
 
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try{
-                    BitMatrix bitMatrix = multiFormatWriter.encode(result.getContents(), BarcodeFormat.QR_CODE,200,200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                   // qr_image.setImageBitmap(bitmap);
-                }
-                catch (WriterException e){
-                    e.printStackTrace();
-                }
-            }
 
-        } }
 
 }
