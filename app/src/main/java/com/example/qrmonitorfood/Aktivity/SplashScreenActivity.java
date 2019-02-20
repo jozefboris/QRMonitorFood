@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.CheckInternet;
 import com.example.qrmonitorfood.MainActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -15,7 +16,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_SHORT).show();
+
+
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -23,6 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 Intent intent =  new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(intent);
+
                 finish();
 
             }

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -14,11 +15,31 @@
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/logo</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="main_button_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="main_button_inner_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="main_button_card_view">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
 
 </resources>
