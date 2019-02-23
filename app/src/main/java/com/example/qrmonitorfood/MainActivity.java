@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openLogin(View view){
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, MenuSingInActivity.class);
 
         startActivity(intent);
 
@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             else {
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(this, ScrollingActivity.class);
+                    Intent intent = new Intent(this, AboutProductActivity.class);
+                   intent.putExtra("data", result.getContents());
                     startActivity(intent);
             }
 

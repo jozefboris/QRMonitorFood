@@ -3,6 +3,7 @@ package com.example.qrmonitorfood;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +44,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
+  private FirebaseAuth mAuth;
+  private static final String TAG = "LoginActivity";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -69,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+      //  mAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -346,6 +354,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+        
     }
+
+  /*  @Override
+
+    public void  onStart(){
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+
+    }*/
 }
 
