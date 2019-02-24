@@ -16,16 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AddIngredientsActivity"
+            android:label="@string/title_activity_add_ingredients"
+            android:parentActivityName=".Aktivity.ListAddActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".MenuSingInActivity"
             android:label="@string/title_activity_menu_sing_in"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".TryActivity"
-            android:label="@string/title_activity_try"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AboutProductActivity"
@@ -39,7 +41,7 @@
         <activity
             android:name=".AddProductActivity"
             android:label="@string/title_activity_add_product"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MenuSingInActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.SplashScreenActivity"

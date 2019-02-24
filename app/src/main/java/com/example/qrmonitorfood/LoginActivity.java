@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-      //  mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -357,13 +357,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         
     }
 
-  /*  @Override
+   @Override
 
     public void  onStart(){
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+       //updateUI(currentUser);
 
-    }*/
+    }
+
 }
 

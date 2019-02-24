@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
 import com.example.qrmonitorfood.Aktivity.GeneratorQRActivity;
+import com.example.qrmonitorfood.Aktivity.ListAddActivity;
 import com.example.qrmonitorfood.Aktivity.ScanQRActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openLogin(View view){
-        Intent intent = new Intent(this, MenuSingInActivity.class);
+        Intent intent = new Intent(this,MenuSingInActivity.class);
 
         startActivity(intent);
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(this, AboutProductActivity.class);
+                    Intent intent = new Intent(this, ScanQRActivity.class);
                    intent.putExtra("data", result.getContents());
                     startActivity(intent);
             }

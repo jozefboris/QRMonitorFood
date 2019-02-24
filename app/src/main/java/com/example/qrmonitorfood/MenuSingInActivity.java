@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.qrmonitorfood.Aktivity.ListAddActivity;
+import com.example.qrmonitorfood.Aktivity.ScanQRActivity;
 
 public class MenuSingInActivity extends AppCompatActivity {
 
@@ -18,19 +19,20 @@ public class MenuSingInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_sing_in);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
 
     public void openAdd(View view){
-        Intent intent = new Intent(this, ListAddActivity.class);
+        Intent intent = new Intent(this, com.example.qrmonitorfood.AddProductActivity.class);
 
         startActivity(intent);
 
     }
 
     public void openScan(View view){
-        Intent intent = new Intent(this, TryActivity.class);
+        Intent intent = new Intent(this, ScanQRActivity.class);
 
         startActivity(intent);
 

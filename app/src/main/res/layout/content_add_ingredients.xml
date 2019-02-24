@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AddProductActivity"
-    tools:showIn="@layout/activity_add_product">
+    tools:context=".AddIngredientsActivity"
+    tools:showIn="@layout/activity_add_ingredients"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -67,12 +68,18 @@
 
             <Button
                 android:id="@+id/add"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="Add" />
 
-
+            <EditText
+                android:id="@+id/textin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/add"
+                android:hint="Zlozky"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -84,5 +91,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

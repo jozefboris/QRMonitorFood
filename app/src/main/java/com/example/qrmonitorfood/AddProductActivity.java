@@ -5,36 +5,47 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
 public class AddProductActivity extends AppCompatActivity {
 
+    Button buttonAdd;
+    LinearLayout container;
     private EditText titleEditText;
     private EditText dateEditText;
     private  EditText date2EditText;
     private EditText countEditText;
     private  EditText descriptionEditText;
     private  EditText producerEditText;
-
-
+    private int childCount;
 
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
@@ -42,7 +53,7 @@ public class AddProductActivity extends AppCompatActivity {
     private EditText btn_date;
     private  EditText btn_date2;
     private EditText btn_time;
-    private Button btn_add_qr;
+
 
     private MenuItem saveIcon;
 
@@ -51,29 +62,15 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
-        btn_add_qr = findViewById(R.id.btn_addqr);
         final Activity activity = this;
 
-        btn_add_qr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Naskenujte QR kod vyrobku");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(false);
-                integrator.setBarcodeImageEnabled(false);
-                integrator.initiateScan();
 
-            }
-        });
 
         btn_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +86,9 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-      //  timeEditText = (EditText) findViewById(R.id.);
+
+        buttonAdd = (Button)findViewById(R.id.add);
+        container = (LinearLayout)findViewById(R.id.container);
         titleEditText = (EditText) findViewById(R.id.title);
         dateEditText = (EditText) findViewById(R.id.date_input);
         date2EditText = findViewById(R.id.date2_input);
@@ -97,16 +96,60 @@ public class AddProductActivity extends AppCompatActivity {
         producerEditText = findViewById(R.id.producer);
         descriptionEditText = findViewById(R.id.decription);
 
-        // updateTextLabel();
+        buttonAdd.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                IntentIntegrator integrator = new IntentIntegrator(activity);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Naskenujte QR kod vyrobku");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
+
+               }
+        });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null){
+            if(result.getContents()==null){
+                Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
+            }
+            else {
 
-        getMenuInflater().inflate(R.menu.menu_add_product, menu);
-        saveIcon = menu.findItem(R.id.action_save);
-     //  setFavoriteIcon();
-        return true;
-    }
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                LayoutInflater layoutInflater =
+                        (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View addView = layoutInflater.inflate(R.layout.row, null);
+                final TextView textOut = (TextView)addView.findViewById(R.id.textout);
+                textOut.setText(result.getContents());
+                Button buttonRemove = (Button)addView.findViewById(R.id.remove);
+
+                final View.OnClickListener thisListener = new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+                        if (!textOut.getText().equals("")){
+
+                            ((LinearLayout)addView.getParent()).removeView(addView);
+
+                            listAllAddView();
+                        } }
+                };
+                if (!textOut.getText().equals("")){
+                    buttonRemove.setOnClickListener(thisListener);
+                    container.addView(addView);
+
+
+                    listAllAddView();
+                }
+            }
+
+        } }
 
     private void setFavoriteIcon() {
 
@@ -114,17 +157,35 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
+    private void listAllAddView(){
+
+
+        int childCount = container.getChildCount();
+        for(int i=0; i<childCount; i++){
+
+        }
+
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_add_product, menu);
+        saveIcon = menu.findItem(R.id.action_save);
+        //  setFavoriteIcon();
+        return true;
+    }
+
     public void save(MenuItem item) {
-       // boolean everythingOK = true;
+        // boolean everythingOK = true;
 
         if (titleEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
             titleEditText.setError("Názov musi byť vyplnený.");
-         //   everythingOK = false;
+            //   everythingOK = false;
         }
 
         if (dateEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
             dateEditText.setError("Datum musi byt vyplneny.");
-           // everythingOK = false;
+            // everythingOK = false;
         }
 
         if (date2EditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
@@ -141,15 +202,15 @@ public class AddProductActivity extends AppCompatActivity {
             //   everythingOK = false;
         }
 
-       
 
 
 
 
 
 
-            Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
-            finish();
+
+        Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
+        finish();
 
     }
 
@@ -204,7 +265,6 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     }
-
 
 
 

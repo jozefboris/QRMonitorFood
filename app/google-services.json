@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "989556294324",
+    "firebase_url": "https://qrmonitorgrocery.firebaseio.com",
+    "project_id": "qrmonitorgrocery",
+    "storage_bucket": "qrmonitorgrocery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989556294324:android:4cfb1dde7219724f",
+        "android_client_info": {
+          "package_name": "com.example.qrmonitorfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "989556294324-1lffvv59iebu0kqs06inq99bms3l5gs9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.qrmonitorfood",
+            "certificate_hash": "8d6c3f3f4211b86c0d0e63c20e22959fc4fe1003"
+          }
+        },
+        {
+          "client_id": "989556294324-ib5flljhi4a94gv2ss4jjg2epll7ae26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVljZYYnM2Gqlhpf-2Sxw2ZsDGUHpQEl8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "989556294324-ib5flljhi4a94gv2ss4jjg2epll7ae26.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
