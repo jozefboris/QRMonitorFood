@@ -61,6 +61,11 @@
             android:gravity="top"
             android:inputType="text"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="addIngre"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -75,13 +80,13 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/container"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="vertical"
 
-        </LinearLayout>
+            />
 
     </LinearLayout>
 

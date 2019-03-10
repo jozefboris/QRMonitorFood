@@ -3,88 +3,88 @@ package com.example.qrmonitorfood.Database;
 import java.util.List;
 
 public class Product {
-    String nazov;
-    String datum_vyroby;
-    String datum_spotreby;
-    Long sarse;
-    String vyrobca;
-    String popis;
-    List<Product> produkty;
-    List<Zlozky> zlozky;
+    String produktId;
+    String title;
+    String dateOfMade;
+    String dateExpiration;
+    String count;
+    String producer;
+    String decription;
+    List<Product> products;
 
-    public Product(String nazov, String datum_vyroby, String datum_spotreby, Long sarse, String vyrobca, String popis, List<Product> produkty, List<Zlozky> zlozky) {
-        this.nazov = nazov;
-        this.datum_vyroby = datum_vyroby;
-        this.datum_spotreby = datum_spotreby;
-        this.sarse = sarse;
-        this.vyrobca = vyrobca;
-        this.popis = popis;
-        this.produkty = produkty;
-        this.zlozky = zlozky;
+    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producer, String decription, List<Product> products) {
+        this.produktId = produktId;
+        this.title = title;
+        this.dateOfMade = dateOfMade;
+        this.dateExpiration = dateExpiration;
+        this.count = count;
+        this.producer = producer;
+        this.decription = decription;
+        this.products = products;
     }
 
-    public String getNazov() {
-        return nazov;
+    public String getProduktId() {
+        return produktId;
     }
 
-    public void setNazov(String nazov) {
-        this.nazov = nazov;
+    public void setProduktId(String produktId) {
+        this.produktId = produktId;
     }
 
-    public String getDatum_vyroby() {
-        return datum_vyroby;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDatum_vyroby(String datum_vyroby) {
-        this.datum_vyroby = datum_vyroby;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDatum_spotreby() {
-        return datum_spotreby;
+    public String getDateOfMade() {
+        return dateOfMade;
     }
 
-    public void setDatum_spotreby(String datum_spotreby) {
-        this.datum_spotreby = datum_spotreby;
+    public void setDateOfMade(String dateOfMade) {
+        this.dateOfMade = dateOfMade;
     }
 
-    public Long getSarse() {
-        return sarse;
+    public String getDateExpiration() {
+        return dateExpiration;
     }
 
-    public void setSarse(Long sarse) {
-        this.sarse = sarse;
+    public void setDateExpiration(String dateExpiration) {
+        this.dateExpiration = dateExpiration;
     }
 
-    public String getVyrobca() {
-        return vyrobca;
+    public String getCount() {
+        return count;
     }
 
-    public void setVyrobca(String vyrobca) {
-        this.vyrobca = vyrobca;
+    public void setCount(String count) {
+        this.count = count;
     }
 
-    public String getPopis() {
-        return popis;
+    public String getProducer() {
+        return producer;
     }
 
-    public void setPopis(String popis) {
-        this.popis = popis;
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
-    public List<Product> getProdukty() {
-        return produkty;
+    public String getDecription() {
+        return decription;
     }
 
-    public void setProdukty(List<Product> produkty) {
-        this.produkty = produkty;
+    public void setDecription(String decription) {
+        this.decription = decription;
     }
 
-    public List<Zlozky> getZlozky() {
-        return zlozky;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setZlozky(List<Zlozky> zlozky) {
-        this.zlozky = zlozky;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
 

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">QRMonitorFood</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
@@ -25,5 +25,27 @@
     <string name="title_activity_menu_sing_in">MenuSingInActivity</string>
     <string name="title_activity_try2">Try2Activity</string>
     <string name="title_activity_add_ingredients">AddIngredientsActivity</string>
+    <string name="title_activity_detail_product">DetailProductActivity</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
+
+    <string-array name="array_technology">
+        <item>Android</item>
+        <item>Java</item>
+        <item>Php</item>
+        <item>Hadoop</item>
+        <item>Sap</item>
+        <item>Python</item>
+        <item>Ajax</item>
+        <item>C++</item>
+        <item>Ruby</item>
+        <item>Rails</item>
+        <item>.Net</item>
+        <item>Perl</item>
+    </string-array>
+    <string name="title_activity_update_product">UpdateProductActivity</string>
+    <string name="title_activity_update_ingredients">UpdateIngredientsActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="title_activity_search_list">SearchListActivity</string>
 </resources>

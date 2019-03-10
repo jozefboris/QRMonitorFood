@@ -1,17 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_detail"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-     >
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Aktivity.AboutProductActivity"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        >
+
+        <ImageView
+            android:id="@+id/qrImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"/>
 
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="18dp"
+            android:textSize="18dp"
+            android:text="Názov" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
 
-</TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:textSize="18dp"
+            android:text="Dátum výroby" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:textSize="18dp"
+            android:text="Dátum spotreby" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:textSize="18dp"
+            android:text="Šarše" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:textSize="18dp"
+            android:text="Výrobca" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:textSize="18dp"
+            android:text="Popis" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:textSize="15dp"
+            android:text="sdfsfs" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Suroviny"
+            android:background="@color/colorPrimary"
+            android:textColor="#000" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+
+            />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
