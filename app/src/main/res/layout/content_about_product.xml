@@ -31,14 +31,16 @@
             android:paddingTop="10dp"
             android:paddingLeft="18dp"
             android:textSize="18dp"
-            android:text="Názov" />
+            android:text="Názov"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/titleText"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,7 +56,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/datetext" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +72,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/date2text" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/counttext" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,7 +104,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/producertext" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -118,15 +120,28 @@
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
             android:textSize="15dp"
-            android:text="sdfsfs" />
+            android:id="@+id/descriptiontext" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:text="Suroviny"
+            android:id="@+id/typetext"
             android:background="@color/colorPrimary"
-            android:textColor="#000" />
+            android:textColor="#000"
+            />
+
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/progress"
+            style="?android:progressBarStyleHorizontal"
+            android:progress="80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

@@ -11,9 +11,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +27,14 @@ import java.util.List;
 public class DetailActivity extends AppCompatActivity {
 
     TextView textView;
+    Product product = new Product();
 
     private List<Movie> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MoviesAdapter mAdapter;
+    DatabaseReference databaseProduct;
+    String code;
+    TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +44,19 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        databaseProduct = FirebaseDatabase.getInstance().getReference("product");
+        titleText = findViewById(R.id.titleText);
+        dateText = findViewById(R.id.datetext);
+        date2text = findViewById(R.id.date2text);
+        countText = findViewById(R.id.counttext);
+        producerText = findViewById(R.id.producertext);
+        descriptionText = findViewById(R.id.descriptiontext);
+        typeText = findViewById(R.id.typetext);
+
         mAdapter = new MoviesAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-
+        code = getIntent().getStringExtra("idCode");
         // vertical RecyclerView
         // keep movie_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -72,6 +91,20 @@ public class DetailActivity extends AppCompatActivity {
         }));
 
         prepareMovieData();
+    }
+
+    private void writeData(){
+
+        titleText.setText(product.getTitle());
+        dateText.setText(product.getDateOfMade());
+        date2text.setText(product.getDateExpiration());
+        countText.setText(product.getCount());
+        producerText.setText(product.getProducer());
+        descriptionText.setText(product.getDecription());
+        typeText.setText("surovina");
+
+
+
     }
 
     private void prepareMovieData() {
@@ -122,9 +155,30 @@ public class DetailActivity extends AppCompatActivity {
 
         movie = new Movie("Guardians of the Galaxy", "Science Fiction & Fantasy");
         movieList.add(movie);
-
+       writeData();
         // notify adapter about data set changes
         // so that it will render the list with new data
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        code = "-L_ZSzdXafGK3z2ocQYX";
+        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                product = snapshot.getValue(Product.class);
+              //  product.setProduktId(code);
+
+
+                //prints "Do you have data? You'll love Firebase."
+                // product = new Product( snapshot.getValue(Product.class));
+                prepareMovieData();
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
     }
 }

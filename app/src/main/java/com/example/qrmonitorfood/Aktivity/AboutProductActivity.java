@@ -7,6 +7,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,13 +20,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.R;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.UpdateProductActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -38,20 +48,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AboutProductActivity extends AppCompatActivity {
-
+    Product uInfo = new Product();
     private MenuItem deleteIcon;
     private MenuItem updateIcon;
     private MenuItem shareIcon;
+
+    ProgressBar progressBar;
+   // Product track;
+    String value;
+    TextView title;
+    Product product = new Product();
     private ImageView qrImage;
     private String code;
     final private String url = "www.qrfoodmonitor.com/id=";
     private List<Movie> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MoviesAdapter mAdapter;
+    DatabaseReference databaseProduct;
+    DatabaseReference databaseComponents;
+    private boolean isThere;
 
+    TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,17 +81,28 @@ public class AboutProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         qrImage = (ImageView) findViewById(R.id.qrImage);
-
+       title = findViewById(R.id.titleText);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        titleText = findViewById(R.id.titleText);
+        dateText = findViewById(R.id.datetext);
+        date2text = findViewById(R.id.date2text);
+        countText = findViewById(R.id.counttext);
+        producerText = findViewById(R.id.producertext);
+        descriptionText = findViewById(R.id.descriptiontext);
+        typeText = findViewById(R.id.typetext);
 
         mAdapter = new MoviesAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
 
-
+        databaseProduct = FirebaseDatabase.getInstance().getReference("product");
+        databaseComponents = FirebaseDatabase.getInstance().getReference("components");
         // vertical RecyclerView
         // keep movie_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        progressBar = (ProgressBar) findViewById(R.id.progress);
+
 
         // horizontal RecyclerView
         // keep movie_list_row.xml width to `wrap_content`
@@ -101,19 +133,6 @@ public class AboutProductActivity extends AppCompatActivity {
             }
         }));
 
-
-        prepareMovieData();
-
-
-    }
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_about_product, menu);
-        deleteIcon = menu.findItem(R.id.action_delete);
-        shareIcon = menu.findItem(R.id.action_share);
-        updateIcon = menu.findItem(R.id.action_update);
-     //   qrImage = (ImageView) findViewById(R.id.qrImage);
-
         code = getIntent().getStringExtra("idCode");
 
 
@@ -128,19 +147,127 @@ public class AboutProductActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+       // prepareMovieData();
+
+
+    }
+
+  /*  private void showData(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+            Product uInfo = new Product();
+            uInfo.setProduktId(code); //set the name
+            uInfo.setTitle(ds.child(code).getValue(Product.class).getTitle()); //set the email
+            uInfo.setDateOfMade(ds.child(code).getValue(Product.class).getDateOfMade());
+            uInfo.setDateExpiration(ds.child(code).getValue(Product.class).getDateOfMade());
+            uInfo.setCount(ds.child(code).getValue(Product.class).getCount());
+            uInfo.setProducer(ds.child(code).getValue(Product.class).getProducer());
+            uInfo.setDecription(ds.child(code).getValue(Product.class).getDecription());
+            //display all the information
+
+
+
+        }
+    }*/
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_about_product, menu);
+        deleteIcon = menu.findItem(R.id.action_delete);
+        shareIcon = menu.findItem(R.id.action_share);
+        updateIcon = menu.findItem(R.id.action_update);
+     //   qrImage = (ImageView) findViewById(R.id.qrImage);
+
+
+
+       // databaseProduct = FirebaseDatabase.getInstance().getReference("product").child(code);
+
         return true;
     }
 
-    public void delete(MenuItem item) {
+  /*  public void readData() {
+      //  super.onStart();
+
+        databaseProduct.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                movieList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Product track = postSnapshot.getValue(Product.classr);
+                    movieList.add(track);
+                }
+                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
+                //listViewTracks.setAdapter(trackListAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }*/
+  public void readData() {
+      //  super.onStart();
+
+      databaseComponents.orderByChild("id_produkt").equalTo(code).addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              movieList.clear();
+              for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                  DatabaseReference dR = FirebaseDatabase.getInstance().getReference("components").child(postSnapshot.getKey());
+                  dR.removeValue();
+
+
+              }
+              //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
+              //listViewTracks.setAdapter(trackListAdapter);
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+      });
+  }
+
+          public void delete(MenuItem item) {
+
+           writeData();
+
         Intent intent = getIntent();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AboutProductActivity.this);
-        builder1.setMessage("Do you want delete item?" + code );
+        builder1.setMessage("Do you want delete item?" );
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("product").child(code);
+
+                        //removing artist
+                        dR.removeValue();
+                      readData();
+
+                     /*   databaseComponents.child("users").orderByKey().equalTo(code).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren()) {
+
+                                    String key = postsnapshot.getKey();
+                                    dataSnapshot.getRef().removeValue();
+
+                                }             dataSnapshot.getRef().removeValue();
+
+                                                                                                                           }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }*/
+
+                        Toast.makeText(getApplicationContext(), "Product Deleted", Toast.LENGTH_LONG).show();
 
                         finish();
                         dialog.cancel();
@@ -241,58 +368,78 @@ public class AboutProductActivity extends AppCompatActivity {
                 });
 
     }
+
+    private void findData(){
+
+        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                product = snapshot.getValue(Product.class);
+                product.setProduktId(code);
+
+                progressBar.setVisibility(View.GONE);
+                //prints "Do you have data? You'll love Firebase."
+                // product = new Product( snapshot.getValue(Product.class));
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
+
+
+
+    }
+
+
+    private void writeData(){
+
+        titleText.setText(product.getTitle());
+        dateText.setText(product.getDateOfMade());
+        date2text.setText(product.getDateExpiration());
+        countText.setText(product.getCount());
+        producerText.setText(product.getProducer());
+        descriptionText.setText(product.getDecription());
+        typeText.setText("surovina");
+
+
+
+    }
+
+
     private void prepareMovieData() {
-        Movie movie = new Movie("Mad Max: Fury Road", "Action & Adventure");
-        movieList.add(movie);
 
-        movie = new Movie("Inside Out", "Animation, Kids & Family");
-        movieList.add(movie);
+ // code = "-L_ZSzdXafGK3z2ocQYX";
+    //    findData();
+   writeData();
+         //  Toast.makeText(this,value, Toast.LENGTH_LONG).show();
 
-        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action");
-        movieList.add(movie);
 
-        movie = new Movie("Shaun the Sheep", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("The Martian", "Science Fiction & Fantasy");
-        movieList.add(movie);
-
-        movie = new Movie("Mission: Impossible Rogue Nation", "Action");
-        movieList.add(movie);
-
-        movie = new Movie("Up", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Star Trek", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("The LEGO Movie", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Iron Man", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Aliens", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("Chicken Run", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Back to the Future", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("Raiders of the Lost Ark", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Goldfinger", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Guardians of the Galaxy", "Science Fiction & Fantasy");
-        movieList.add(movie);
 
         // notify adapter about data set changes
         // so that it will render the list with new data
         mAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                product = snapshot.getValue(Product.class);
+                product.setProduktId(code);
+
+                progressBar.setVisibility(View.GONE);
+                //prints "Do you have data? You'll love Firebase."
+                // product = new Product( snapshot.getValue(Product.class));
+                prepareMovieData();
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
     }
 
 

@@ -24,14 +24,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".Main3Activity"
-            android:label="@string/title_activity_main3"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".UpdateIngredientsActivity"
             android:label="@string/title_activity_update_ingredients"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -63,11 +55,6 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Aktivity.ListAddActivity"
-            android:label="@string/title_activity_list_add"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Aktivity.SplashScreenActivity"
             android:label="QRMonitorFood"
             android:theme="@style/SplashScreenTheme">
@@ -77,10 +64,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Aktivity.ScanQRActivity"
-            android:label="@string/title_activity_scan_qr"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.GeneratorQRActivity"
             android:label="@string/title_activity_generator_qr"

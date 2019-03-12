@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:hint="Datum výroby"
             android:gravity="top"
-            android:inputType="date"/>
+            />
 
         <EditText
             android:id="@+id/date2_input"

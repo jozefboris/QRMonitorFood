@@ -4,33 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
-import com.example.qrmonitorfood.Aktivity.GeneratorQRActivity;
-import com.example.qrmonitorfood.Aktivity.ListAddActivity;
-import com.example.qrmonitorfood.Aktivity.ScanQRActivity;
-import com.example.qrmonitorfood.Aktivity.SplashScreenActivity;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class MainActivity extends AppCompatActivity {
     FloatingActionMenu materialDesignFAM;
@@ -52,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-        floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
+        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.koko);
+        floatingActionButton2 = (FloatingActionButton) findViewById(R.id.kokot);
         //   floatingActionButton3 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
 
    /*     floatingActionButton1.setOnClickListener(new View.OnClickListener() {
@@ -174,10 +162,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
-                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+               //     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(this,DetailActivity.class);
-                   intent.putExtra("data", result.getContents());
+                   intent.putExtra("idCode", result.getContents());
                     startActivity(intent);
             }
 

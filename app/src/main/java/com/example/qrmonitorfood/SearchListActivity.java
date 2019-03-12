@@ -1,13 +1,17 @@
 package com.example.qrmonitorfood;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +19,7 @@ import android.view.View;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,6 +32,11 @@ import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.R;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static com.example.qrmonitorfood.R.drawable.ic_action_share;
 
@@ -37,6 +47,9 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     private RecyclerAdapter mAdapter;
     private Boolean typList ;
     private ImageView iconList;
+   // ProgressBar progressBar;
+    FirebaseDatabase database;
+    DatabaseReference databaseProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +66,13 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         // vertical RecyclerView
         // keep movie_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-
+        database = FirebaseDatabase.getInstance();
+        databaseProduct = database.getReference("product");
+      // progressBar = (ProgressBar) findViewById(R.id.progress);
         // horizontal RecyclerView
         // keep movie_list_row.xml width to `wrap_content`
         // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-
+       // readData();
         recyclerView.setLayoutManager(mLayoutManager);
 
         // adding inbuilt divider line
@@ -95,17 +110,17 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
             }
         }));
-        setFavoriteIcon();
-        prepareMovieData();
+
+
+  //     prepareMovieData();
 
 
 
     }
-    private void setFavoriteIcon() {
 
-     //iconList.setImageResource(Integer.parseInt(null));
 
-    }
+
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -113,7 +128,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
         MenuItem searchItem = menu.findItem(R.id.search_b);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(this);
+       searchView.setOnQueryTextListener(this);
 
         //    searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         //   searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -168,9 +183,44 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
 
 
+    public void readData() {
+        //  super.onStart();
+
+        databaseProduct.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                movieList.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Product track = postSnapshot.getValue(Product.class);
+                    track.setProduktId(postSnapshot.getKey());
+                    movieList.add(track);
+                //   findViewById(R.id.progress).setVisibility(View.GONE);
+                 //   ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+                    //progressBar.setSecondaryProgress(0);
+                  //  progressBar.hideProgressDialog();
+                   // showProgressDialog();
+                  //  progressBar.setVisibility(View.GONE);
+                  //  progressBar.setVisibility(View.GONE);
+                }
+                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
+                //listViewTracks.setAdapter(trackListAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     private void prepareMovieData() {
+
+
+ // readData();
+      /*
+
         List<Product> p = null;
         Product product = new Product("Rohlik", "Banan","sdg",
                 "15.3.2018","fs","gdf","xgx", p);
@@ -206,10 +256,41 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         movieList.add(product7);
 
         // notify adapter about data set changes
-        // so that it will render the list with new data
+        // so that it will render the list with new data*/
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        databaseProduct.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                movieList.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Product track = postSnapshot.getValue(Product.class);
+                    track.setProduktId(postSnapshot.getKey());
+                    movieList.add(track);
+                    //   findViewById(R.id.progress).setVisibility(View.GONE);
+                    //   ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+                    //progressBar.setSecondaryProgress(0);
+                    //  progressBar.hideProgressDialog();
+                    // showProgressDialog();
+                    //  progressBar.setVisibility(View.GONE);
+                    //  progressBar.setVisibility(View.GONE);
+                prepareMovieData();
+                }
+                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
+                //listViewTracks.setAdapter(trackListAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

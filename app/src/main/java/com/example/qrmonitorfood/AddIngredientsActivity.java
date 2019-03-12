@@ -43,25 +43,25 @@ public class AddIngredientsActivity extends AppCompatActivity {
     private List<Movie> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MoviesAdapter mAdapter;
+
     EditText textIn;
     Button buttonAdd;
     Button buttonAdd2;
-    LinearLayout container;
+
     private EditText titleEditText;
     private EditText dateEditText;
     private  EditText date2EditText;
     private EditText countEditText;
     private  EditText descriptionEditText;
     private  EditText producerEditText;
-    private int childCount;
-    String ss;
+
     String item;
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
 
     DatabaseReference databaseComponents;
     DatabaseReference databaseProduct;
-    private DatabaseReference mDatabase;
+
     private EditText btn_date;
     private  EditText btn_date2;
     private EditText btn_time;
@@ -249,13 +249,6 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
 
-  /* public void koko(View view){
-       movieList.clear();
-        mAdapter.notifyDataSetChanged();
-
-
-
-    }*/
 
     private void prepareMovieData(String nazov) {
         Movie movie = new Movie(nazov, "Action & Adventur");
@@ -353,7 +346,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
             if (previousActivity.equals("A")) {
                 Intent intent = new Intent();
-                intent.putExtra("editTextValue", ss);
+                intent.putExtra("editTextValue", titleEditText.getText().toString());
                 setResult(RESULT_OK, intent);
              //   Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
                 finish();

@@ -16,123 +16,111 @@
     android:focusableInTouchMode="true"
     >
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:paddingTop="10dp"
+        android:paddingLeft="18dp"
+        android:textSize="18dp"
         android:text="Názov"
-        android:paddingTop="10dp"
-        android:paddingLeft="15dp"
-        android:textSize="18dp"
-        android:textColor="#000"
-        tools:ignore="MissingConstraints" />
+        />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="Rohlik"/>
+        android:id="@+id/titleText"
+        />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"
         android:textSize="18dp"
-        android:textColor="#000"
-        android:text="Dátum výroby"
-        tools:ignore="MissingConstraints" />
+        android:text="Dátum výroby" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="22.8.2018"/>
+        android:id="@+id/datetext" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dátum spotreby"
+        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"
         android:textSize="18dp"
-        android:textColor="#000"
-        tools:ignore="MissingConstraints" />
-
+        android:text="Dátum spotreby" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="19.3.2019"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/date2text" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"
         android:textSize="18dp"
-        android:textColor="#000"
-        android:text="Šarše"
-        tools:ignore="MissingConstraints" />
-
+        android:text="Šarše" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="100"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/counttext" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"
         android:textSize="18dp"
-        android:textColor="#000"
-        android:text="Výrobca"
-        tools:ignore="MissingConstraints" />
-
+        android:text="Výrobca" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="www.konvoj.cz"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/producertext" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="15dp"
         android:textSize="18dp"
-        android:textColor="#000"
-        android:text="Popis"
-        tools:ignore="MissingConstraints" />
-
+        android:text="Popis" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:textSize="15dp"
-        android:text="dodavka"
-        tools:ignore="MissingConstraints" />
-
+        android:id="@+id/descriptiontext" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:textSize="15dp"
-        android:text="Suroviny"
+        android:textSize="15dp"
+        android:id="@+id/typetext"
         android:background="@color/colorPrimary"
-        android:textColor="#000" />
+        android:textColor="#000"
+        />
 
 
 
