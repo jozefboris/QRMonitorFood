@@ -1,5 +1,6 @@
 package com.example.qrmonitorfood.Database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
@@ -10,9 +11,9 @@ public class Product {
     String count;
     String producer;
     String decription;
-    List<Product> products;
+    List<String> products;
 
-    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producer, String decription, List<Product> products) {
+    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producer, String decription, List<String> products) {
         this.produktId = produktId;
         this.title = title;
         this.dateOfMade = dateOfMade;
@@ -23,7 +24,12 @@ public class Product {
         this.products = products;
     }
 
-    public  Product(){}
+    public  Product(){
+
+        products = new ArrayList<>();
+    }
+
+
 
     public String getProduktId() {
         return produktId;
@@ -81,11 +87,11 @@ public class Product {
         this.decription = decription;
     }
 
-    public List<Product> getProducts() {
+    public List<String> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<String> products) {
         this.products = products;
     }
 }

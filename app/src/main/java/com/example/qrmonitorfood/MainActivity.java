@@ -15,6 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Aktivity.AddIngredientsActivity;
+import com.example.qrmonitorfood.Aktivity.AddProductActivity;
+import com.example.qrmonitorfood.Aktivity.DetailActivity;
+import com.example.qrmonitorfood.Aktivity.SearchListActivity;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAddProduct(View view){
-        Intent intent = new Intent(this,AddProductActivity.class);
+        Intent intent = new Intent(this, AddProductActivity.class);
 
         startActivity(intent);
 
@@ -143,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         final Activity activity = this;
         IntentIntegrator integrator = new IntentIntegrator(activity);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        integrator.setPrompt("Naskenujte QR kod výrobku");
+        integrator.setPrompt(getString(R.string.scan));
         integrator.setCameraId(0);
         integrator.setBeepEnabled(false);
         integrator.setBarcodeImageEnabled(false);
@@ -164,9 +168,11 @@ public class MainActivity extends AppCompatActivity {
             else {
                //     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(this,DetailActivity.class);
-                   intent.putExtra("idCode", result.getContents());
-                    startActivity(intent);
+                final Intent intent = new Intent(this, DetailActivity.class);
+                intent.putExtra("idCode",result.getContents() );
+                // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+
+                startActivity(intent);
             }
 
         } }

@@ -31,7 +31,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="18dp"
             android:textSize="18dp"
-            android:text="Názov"
+            android:text="@string/title_of_product"
             />
 
         <TextView
@@ -49,7 +49,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="18dp"
-            android:text="Dátum výroby" />
+            android:text="@string/date_of_made" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="18dp"
-            android:text="Dátum spotreby" />
+            android:text="@string/date_of_expiration" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="18dp"
-            android:text="Šarše" />
+            android:text="@string/count" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="18dp"
-            android:text="Výrobca" />
+            android:text="@string/producer" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="15dp"
             android:textSize="18dp"
-            android:text="Popis" />
+            android:text="@string/decription" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -1,28 +1,20 @@
-package com.example.qrmonitorfood;
+package com.example.qrmonitorfood.Aktivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.qrmonitorfood.Aktivity.GeneratorQRActivity;
+import com.example.qrmonitorfood.MainActivity;
+import com.example.qrmonitorfood.R;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.io.FileInputStream;
 
 public class DetailProductActivity extends AppCompatActivity {
 
@@ -95,7 +87,7 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Switching Activities.");
-                Intent intent = new Intent(DetailProductActivity.this, GeneratorQRActivity.class);
+                Intent intent = new Intent(DetailProductActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

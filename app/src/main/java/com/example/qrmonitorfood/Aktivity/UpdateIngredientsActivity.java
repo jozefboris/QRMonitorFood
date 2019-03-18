@@ -1,12 +1,8 @@
-package com.example.qrmonitorfood;
+package com.example.qrmonitorfood.Aktivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,50 +10,56 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.Database.Zlozky;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
+import com.example.qrmonitorfood.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class UpdateProductActivity extends AppCompatActivity {
+import static android.widget.Toast.LENGTH_SHORT;
 
+public class UpdateIngredientsActivity extends AppCompatActivity {
+    private List<Movie> movieList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private MoviesAdapter mAdapter;
+
+    EditText textIn;
     Button buttonAdd;
+    Button buttonAdd2;
+
     private EditText titleEditText;
     private EditText dateEditText;
     private  EditText date2EditText;
     private EditText countEditText;
     private  EditText descriptionEditText;
     private  EditText producerEditText;
-    private List<Movie> movieList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private MoviesAdapter mAdapter;
-    String code;
 
-    DatabaseReference databaseProduct;
-
+    String item;
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
+
+    DatabaseReference databaseComponents;
+    DatabaseReference databaseProduct;
 
     private EditText btn_date;
     private  EditText btn_date2;
@@ -65,23 +67,81 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     private MenuItem saveIcon;
-
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_product);
+        setContentView(R.layout.activity_update_ingredients);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        // app.initializeApp(this);
+        buttonAdd2 = (Button) findViewById(R.id.add2);
+        textIn = findViewById(R.id.textin);
+        databaseComponents = FirebaseDatabase.getInstance().getReference("components");
         databaseProduct = FirebaseDatabase.getInstance().getReference("product");
+
+        spinner = findViewById(R.id.spinner);
+
+        buttonAdd2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!item.equals("Výber zložky")){
+                    prepareMovieData(item);
+                    item = "Výber zložky";
+                } }
+
+            ;
+
+        });
+
+
+        List<String> categories = new ArrayList<>();
+        categories.add(0, "Výber zložky");
+        categories.add("Bag");
+        categories.add("Pen");
+        categories.add("Pencil");
+        categories.add("Eraser");
+        categories.add("Bag");
+        categories.add("Pen");
+        categories.add("Pencil");
+        categories.add("Eraser");
+
+        //Style and populate the spinner
+        ArrayAdapter<String> dataAdapter;
+        dataAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories);
+
+        //Dropdown layout style
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (parent.getItemAtPosition(position).equals("Výber zložky")) {
+                    Toast.makeText(parent.getContext(), "Vyber zlozku", LENGTH_SHORT).show();
+                    item = "Výber zložky";
+
+                } else {
+                    //on selecting a spinner item
+                    item = parent.getItemAtPosition(position).toString();
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // TODO Auto-generated method stub
+            }
+        });
+
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
-        final Activity activity = this;
-
 
 
         btn_date.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +159,8 @@ public class UpdateProductActivity extends AppCompatActivity {
         });
 
 
-        buttonAdd = (Button)findViewById(R.id.add);
+        buttonAdd = (Button) findViewById(R.id.add);
+        buttonAdd2 = (Button) findViewById(R.id.add2);
         titleEditText = (EditText) findViewById(R.id.title);
         dateEditText = (EditText) findViewById(R.id.date_input);
         date2EditText = findViewById(R.id.date2_input);
@@ -107,19 +168,17 @@ public class UpdateProductActivity extends AppCompatActivity {
         producerEditText = findViewById(R.id.producer);
         descriptionEditText = findViewById(R.id.decription);
 
-        buttonAdd.setOnClickListener(new View.OnClickListener(){
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Naskenujte QR kod vyrobku");
-                integrator.setCameraId(0);
-                integrator.setBeepEnabled(false);
-                integrator.setBarcodeImageEnabled(false);
-                integrator.initiateScan();
-
+                if (!textIn.getText().toString().equals("")){
+                    prepareMovieData(textIn.getText().toString());
+                    textIn.setText(""); }
             }
+
+
+
         });
 
 
@@ -185,47 +244,13 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
 
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-                String strEditText = data.getStringExtra("editTextValue");
-                prepareMovieData(strEditText);
-                Toast.makeText(this, strEditText, Toast.LENGTH_LONG).show();
-            }
-        }
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null){
-            if(result.getContents()==null){
-                Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
-            }
-            else {
 
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                LayoutInflater layoutInflater =
-                        (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View addView = layoutInflater.inflate(R.layout.row, null);
-                prepareMovieData(result.getContents());
-                mAdapter.notifyDataSetChanged();
-
-                final View.OnClickListener thisListener = new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                };
-
-            }
-
-        } }
 
     private void prepareMovieData(String nazov) {
-        Movie movie = new Movie(nazov, "Action & Adventure");
+        Movie movie = new Movie(nazov, "Action & Adventur");
         movieList.add(movie);
 
 
@@ -242,6 +267,8 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
 
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_add_product, menu);
@@ -249,60 +276,97 @@ public class UpdateProductActivity extends AppCompatActivity {
         //  setFavoriteIcon();
         return true;
     }
+    public void koko(ImageView item) {
+        Intent intent = new Intent(this, UpdateProductActivity.class);
+
+        startActivity(intent);
+
+    }
+
 
     public void save(MenuItem item) {
+
         boolean everythingOK = true;
 
         if (titleEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
-            titleEditText.setError("Názov musi byť vyplnený.");
+            titleEditText.setError(getString(R.string.error_title));
             everythingOK = false;
         }
 
         if (dateEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
-            dateEditText.setError("Datum musi byt vyplneny.");
+            dateEditText.setError(getString(R.string.error_date_made));
             everythingOK = false;
         }
 
         if (date2EditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
-            date2EditText.setError("Nazov musi byt vyplneny.");
+            date2EditText.setError(getString(R.string.error_date_expiration));
             everythingOK = false;
         }
 
         if (countEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
-            countEditText.setError("Šarš musi byť vyplnená.");
+            countEditText.setError(getString(R.string.error_count));
             everythingOK = false;
         }
         if (producerEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
-            producerEditText.setError("Výrobca musí byť vyplnený.");
+            producerEditText.setError(getString(R.string.error_producer));
             everythingOK = false;
         }
-
-        List<Product> list = null;
-        List<Zlozky> list2 = null;
-
         if (everythingOK) {
-            String id = databaseProduct.push().getKey();
 
+            String id = databaseProduct.push().getKey();
+            List<String> list = null;
             Product product = new Product(id, titleEditText.getText().toString().trim(),
                     dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
                     countEditText.getText().toString().trim(), producerEditText.getText().toString().trim(),
                     descriptionEditText.getText().toString().trim(), list);
             databaseProduct.child(id).setValue(product);
-            Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Surovina pridana do systému", Toast.LENGTH_SHORT).show();
 
-            final Intent intent = new Intent(this, AboutProductActivity.class);
-            intent.putExtra("idCode",id );
-            // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+            for (int i = 0 ; i <movieList.size(); i++) {
+                String id2 = databaseComponents.push().getKey();
 
-            startActivity(intent);
+                Zlozky zlozky = new Zlozky(movieList.get(i).getTitle(),id2,null,id);
+                databaseComponents.child(id2).setValue(zlozky);
+            }
+
+
+
+
+
+
+
+
+
+
+            Intent mIntent = getIntent();
+            String previousActivity= mIntent.getStringExtra("FROM_ACTIVITY");
+
+
+
+            if (previousActivity.equals("A")) {
+                Intent intent = new Intent();
+                intent.putExtra("editTextValue", titleEditText.getText().toString());
+                setResult(RESULT_OK, intent);
+                //   Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
+                finish();
+            } else if (previousActivity.equals("B")){
+
+                final Intent intent = new Intent(this, AboutProductActivity.class);
+                intent.putExtra("idCode",id );
+                // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+
+                startActivity(intent);
+
+            }
+
+            //  Toast.makeText(this, "Surovina pridan8 do systemu", Toast.LENGTH_SHORT).show();
+
+
         }
-    }
 
 
-    public void addIngre(View view){
-        Intent i = new Intent(this, AddIngredientsActivity.class);
-        i.putExtra("FROM_ACTIVITY", "A");
-        startActivityForResult(i, 1);
+
+
 
 
 
@@ -310,9 +374,6 @@ public class UpdateProductActivity extends AppCompatActivity {
 
     private void updateDate(){
         new DatePickerDialog(this, d, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
-        code = getIntent().getStringExtra("data");
-        prepareMovieData(code);
-
     }
 
     private void updateDate2(){
@@ -362,7 +423,5 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     }
-
-
 
 }

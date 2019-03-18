@@ -26,7 +26,7 @@
             android:id="@+id/nie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nie"
+            android:text="@string/dialog_no"
             android:layout_weight="1"
             />
 
@@ -34,7 +34,7 @@
             android:id="@+id/ano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ano"
+            android:text="@string/dialog_yes"
             android:layout_weight="1"
             />
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".UpdateProductActivity"
+    tools:context=".Aktivity.UpdateProductActivity"
     tools:showIn="@layout/activity_add_product">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nazov produktu"
+            android:hint="@string/title_of_product"
             android:gravity="top"
             android:inputType="text"
             />
@@ -28,7 +28,7 @@
             android:id="@+id/date_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Datum výroby"
+            android:hint="@string/date_of_made"
             android:gravity="top"
             />
 
@@ -36,35 +36,36 @@
             android:id="@+id/date2_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Datum spotreby"
+            android:hint="@string/date_of_expiration"
             android:gravity="top"
             android:inputType="date"/>
         <EditText
             android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Šarš"
+            android:hint="@string/count"
             android:gravity="top"
             android:inputType="number"/>
         <EditText
             android:id="@+id/producer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Výrobca"
+            android:hint="@string/producer"
             android:gravity="top"
             android:inputType="textUri"/>
         <EditText
             android:id="@+id/decription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Popis"
+            android:hint="@string/decription"
             android:gravity="top"
             android:inputType="text"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="addIngre"/>
+            android:onClick="addIngre"
+            android:text="@string/scan_product"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Add" />
+                android:text="@string/add_new_product" />
 
 
         </RelativeLayout>

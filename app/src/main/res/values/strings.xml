@@ -14,38 +14,39 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_generator_qr">GeneratorQRActivity</string>
-    <string name="title_activity_scan_qr">ScanQRActivity</string>
+
+
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_add_product">AddProductActivity</string>
-    <string name="title_activity_list_add">ListAddActivity</string>
     <string name="title_activity_about_product">AboutProductActivity</string>
-    <string name="title_activity_try">TryActivity</string>
-    <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="title_activity_menu_sing_in">MenuSingInActivity</string>
-    <string name="title_activity_try2">Try2Activity</string>
     <string name="title_activity_add_ingredients">AddIngredientsActivity</string>
     <string name="title_activity_detail_product">DetailProductActivity</string>
     <string name="title_activity_detail">DetailActivity</string>
-
-
-    <string-array name="array_technology">
-        <item>Android</item>
-        <item>Java</item>
-        <item>Php</item>
-        <item>Hadoop</item>
-        <item>Sap</item>
-        <item>Python</item>
-        <item>Ajax</item>
-        <item>C++</item>
-        <item>Ruby</item>
-        <item>Rails</item>
-        <item>.Net</item>
-        <item>Perl</item>
-    </string-array>
     <string name="title_activity_update_product">UpdateProductActivity</string>
     <string name="title_activity_update_ingredients">UpdateIngredientsActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_main3">Main3Activity</string>
     <string name="title_activity_search_list">SearchListActivity</string>
+
+    <string name="add_new_product">Pridať novú surovinu</string>
+    <string name="add_product">Pridať produkt</string>
+    <string name="add_ingredient">Pridať surovinu</string>
+    <string name="scan_product">Naskenuj surovinu</string>
+    <string name="decription">Popis</string>
+    <string name="producer">Výrobca</string>
+    <string name="count">Šarš</string>
+    <string name="date_of_expiration">Dátum spotreby</string>
+    <string name="date_of_made">Dátum výroby</string>
+    <string name="title_of_product">Názov produktu</string>
+    <string name="ingredients">Zložky</string>
+    <string name="add_ingredients">Pridať zložku</string>
+    <string name="dialog_no">Nie</string>
+    <string name="dialog_yes">Ano</string>
+    <string name="search">Vyhladavanie</string>
+    <string name="scan">Naskenujte QR kod výrobku</string>
+
+    <string name="error_title">Názov musi byť vyplnený.</string>
+    <string name="error_date_expiration">Dátum musi byť vyplnený.</string>
+    <string name="error_date_made">Dátum musi byť vyplnený.</string>
+    <string name="error_count">Šarš musi byť vyplnená.</string>
+    <string name="error_producer">Výrobca musí byť vyplnený</string>
+
 </resources>

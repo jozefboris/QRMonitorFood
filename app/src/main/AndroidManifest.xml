@@ -19,40 +19,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SearchListActivity"
+            android:name=".Aktivity.SearchListActivity"
             android:label="@string/title_activity_search_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".UpdateIngredientsActivity"
+            android:name=".Aktivity.UpdateIngredientsActivity"
             android:label="@string/title_activity_update_ingredients"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Aktivity.SearchListActivity"/>
         <activity
-            android:name=".UpdateProductActivity"
+            android:name=".Aktivity.UpdateProductActivity"
             android:label="@string/title_activity_update_product"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Aktivity.SearchListActivity"/>
         <activity
-            android:name=".DetailActivity"
+            android:name=".Aktivity.DetailActivity"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DetailProductActivity"
+            android:name=".Aktivity.DetailProductActivity"
             android:label="@string/title_activity_detail_product"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddIngredientsActivity"
+            android:name=".Aktivity.AddIngredientsActivity"
             android:label="@string/title_activity_add_ingredients"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddProductActivity"
+            android:name=".Aktivity.AddProductActivity"
             android:label="@string/title_activity_add_product"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AboutProductActivity"
             android:label="@string/title_activity_about_product"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".Aktivity.SearchListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.SplashScreenActivity"
@@ -64,10 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Aktivity.GeneratorQRActivity"
-            android:label="@string/title_activity_generator_qr"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"

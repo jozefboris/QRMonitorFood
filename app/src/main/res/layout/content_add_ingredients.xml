@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AddIngredientsActivity"
+    tools:context=".Aktivity.AddIngredientsActivity"
     tools:showIn="@layout/activity_add_ingredients"
     >
 
@@ -19,7 +19,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nazov produktu"
+            android:hint="@string/title_of_product"
             android:gravity="top"
             android:inputType="text"
             />
@@ -29,7 +29,7 @@
             android:id="@+id/date_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Datum výroby"
+            android:hint="@string/date_of_made"
             android:gravity="top"
             android:inputType="date"/>
 
@@ -37,31 +37,31 @@
             android:id="@+id/date2_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Datum spotreby"
+            android:hint="@string/date_of_expiration"
             android:gravity="top"
             android:inputType="date"/>
         <EditText
             android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Šarš"
+            android:hint="@string/count"
             android:gravity="top"
             android:inputType="number"/>
         <EditText
             android:id="@+id/producer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Výrobca"
+            android:hint="@string/producer"
             android:gravity="top"
             android:inputType="textUri"/>
         <EditText
             android:id="@+id/decription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Popis"
+            android:hint="@string/decription"
             android:gravity="top"
             android:inputType="text"/>
-
+<!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Add" />
+                android:text="" />
 
             <Spinner
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 >
 
             </Spinner>
-        </RelativeLayout>
+        </RelativeLayout>  -->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Add" />
+                android:text="@string/add_ingredients" />
 
             <EditText
                 android:id="@+id/textin"
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/add"
-                android:hint="Zlozky"/>
+                android:hint="@string/ingredients"/>
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.example.qrmonitorfood;
+package com.example.qrmonitorfood.Aktivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -47,9 +47,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     private RecyclerAdapter mAdapter;
     private Boolean typList ;
     private ImageView iconList;
-   // ProgressBar progressBar;
+    ProgressBar progressBar;
     FirebaseDatabase database;
     DatabaseReference databaseProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +66,13 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
        // iconList = (ImageView) findViewById(R.id.image_list);
         // vertical RecyclerView
         // keep movie_list_row.xml width to `match_parent`
+        progressBar = findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         database = FirebaseDatabase.getInstance();
         databaseProduct = database.getReference("product");
-      // progressBar = (ProgressBar) findViewById(R.id.progress);
+       progressBar = (ProgressBar) findViewById(R.id.progress);
+    //    progressBar.setVisibility(View.VISIBLE);
         // horizontal RecyclerView
         // keep movie_list_row.xml width to `wrap_content`
         // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -264,6 +268,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     protected void onStart() {
         super.onStart();
 
+
         databaseProduct.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -291,6 +296,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
             }
         });
+      //  progressBar.setVisibility(View.GONE);
     }
 
 }

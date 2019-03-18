@@ -9,17 +9,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-
-import com.example.qrmonitorfood.Database.Product;
+import com.example.qrmonitorfood.Database.Ingredients;
 import com.example.qrmonitorfood.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> implements Filterable {
+public class RecyclerAdapterIngredients extends RecyclerView.Adapter<RecyclerAdapterIngredients.MyViewHolder> implements Filterable {
 
-    private List<Product> productsList;
-    private List<Product> productsListFull;
+    private List<Ingredients> productsList;
+    private List<Ingredients> productsListFull;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, genre;
@@ -31,7 +30,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
     }
 
-    public RecyclerAdapter(List<Product> productsList)
+    public RecyclerAdapterIngredients(List<Ingredients> productsList)
     {
 
         productsListFull = new ArrayList<>(productsList);
@@ -48,9 +47,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Product movie = productsList.get(position);
+        Ingredients movie = productsList.get(position);
         holder.title.setText(movie.getTitle());
-        holder.genre.setText("od " + movie.getDateOfMade()+ " do " + movie.getDateExpiration() + " " + movie.getProducer());
+        holder.genre.setText("zlozky");
 
     }
 
@@ -64,7 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return exampleFilter;
     }
 
-    public void updateList(List<Product> list){
+    public void updateList(List<Ingredients> list){
 
         productsList = new ArrayList<>();
         productsList.addAll(list);
@@ -75,14 +74,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Product> filteredList = new ArrayList<>();
+            List<Ingredients> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(productsListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Product item : productsListFull) {
+                for (Ingredients item : productsListFull) {
                     if (item.getTitle().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }

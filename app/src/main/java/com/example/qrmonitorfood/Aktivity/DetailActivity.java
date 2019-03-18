@@ -1,4 +1,4 @@
-package com.example.qrmonitorfood;
+package com.example.qrmonitorfood.Aktivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
+import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
+import com.example.qrmonitorfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,12 +28,12 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
-    TextView textView;
+  //  TextView textView;
     Product product = new Product();
 
-    private List<Movie> movieList = new ArrayList<>();
+    private List<Product> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private MoviesAdapter mAdapter;
+    private RecyclerAdapter mAdapter;
     DatabaseReference databaseProduct;
     String code;
     TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
@@ -53,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
 
-        mAdapter = new MoviesAdapter(movieList);
+        mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         code = getIntent().getStringExtra("idCode");
@@ -80,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Movie movie = movieList.get(position);
+                Product movie = movieList.get(position);
                 Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
             }
 
@@ -90,7 +92,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }));
 
-        prepareMovieData();
+      //  prepareMovieData();
     }
 
     private void writeData(){
@@ -108,53 +110,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void prepareMovieData() {
-        Movie movie = new Movie("Mad Max: Fury Road", "Action & Adventure");
-        movieList.add(movie);
 
-        movie = new Movie("Inside Out", "Animation, Kids & Family");
-        movieList.add(movie);
-
-        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action");
-        movieList.add(movie);
-
-        movie = new Movie("Shaun the Sheep", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("The Martian", "Science Fiction & Fantasy");
-        movieList.add(movie);
-
-        movie = new Movie("Mission: Impossible Rogue Nation", "Action");
-        movieList.add(movie);
-
-        movie = new Movie("Up", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Star Trek", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("The LEGO Movie", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Iron Man", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Aliens", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("Chicken Run", "Animation");
-        movieList.add(movie);
-
-        movie = new Movie("Back to the Future", "Science Fiction");
-        movieList.add(movie);
-
-        movie = new Movie("Raiders of the Lost Ark", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Goldfinger", "Action & Adventure");
-        movieList.add(movie);
-
-        movie = new Movie("Guardians of the Galaxy", "Science Fiction & Fantasy");
-        movieList.add(movie);
        writeData();
         // notify adapter about data set changes
         // so that it will render the list with new data
@@ -164,14 +120,15 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        code = "-L_ZSzdXafGK3z2ocQYX";
+
         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 product = snapshot.getValue(Product.class);
-              //  product.setProduktId(code);
 
+             //   product.setProduktId(code);
 
+                //  progressBar.setVisibility(View.GONE);
                 //prints "Do you have data? You'll love Firebase."
                 // product = new Product( snapshot.getValue(Product.class));
                 prepareMovieData();
@@ -181,4 +138,5 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
 }
