@@ -9,33 +9,44 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main"
     android:orientation="vertical"
+    android:background="@drawable/background"
+
     android:paddingTop="100dp">
 
 
+
     <android.support.v7.widget.CardView
+        android:layout_marginTop="15dp"
+        android:id="@+id/button_scan"
+        style="@style/main_button_card_view"
+        android:onClick="openScan"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="15dp"
-        app:cardElevation="10dp"
-        android:onClick="openScan"
-        style="@style/main_button_card_view">
+        app:cardElevation="10dp">
+
         <RelativeLayout style="@style/main_button_inner_container">
+
             <TextView
-                android:text="@string/scan_product"
-                style="@style/main_button_text" />
+                style="@style/main_button_text"
+                android:text="@string/scan_product" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
+
     <android.support.v7.widget.CardView
+        android:id="@+id/button_search"
+        style="@style/main_button_card_view"
+        android:onClick="openSearch"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
-        android:onClick="openSearch"
-        style="@style/main_button_card_view"
         tools:ignore="OnClick">
+
         <RelativeLayout style="@style/main_button_inner_container">
+
             <TextView
-                android:text="@string/search"
-                style="@style/main_button_text" />
+                style="@style/main_button_text"
+                android:text="@string/search" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -45,23 +56,15 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:fab_colorNormal="@color/colorAccent"
+        app:fab_colorPressed="@color/colorAccent"
 
 
-        >
-
-
-        <!--
-
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="11dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginRight="11dp"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#da3c2f"
-        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccent"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/fab_add"
@@ -71,38 +74,31 @@
         fab:menu_labels_cornerRadius="3dp"
         fab:menu_labels_ellipsize="none"
         fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-        fab:menu_labels_margin="0dp"
-        fab:menu_labels_maxLines="-1"
-        fab:menu_labels_padding="8dp"
-        fab:menu_labels_position="left"
-        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-        fab:menu_labels_showShadow="true"
-        fab:menu_labels_singleLine="false"
-        fab:menu_labels_textColor="#f2f1f1"
-        fab:menu_labels_textSize="15sp"
-        fab:menu_openDirection="up"
-        fab:menu_shadowColor="#000"
-        fab:menu_shadowRadius="4dp"
-        fab:menu_shadowXOffset="1dp"
-        fab:menu_shadowYOffset="4dp"
-        fab:menu_showShadow="true" -->
+
+>
+
+
 
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/koko"
+            android:id="@+id/floating_button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="openAddProduct"
             android:src="@drawable/ic_action_add"
             fab:fab_label="@string/add_product"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorAccent"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/kokot"
+            android:id="@+id/floating_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="openAddIngredients"
             android:src="@drawable/ic_action_add"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@color/colorAccent"
             fab:fab_label="@string/add_ingredient"
             fab:fab_size="mini"
             tools:ignore="OnClick" />

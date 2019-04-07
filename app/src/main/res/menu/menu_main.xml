@@ -2,17 +2,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.qrmonitorfood.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/updateProfil"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/update_profil"
+        android:onClick="openUpdateProfil"
         app:showAsAction="never" />
 
-    <item
 
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="100"
+        android:title="@string/log_out"
+        android:onClick="openLogout"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/signIn"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="always"
-        android:onClick="access"
+        android:onClick="openAccess"
         android:icon="@drawable/ic_action_access"/>
 </menu>
+

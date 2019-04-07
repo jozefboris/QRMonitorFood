@@ -49,7 +49,6 @@ public class AddIngredientsActivity extends AppCompatActivity {
     private  EditText descriptionEditText;
     private  EditText producerEditText;
 
-    String item;
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
 
@@ -58,9 +57,6 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
     private EditText btn_date;
     private  EditText btn_date2;
-    private EditText btn_time;
-
-
     private MenuItem saveIcon;
   //  private Spinner spinner;
 
@@ -74,7 +70,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
         buttonAdd2 = (Button) findViewById(R.id.add2);
         textIn = findViewById(R.id.textin);
         databaseComponents = FirebaseDatabase.getInstance().getReference("components");
-        databaseProduct = FirebaseDatabase.getInstance().getReference("product");
+        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
 
      /*   spinner = findViewById(R.id.spinner);
 
@@ -137,6 +133,14 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
+        buttonAdd = (Button) findViewById(R.id.add);
+        buttonAdd2 = (Button) findViewById(R.id.add2);
+        titleEditText = (EditText) findViewById(R.id.title);
+        dateEditText = (EditText) findViewById(R.id.date_input);
+        date2EditText = findViewById(R.id.date2_input);
+        countEditText = findViewById(R.id.count);
+        producerEditText = findViewById(R.id.producer);
+        descriptionEditText = findViewById(R.id.decription);
 
 
         btn_date.setOnClickListener(new View.OnClickListener() {
@@ -153,15 +157,6 @@ public class AddIngredientsActivity extends AppCompatActivity {
             }
         });
 
-
-        buttonAdd = (Button) findViewById(R.id.add);
-        buttonAdd2 = (Button) findViewById(R.id.add2);
-        titleEditText = (EditText) findViewById(R.id.title);
-        dateEditText = (EditText) findViewById(R.id.date_input);
-        date2EditText = findViewById(R.id.date2_input);
-        countEditText = findViewById(R.id.count);
-        producerEditText = findViewById(R.id.producer);
-        descriptionEditText = findViewById(R.id.decription);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,26 +237,15 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * priprava dat
+     * @param nazov nazov potraviny
+     */
     private void prepareMovieData(String nazov) {
-Movie movie = new Movie(nazov,"");
+        Movie movie = new Movie(nazov,"");
         movieList.add(movie);
-
-
-        // notify adapter about data set changes
-        // so that it will render the list with new data
         mAdapter.notifyDataSetChanged();
     }
-
-    private void setFavoriteIcon() {
-
-        saveIcon.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_save));
-
-    }
-
-
-
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -278,31 +262,34 @@ Movie movie = new Movie(nazov,"");
 
     }
 
-
+    /**
+     * onClick pre tlačidlo uložiť v menu
+     * @param item
+     */
     public void save(MenuItem item) {
 
          boolean everythingOK = true;
 
-        if (titleEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
+        if (titleEditText.getText().toString().trim().equals("")) {
             titleEditText.setError(getString(R.string.error_title));
             everythingOK = false;
         }
 
-        if (dateEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
+        if (dateEditText.getText().toString().trim().equals("")) {
             dateEditText.setError(getString(R.string.error_date_made));
             everythingOK = false;
         }
 
-        if (date2EditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
+        if (date2EditText.getText().toString().trim().equals("")) {
             date2EditText.setError(getString(R.string.error_date_expiration));
             everythingOK = false;
         }
 
-        if (countEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
+        if (countEditText.getText().toString().trim().equals("")) {
             countEditText.setError(getString(R.string.error_count));
             everythingOK = false;
         }
-        if (producerEditText.getText().toString().trim().equals("")) {  // stringy nie == ale equals
+        if (producerEditText.getText().toString().trim().equals("")) {
             producerEditText.setError(getString(R.string.error_producer));
             everythingOK = false;
         }
@@ -325,15 +312,6 @@ Movie movie = new Movie(nazov,"");
                 databaseComponents.child(id2).setValue(zlozky);
             }
 
-
-
-
-
-
-
-
-
-
             Intent mIntent = getIntent();
             String previousActivity= mIntent.getStringExtra("FROM_ACTIVITY");
 
@@ -343,21 +321,15 @@ Movie movie = new Movie(nazov,"");
                 Intent intent = new Intent();
                 intent.putExtra("editTextValue", id);
                 setResult(RESULT_OK, intent);
-             //   Toast.makeText(this, "Produkt pridaný do systému", Toast.LENGTH_SHORT).show();
                 finish();
+
             } else if (previousActivity.equals("B")){
 
                 final Intent intent = new Intent(this, AboutProductActivity.class);
                 intent.putExtra("idCode",id );
-                // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-
                 startActivity(intent);
 
-            }
-
-              //  Toast.makeText(this, "Surovina pridan8 do systemu", Toast.LENGTH_SHORT).show();
-
-
+               }
             }
 
 
@@ -367,11 +339,18 @@ Movie movie = new Movie(nazov,"");
 
 
     }
+
+    /**
+     * aktualizuje datum
+     */
 
     private void updateDate(){
         new DatePickerDialog(this, d, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    /**
+     * aktualizuje datum spotreby
+     */
     private void updateDate2(){
         new DatePickerDialog(this, d2, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -379,6 +358,10 @@ Movie movie = new Movie(nazov,"");
   /*  private void updateTime(){
         new TimePickerDialog(this, t, dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE), true).show();
     }*/
+
+  /**
+     * ddialog pre datum
+     */
 
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -399,6 +382,9 @@ Movie movie = new Movie(nazov,"");
         }
     };*/
 
+    /**
+     * dialog pre datum spotreby
+     */
     DatePickerDialog.OnDateSetListener d2 = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -409,11 +395,18 @@ Movie movie = new Movie(nazov,"");
         }
     };
 
+    /**
+     * upravý editText datum výroby
+     */
     private void updateTextLabel(){
         dateEditText.setText(formatDateTime.format(dateTime.getTime()));
 
 
     }
+
+    /**
+     * upravy editView datum spotreby
+     */
     private void updateTextLabel2(){
         date2EditText.setText(formatDateTime.format(dateTime.getTime()));
 

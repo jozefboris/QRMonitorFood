@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/title_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <group
+        android:visible="false">
+        <item
+            android:id="@+id/group1"
+            android:title="Akce"
+            android:icon="@drawable/ic_action_share"
+            app:showAsAction="always"
+            />
+        <item
+            android:id="@+id/group2"
+            android:title="Neakce"
+            android:icon="@drawable/ic_action_access"
+            app:showAsAction="always"
+            />
+
+
+
+
+    </group>
+
+</menu>

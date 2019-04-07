@@ -20,8 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nazov produktu"
+            android:layout_margin="5dp"
             android:gravity="top"
-            android:inputType="text"
+            android:inputType="textCapWords|textCapSentences"
             />
 
 
@@ -31,7 +32,8 @@
             android:layout_height="wrap_content"
             android:hint="Datum výroby"
             android:gravity="top"
-            android:inputType="date"/>
+            android:layout_margin="5dp"
+            android:focusable="false"/>
 
         <EditText
             android:id="@+id/date2_input"
@@ -39,28 +41,34 @@
             android:layout_height="wrap_content"
             android:hint="Datum spotreby"
             android:gravity="top"
-            android:inputType="date"/>
+            android:layout_margin="5dp"
+            android:focusable="false"/>
+
         <EditText
             android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Šarš"
             android:gravity="top"
+            android:layout_margin="5dp"
             android:inputType="number"/>
+
         <EditText
             android:id="@+id/producer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Výrobca"
             android:gravity="top"
-            android:inputType="textUri"/>
+            android:layout_margin="5dp"
+            android:focusable="false"/>
         <EditText
             android:id="@+id/decription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Popis"
             android:gravity="top"
-            android:inputType="text"/>
+            android:layout_margin="5dp"
+            android:inputType="textCapWords|textCapSentences"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,11 +81,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
                 android:text="Add" />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:id="@+id/spinner"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/add2"
@@ -97,6 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
                 android:text="Add" />
 
             <EditText
@@ -104,13 +115,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
                 android:layout_toLeftOf="@id/add"
+                android:inputType="textCapWords|textCapSentences"
                 android:hint="Zlozky"/>
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
+            android:layout_margin="5dp"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
 

@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/title_of_product"
             android:gravity="top"
-            android:inputType="text"
+            android:layout_margin="5dp"
+            android:inputType="textCapWords|textCapSentences"
             />
 
 
@@ -30,6 +31,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/date_of_made"
             android:gravity="top"
+            android:layout_margin="5dp"
+            android:focusable="false"
+
             />
 
         <EditText
@@ -38,34 +42,47 @@
             android:layout_height="wrap_content"
             android:hint="@string/date_of_expiration"
             android:gravity="top"
-            android:inputType="date"/>
+            android:layout_margin="5dp"
+            android:focusable="false"/>
+
         <EditText
             android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/count"
+            android:layout_margin="5dp"
             android:gravity="top"
             android:inputType="number"/>
+
         <EditText
             android:id="@+id/producer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/producer"
             android:gravity="top"
-            android:inputType="textUri"/>
+            android:layout_margin="5dp"
+            android:focusable="false"
+           />
+
         <EditText
             android:id="@+id/decription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/decription"
             android:gravity="top"
-            android:inputType="text"/>
+            android:layout_margin="5dp"
+            android:inputType="textCapWords|textCapSentences"
+            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_new_product"
-            android:onClick="addIngre" />
+            android:onClick="addIngre"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,13 +93,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@string/scan_product" />
+                android:textColor="@android:color/white"
+                android:background="@color/colorPrimary"
+                android:text="@string/scan_product"
+                android:layout_margin="5dp"
+
+                />
 
 
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"

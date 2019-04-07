@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.qrmonitorfood">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -7,8 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -19,27 +19,46 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Aktivity.AddProducerActivity"
+            android:label="@string/title_activity_add_producer"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Aktivity.RegisterActivity"></activity>
+        <activity
+            android:name=".Aktivity.UpdateProfilActivity"
+            android:label="@string/title_activity_update_profil"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Aktivity.ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Aktivity.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Aktivity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Aktivity.SearchListActivity"
             android:label="@string/title_activity_search_list"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.UpdateIngredientsActivity"
             android:label="@string/title_activity_update_ingredients"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".Aktivity.SearchListActivity"/>
+            android:parentActivityName=".Aktivity.SearchListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.UpdateProductActivity"
             android:label="@string/title_activity_update_product"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".Aktivity.SearchListActivity"/>
+            android:parentActivityName=".Aktivity.SearchListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Aktivity.DetailProductActivity"
-            android:label="@string/title_activity_detail_product"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AddIngredientsActivity"
@@ -67,13 +86,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:replace="screenOrientation" />
     </application>
 
 </manifest>

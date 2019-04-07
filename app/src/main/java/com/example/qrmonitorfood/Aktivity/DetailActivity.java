@@ -1,5 +1,6 @@
 package com.example.qrmonitorfood.Aktivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,12 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
-import com.example.qrmonitorfood.ListAdapter.Movie;
-import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
@@ -27,26 +29,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
-  //  TextView textView;
+    ProgressBar progressBar;
+    TextView emptyList;
     Product product = new Product();
-
+    DatabaseReference databaseProducer;
     private List<Product> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     DatabaseReference databaseProduct;
+    Product product2 = new Product();
     String code;
     TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
+    Producer producer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-      //  textView=(TextView)findViewById(R.id.textView);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        databaseProduct = FirebaseDatabase.getInstance().getReference("product");
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         titleText = findViewById(R.id.titleText);
         dateText = findViewById(R.id.datetext);
         date2text = findViewById(R.id.date2text);
@@ -54,36 +59,28 @@ public class DetailActivity extends AppCompatActivity {
         producerText = findViewById(R.id.producertext);
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
-
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
         mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-        code = getIntent().getStringExtra("idCode");
-        // vertical RecyclerView
-        // keep movie_list_row.xml width to `match_parent`
+        emptyList = findViewById(R.id.emptyList);
+        code = getIntent().getStringExtra(IntentConstants.idCode);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-        // horizontal RecyclerView
-        // keep movie_list_row.xml width to `wrap_content`
-        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
-        // recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(mAdapter);
+        final Intent intent = new Intent(this, DetailActivity.class);
 
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Product movie = movieList.get(position);
-                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+                //  final Intent intent = new Intent(this, AboutProductActivity.class);
+                intent.putExtra(IntentConstants.idCode, movie.getProduktId());
+                startActivity(intent);
             }
 
             @Override
@@ -91,9 +88,12 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         }));
-
-      //  prepareMovieData();
+readProduct();
     }
+
+    /**
+     * zapis infornacii do edit text
+     */
 
     private void writeData(){
 
@@ -101,42 +101,104 @@ public class DetailActivity extends AppCompatActivity {
         dateText.setText(product.getDateOfMade());
         date2text.setText(product.getDateExpiration());
         countText.setText(product.getCount());
-        producerText.setText(product.getProducer());
         descriptionText.setText(product.getDecription());
-        typeText.setText("surovina");
-
+        typeText.setText(getString(R.string.ingredients));
+        readProducer(product.getProducerId());
+        if (product.getProducts().size() != 0){
+            for (int i =0; i<product.getProducts().size();i++) {
+                readIngredients(product.getProducts().get(i));
+            }
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
+        }
 
 
     }
 
-    private void prepareMovieData() {
-
-       writeData();
-        // notify adapter about data set changes
-        // so that it will render the list with new data
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+    /**
+     * načitanie pre pridanie do listu
+     * @param id
+     */
+    void readIngredients(final String id) {
+        databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                product = snapshot.getValue(Product.class);
 
-             //   product.setProduktId(code);
+                product2 = snapshot.getValue(Product.class);
+                if (snapshot.exists()) {
+                    product2.setProduktId(id);
+                    movieList.add(product2);
+                    mAdapter.notifyDataSetChanged();
 
-                //  progressBar.setVisibility(View.GONE);
-                //prints "Do you have data? You'll love Firebase."
-                // product = new Product( snapshot.getValue(Product.class));
-                prepareMovieData();
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * priprava dat pre activitu
+     */
+    private void prepareMovieData() {
+       writeData();
+       mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * toast
+     */
+    void print(){
+
+        Toast.makeText(this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
+    }
+
+    public void readProducer(String id) {
+
+        databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    producer = snapshot.getValue(Producer.class);
+                    producer.setId(snapshot.getKey());
+                    producerText.setText(producer.getTitle());
+
+                }
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
             }
         });
+    }
+
+
+
+    void readProduct(){
+        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                product = snapshot.getValue(Product.class);
+                progressBar.setVisibility(View.GONE);
+                if (snapshot.exists()){
+
+                    prepareMovieData();}
+                    else {
+                    print();
+                    finish();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
+
+
     }
 
 }

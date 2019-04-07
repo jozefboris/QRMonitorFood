@@ -1,34 +1,26 @@
 package com.example.qrmonitorfood.Aktivity;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.support.v7.widget.DefaultItemAnimator;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
 import com.example.qrmonitorfood.Database.Product;
-import com.example.qrmonitorfood.ListAdapter.Movie;
-import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
+import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.R;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
@@ -38,18 +30,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.example.qrmonitorfood.R.drawable.ic_action_share;
 
 public class SearchListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     List<Product> newList;
+    private MenuItem action;
+    TextView emptyList;
     private List<Product> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     private Boolean typList ;
-    private ImageView iconList;
     ProgressBar progressBar;
     FirebaseDatabase database;
     DatabaseReference databaseProduct;
+    ActionMode actionMode;
+    private ActionMode.Callback callback;
+    String idProducer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,27 +59,21 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-       // iconList = (ImageView) findViewById(R.id.image_list);
-        // vertical RecyclerView
-        // keep movie_list_row.xml width to `match_parent`
+
         progressBar = findViewById(R.id.progress);
-        progressBar.setVisibility(View.VISIBLE);
+        emptyList=findViewById(R.id.emptyText);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         database = FirebaseDatabase.getInstance();
-        databaseProduct = database.getReference("product");
+        databaseProduct = database.getReference("Products");
        progressBar = (ProgressBar) findViewById(R.id.progress);
-    //    progressBar.setVisibility(View.VISIBLE);
-        // horizontal RecyclerView
-        // keep movie_list_row.xml width to `wrap_content`
-        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-       // readData();
+        idProducer = getIntent().getStringExtra("idProducer");
         recyclerView.setLayoutManager(mLayoutManager);
 
         // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         // adding custom divider line with padding 16dp
-        // recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+       //  recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
@@ -111,51 +101,155 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
             @Override
             public void onLongClick(View view, int position) {
+                if (typList){
+                    Product movie = newList.get(position);
+                    startActionMode();
+                    mAdapter.onClick(view,position,movie.getProduktId() );
 
+                    actionMode.setTitle("" + mAdapter.getSelectedItemCount());
+                    if (mAdapter.getSelectedItemCount()==0){
+                        cancelActionMode();
+                    }
+
+                } else {
+                    startActionMode();
+                    Product movie = movieList.get(position);
+                    mAdapter.onClick(view,position, movie.getProduktId());
+                     actionMode.setTitle("" + mAdapter.getSelectedItemCount());
+                    if (mAdapter.getSelectedItemCount()==0){
+                        cancelActionMode();
+                    }
+            }
             }
         }));
 
 
-  //     prepareMovieData();
 
 
+        // aktivace šipky zpět na toolbaru.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
-
-
-
-
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.delete_menu_option, menu);
+        action = menu.findItem(R.id.action);
 
-        MenuItem searchItem = menu.findItem(R.id.search_b);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-       searchView.setOnQueryTextListener(this);
-
-        //    searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        //   searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-
+       MenuItem searchItem = menu.findItem(R.id.action);
+       SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-/*
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            return false;
+
+        int id = item.getItemId();
+        if (id == R.id.action){
         }
 
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            mAdapter.getFilter().filter(newText);
-            return false;
-        }*/
+        if (id == android.R.id.home){
+            mAdapter.clearSelections();
+            // pokud uzivatel klikne na sipku zpet tak se ukonci soucasna aktivita.
+            finish();
+        }
 
 
+        return super.onOptionsItemSelected(item);
+    }
 
+
+    /**
+     * Nastartuje action mode.
+     */
+    private void startActionMode(){
+        if (actionMode == null){
+            setActionMode();
+            actionMode = startSupportActionMode(callback);
+           // actionMode.setTitle(""+mAdapter.getSelectedItemCount());
+        }
+
+
+    }
+
+
+    /**
+     * Nastartuje action mode.
+     */
+    private void setActionMode(){
+        // inicializace callbacku pro action mode. Definuje akce co se maji stat.
+        callback = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                getMenuInflater().inflate(R.menu.menu_search, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+                // click na tlačítko na toolbaru při aktivovaném action modu.
+                if (item.getItemId() == R.id.cancel){
+                    Toast.makeText(SearchListActivity.this, "Neco", Toast.LENGTH_LONG).show();
+                    cancelActionMode();
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // voláno pokud uživatel klikne na action modu na tlačítko zpět.
+                mAdapter.clearSelections();
+                actionMode = null;
+            }
+        };
+
+
+    }
+
+
+    /**
+     * Ukončuje action mode
+     */
+    private void cancelActionMode(){
+        if (actionMode != null){
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+    public void actionOnClick(MenuItem item) {
+    }
+
+    // action tlačidko pre vymazanie vybratých položiek
+    public void actionDelete(MenuItem item) {
+
+  for (int i = 0; i<mAdapter.getSelectedItemCount();i++){
+      DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(mAdapter.getSelectedItems().get(i));
+
+      dR.removeValue();
+  }
+        mAdapter.notifyDataSetChanged();
+        mAdapter.clearSelections();
+       cancelActionMode();
+        Toast.makeText(SearchListActivity.this, R.string.delete_select_item , Toast.LENGTH_LONG).show();
+
+    }
+
+    /**
+     * metody pre filtrovanie zoznamu
+     * @param query
+     * @return
+     */
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -184,92 +278,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         return false;
     }
 
-
-
-
-    public void readData() {
-        //  super.onStart();
-
-        databaseProduct.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                movieList.clear();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Product track = postSnapshot.getValue(Product.class);
-                    track.setProduktId(postSnapshot.getKey());
-                    movieList.add(track);
-                //   findViewById(R.id.progress).setVisibility(View.GONE);
-                 //   ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
-                    //progressBar.setSecondaryProgress(0);
-                  //  progressBar.hideProgressDialog();
-                   // showProgressDialog();
-                  //  progressBar.setVisibility(View.GONE);
-                  //  progressBar.setVisibility(View.GONE);
-                }
-                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
-                //listViewTracks.setAdapter(trackListAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    private void prepareMovieData() {
-
-
- // readData();
-      /*
-
-        List<Product> p = null;
-        Product product = new Product("Rohlik", "Banan","sdg",
-                "15.3.2018","fs","gdf","xgx", p);
-        movieList.add(product);
-
-
-        Product product2 = new Product("Salat", "Jablko","sdg",
-                "11.11.2019","fs","gdf","xgx", p);
-        movieList.add(product2);
-
-
-        Product product3 = new Product("Cesnak", "Rohlik","sdg",
-                "17.4.2020","fs","gdf","xgx", p);
-        movieList.add(product3);
-
-
-        Product product4 = new Product("Sunka", "Chlieb","sdg",
-                "24.7.2018","fs","gdf","xgx", p);
-        movieList.add(product4);
-
-
-        Product product5 = new Product("Jogurt", "Prorein","sdg",
-                "31.3.2019","fs","gdf","xgx", p);
-        movieList.add(product5);
-
-
-        Product product6 = new Product("Kecup", "Pomazanka","sdg",
-                "22.08.1019","fs","gdf","xgx", p);
-        movieList.add(product6);
-
-        Product product7 = new Product("Pomazanka", "Kecup","dfg",
-                "22.07.2019","fs","gdf","xgx", p);
-        movieList.add(product7);
-
-        // notify adapter about data set changes
-        // so that it will render the list with new data*/
-        mAdapter.notifyDataSetChanged();
-    }
+    /**
+     * metoda po stusteni pre načítanie z databázy
+     */
 
     @Override
     protected void onStart() {
         super.onStart();
 
 
-        databaseProduct.addValueEventListener(new ValueEventListener() {
+        databaseProduct.orderByChild("producerId").equalTo(IntentConstants.idProducer).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 movieList.clear();
@@ -278,17 +296,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     Product track = postSnapshot.getValue(Product.class);
                     track.setProduktId(postSnapshot.getKey());
                     movieList.add(track);
-                    //   findViewById(R.id.progress).setVisibility(View.GONE);
-                    //   ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
-                    //progressBar.setSecondaryProgress(0);
-                    //  progressBar.hideProgressDialog();
-                    // showProgressDialog();
-                    //  progressBar.setVisibility(View.GONE);
-                    //  progressBar.setVisibility(View.GONE);
-                prepareMovieData();
+                    progressBar.setVisibility(View.GONE);
+                    mAdapter.notifyDataSetChanged();
                 }
-                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
-                //listViewTracks.setAdapter(trackListAdapter);
+
+        if (movieList.size()==0){
+             emptyList.setVisibility(View.VISIBLE);
+             progressBar.setVisibility(View.INVISIBLE);
+             mAdapter.notifyDataSetChanged();
+
+                }
             }
 
             @Override
@@ -296,7 +313,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
             }
         });
-      //  progressBar.setVisibility(View.GONE);
     }
+
 
 }

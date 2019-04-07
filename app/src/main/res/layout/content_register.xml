@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Qr monitoring                food"
+        android:textSize="40dp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textDirection="firstStrong"
+        />
+
+    <EditText
+        android:id="@+id/ETemail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        />
+
+    <EditText
+        android:id="@+id/ETpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        >
+
+        <ImageButton
+            android:id="@+id/add2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text=""
+
+            android:layout_margin="5dp"
+
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_action_add"
+
+            android:onClick="openAddPruducer"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:id="@+id/spinner"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/add2"
+            >
+
+        </Spinner>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="@string/registration"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/TVSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/have_account"
+        android:layout_margin="15dp"
+        android:textSize="20dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

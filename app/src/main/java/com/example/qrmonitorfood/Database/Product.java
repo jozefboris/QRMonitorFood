@@ -9,24 +9,36 @@ public class Product {
     String dateOfMade;
     String dateExpiration;
     String count;
-    String producer;
+    String producerId;
     String decription;
     List<String> products;
 
-    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producer, String decription, List<String> products) {
+    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producerId, String decription, List<String> products) {
         this.produktId = produktId;
         this.title = title;
         this.dateOfMade = dateOfMade;
         this.dateExpiration = dateExpiration;
         this.count = count;
-        this.producer = producer;
+        this.producerId = producerId;
         this.decription = decription;
         this.products = products;
     }
 
-    public  Product(){
+    public Product(String title, String dateOfMade, String dateExpiration, String count, String producerId, String decription, List<String> products) {
+        this.title = title;
+        this.dateOfMade = dateOfMade;
+        this.dateExpiration = dateExpiration;
+        this.count = count;
+        this.producerId = producerId;
+        this.decription = decription;
+        this.products = products;
+    }
 
+
+
+    public Product() {
         products = new ArrayList<>();
+
     }
 
 
@@ -71,12 +83,12 @@ public class Product {
         this.count = count;
     }
 
-    public String getProducer() {
-        return producer;
+    public String getProducerId() {
+        return producerId;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setProducerId(String producerId) {
+        this.producerId = producerId;
     }
 
     public String getDecription() {

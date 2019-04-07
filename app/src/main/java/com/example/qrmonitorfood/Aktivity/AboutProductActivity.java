@@ -3,10 +3,8 @@ package com.example.qrmonitorfood.Aktivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +12,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.R;
@@ -37,39 +36,31 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AboutProductActivity extends AppCompatActivity {
-    //Product uInfo = new Product();
-    private MenuItem deleteIcon;
-    private MenuItem updateIcon;
-    private MenuItem shareIcon;
+
 
     ProgressBar progressBar;
-   // Product track;
-    //String value;
+    TextView emptyList;
     TextView title;
+    Boolean testDelete;
     Product product = new Product();
-
     Product product2 = new Product();
     private ImageView qrImage;
     private String code;
-    final private String url = "www.qrfoodmonitor.com/id=";
+    final private String url = "https://www.qrmonitoringfood.com/id=";
     private List<Product> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     DatabaseReference databaseProduct;
+    DatabaseReference databaseProducer;
     DatabaseReference databaseComponents;
-  //  private boolean isThere;
-
-    TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
+    Producer producer;
+    TextView titleText, dateText, date2text, countText, producerText, descriptionText, typeText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +68,10 @@ public class AboutProductActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        qrImage = (ImageView) findViewById(R.id.qrImage);
-       title = findViewById(R.id.titleText);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        qrImage = (ImageView) findViewById(R.id.qrImage);
+        title = findViewById(R.id.titleText);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         titleText = findViewById(R.id.titleText);
         dateText = findViewById(R.id.datetext);
         date2text = findViewById(R.id.date2text);
@@ -88,18 +79,18 @@ public class AboutProductActivity extends AppCompatActivity {
         producerText = findViewById(R.id.producertext);
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
-
+        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
         mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
+        emptyList = findViewById(R.id.emptyList);
 
-        databaseProduct = FirebaseDatabase.getInstance().getReference("product");
-        databaseComponents = FirebaseDatabase.getInstance().getReference("components");
+       // databaseComponents = FirebaseDatabase.getInstance().getReference("components");
         // vertical RecyclerView
         // keep movie_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // horizontal RecyclerView
         // keep movie_list_row.xml width to `wrap_content`
@@ -146,286 +137,187 @@ public class AboutProductActivity extends AppCompatActivity {
         catch (WriterException e){
             e.printStackTrace();
         }
-
-
-       // prepareMovieData();
-
+        testDelete = false;
+add();
 
     }
 
-  /*  private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            Product uInfo = new Product();
-            uInfo.setProduktId(code); //set the name
-            uInfo.setTitle(ds.child(code).getValue(Product.class).getTitle()); //set the email
-            uInfo.setDateOfMade(ds.child(code).getValue(Product.class).getDateOfMade());
-            uInfo.setDateExpiration(ds.child(code).getValue(Product.class).getDateOfMade());
-            uInfo.setCount(ds.child(code).getValue(Product.class).getCount());
-            uInfo.setProducer(ds.child(code).getValue(Product.class).getProducer());
-            uInfo.setDecription(ds.child(code).getValue(Product.class).getDecription());
-            //display all the information
-
-
-
-        }
-    }*/
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_about_product, menu);
-        deleteIcon = menu.findItem(R.id.action_delete);
-        shareIcon = menu.findItem(R.id.action_share);
-        updateIcon = menu.findItem(R.id.action_update);
-     //   qrImage = (ImageView) findViewById(R.id.qrImage);
-
-
-
-       // databaseProduct = FirebaseDatabase.getInstance().getReference("product").child(code);
+      //  deleteIcon = menu.findItem(R.id.action_delete);
+     //   shareIcon = menu.findItem(R.id.action_share);
+     //   updateIcon = menu.findItem(R.id.action_update);
 
         return true;
     }
 
-  /*  public void readData() {
-      //  super.onStart();
+    /**
+     * Tlačidlo pre vymazanie potraviny
+     * @param item
+     */
 
-        databaseProduct.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                movieList.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Product track = postSnapshot.getValue(Product.classr);
-                    movieList.add(track);
-                }
-                //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
-                //listViewTracks.setAdapter(trackListAdapter);
-            }
+    public void delete(MenuItem item) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        if (product.getProducerId().equals(IntentConstants.idProducer)) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(AboutProductActivity.this);
+            builder1.setMessage(getString(R.string.delete_item));
+            builder1.setCancelable(true);
 
-            }
-        });
-    }*/
-  public void readData() {
-      //  super.onStart();
+            builder1.setPositiveButton(
+                    getString(R.string.dialog_yes),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(code);
+                            dR.removeValue();
 
-      databaseComponents.orderByChild("id_produkt").equalTo(code).addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-              movieList.clear();
-              for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                  DatabaseReference dR = FirebaseDatabase.getInstance().getReference("components").child(postSnapshot.getKey());
-                  dR.removeValue();
-
-
-              }
-              //TrackList trackListAdapter = new TrackList(ArtistActivity.this, tracks);
-              //listViewTracks.setAdapter(trackListAdapter);
-          }
-
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-
-          }
-      });
-  }
-
-          public void delete(MenuItem item) {
-
-          // writeData();
-
-    //    Intent intent = getIntent();
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(AboutProductActivity.this);
-        builder1.setMessage("Do you want delete item?" );
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("product").child(code);
-
-                        //removing artist
-                        dR.removeValue();
-                     // readData();
-
-                     /*  databaseComponents.child("users").orderByKey().equalTo(code).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                for (DataSnapshot postsnapshot :dataSnapshot.getChildren()) {
-
-                                    String key = postsnapshot.getKey();
-                                    dataSnapshot.getRef().removeValue();
-
-                                }             dataSnapshot.getRef().removeValue();
-
-                                                                                                                           }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }*/
-
-                        Toast.makeText(getApplicationContext(), "Product Deleted", Toast.LENGTH_LONG).show();
-
-                        finish();
-                        dialog.cancel();
+                            testDelete = true;
+                            finish();
+                            dialog.cancel();
+                            Toast.makeText(getApplicationContext(), R.string.delete_product, Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
 
-                );
+            );
 
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+            builder1.setNegativeButton(
+                    getString(R.string.dialog_no),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
 
-
+        }
 
     }
 
+    /**
+     * tlačidlo pre upravenie potraviny presmerovanie na updateProductActivity
+     * @param item
+     */
+
     public void update(MenuItem item) {
-        Intent intent = new Intent(this, UpdateProductActivity.class);
 
-        intent.putExtra("idCode", code);
+        if (product.getProducerId().equals(IntentConstants.idProducer)) {
+            Intent intent = new Intent(this, UpdateProductActivity.class);
 
-        startActivity(intent);
+            intent.putExtra("idCode", code);
 
+            startActivity(intent);
+        }
 }
 
-
+    /**
+     * onClick pre tlačidlo zdieľať, možnosť využiť lubovolnu aplikáciu pre zdiaľanie
+     * @param item
+     * @throws WriterException
+     */
 
     public void share(MenuItem item) throws WriterException {
 
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
-            BitMatrix bitMatrix = multiFormatWriter.encode(url+code, BarcodeFormat.QR_CODE,200,200);
+
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+            BitMatrix bitMatrix = multiFormatWriter.encode(url + code, BarcodeFormat.QR_CODE, 200, 200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             qrImage.setImageBitmap(bitmap);
 
 
-        try {
-            File file = new File(this.getExternalCacheDir(),"logicchip.png");
-            FileOutputStream fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-            file.setReadable(true, false);
-            final Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intent.setType("image/png");
-           // Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
-            startActivity(Intent.createChooser(intent, "Share image via"));
-        } catch (Exception e) {
-          //  Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+            try {
+                File file = new File(this.getExternalCacheDir(), "logicchip.png");
+                FileOutputStream fOut = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                fOut.flush();
+                fOut.close();
+                file.setReadable(true, false);
+                final Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                intent.setType("image/png");
+                // Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
+                startActivity(Intent.createChooser(intent, "Share image via"));
+            } catch (Exception e) {
+                //  Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
 
 
     }
 
-    private void saveImageToExternalStorage(Bitmap finalBitmap) {
 
-        File path = Environment.getExternalStorageDirectory();
-        File dir = new File(path +  "Image-" +  ".jpg");
-        dir.mkdirs();
-
-        File file = new File(dir +  "Image-" +  ".jpg");
-
-        OutputStream out = null;
-
-        try {
-            out = new FileOutputStream(file);
-
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
-                    out.flush();
-                    out.close();
-
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
-
-    }
-
-
-
+    /**
+     * vyplenie textView po stiahnutí informácii z databázy
+     */
     private void writeData(){
 
         titleText.setText(product.getTitle());
         dateText.setText(product.getDateOfMade());
         date2text.setText(product.getDateExpiration());
         countText.setText(product.getCount());
-        producerText.setText(product.getProducer());
+     //  producerText.setText(product.getProducerId());
         descriptionText.setText(product.getDecription());
-        typeText.setText("surovina");
+        typeText.setText("Suroviny");
+        readProducer(product.getProducerId());
         if (product.getProducts().size() != 0){
+            //emptyList.setVisibility(View.INVISIBLE);
             for (int i =0; i<product.getProducts().size();i++) {
 
-                add2(product.getProducts().get(i));
+                readIngredients(product.getProducts().get(i));
             }
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
         }
 
 
 
     }
 
-
+    /**
+     * výpis dat a aktualizovanie listu
+     */
     private void prepareMovieData() {
-
- // code = "-L_ZSzdXafGK3z2ocQYX";
-    //    findData();
-   writeData();
-         //  Toast.makeText(this,value, Toast.LENGTH_LONG).show();
-
-
-
-        // notify adapter about data set changes
-        // so that it will render the list with new data
+        writeData();
         mAdapter.notifyDataSetChanged();
+
     }
 
 
-   @Override
+
+
+    /**
+     * stiahnutie dat o potravine
+     */
+
+    /*
+    @Override
     protected void onStart() {
        super.onStart();
 
+       // Toast.makeText(this, "ja som on start", Toast.LENGTH_SHORT).show();
          databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
                 product = snapshot.getValue(Product.class);
+        if (snapshot.exists()){
 
                 product.setProduktId(code);
-
                 progressBar.setVisibility(View.GONE);
-                //prints "Do you have data? You'll love Firebase."
-                // product = new Product( snapshot.getValue(Product.class));
                 prepareMovieData();
+        } else {
+            if (testDelete){
+             } else{
+                     print();
+                     finish();
+                }
+              }
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
@@ -433,29 +325,60 @@ public class AboutProductActivity extends AppCompatActivity {
         });
     }
 
-    void add2(final String id) {
+                      */
 
+    void print(){
 
-
-
-        databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
+        Toast.makeText(this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
+    }
+    void add(){
+        movieList.clear();
+        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
+                product = snapshot.getValue(Product.class);
+                if (snapshot.exists()){
+
+                    product.setProduktId(code);
+                    progressBar.setVisibility(View.GONE);
+                    prepareMovieData();
+                } else {
+                    if (testDelete){
+                    } else{
+                     //   print();
+                        finish();
+                    }
+
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
+
+
+    }
+
+    /**
+     * pridanie potravín do zoznamu
+     * @param id
+     */
+
+    void readIngredients(final String id) {
+        movieList.clear();
+        databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
                 product2 = snapshot.getValue(Product.class);
                 if (snapshot.exists()) {
-
                     product2.setProduktId(id);
-
                     movieList.add(product2);
-
-                    // progressBar.setVisibility(View.GONE);
-                    //prints "Do you have data? You'll love Firebase."
-                    // product = new Product( snapshot.getValue(Product.class));
                     mAdapter.notifyDataSetChanged();
+
                 } else {
-                    //     print();
-                    // makeText(this, "Produkt pridaný  do systému", LENGTH_SHORT).show();
+
 
                 }
             }
@@ -467,7 +390,27 @@ public class AboutProductActivity extends AppCompatActivity {
         });
     }
 
+    public void readProducer(String id) {
+
+       // producerText.setText(id);
+        databaseProducer.child("Producers").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    producer = snapshot.getValue(Producer.class);
+                    producer.setId(snapshot.getKey());
+                   producerText.setText(producer.getTitle());
+                    //   }}
 
 
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
+    }
 
 }
