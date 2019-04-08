@@ -19,14 +19,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.Database.Zlozky;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -48,13 +53,15 @@ public class AddIngredientsActivity extends AppCompatActivity {
     private EditText countEditText;
     private  EditText descriptionEditText;
     private  EditText producerEditText;
+    Producer producer;
+
 
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
 
     DatabaseReference databaseComponents;
     DatabaseReference databaseProduct;
-
+    DatabaseReference databaseProducer;
     private EditText btn_date;
     private  EditText btn_date2;
     private MenuItem saveIcon;
@@ -69,9 +76,8 @@ public class AddIngredientsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         buttonAdd2 = (Button) findViewById(R.id.add2);
         textIn = findViewById(R.id.textin);
-        databaseComponents = FirebaseDatabase.getInstance().getReference("components");
-        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
-
+        databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
      /*   spinner = findViewById(R.id.spinner);
 
         buttonAdd2.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +163,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
             }
         });
 
-
+/*
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,11 +175,11 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
 
-        });
+        }); */
 
 
         // list
-
+/*
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mAdapter = new MoviesAdapter(movieList);
@@ -219,7 +225,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
         }));
 
 
-/*
+
         final ImageView delete = (ImageView) recyclerView.findViewById(R.id.kokos);
         delete.setOnClickListener(new View.OnClickListener() {
 
@@ -227,12 +233,12 @@ public class AddIngredientsActivity extends AppCompatActivity {
                 prepareMovieData("kokos");
             }
         });
-*/
+
 
         mAdapter.notifyDataSetChanged();
 
 
-
+*/
 
     }
 
@@ -298,9 +304,9 @@ public class AddIngredientsActivity extends AppCompatActivity {
             String id = databaseProduct.push().getKey();
            List<String
                    > list = null;
-            Product product = new Product(id, titleEditText.getText().toString().trim(),
+            Product product = new Product(titleEditText.getText().toString().trim(),
                     dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
-                    countEditText.getText().toString().trim(), producerEditText.getText().toString().trim(),
+                    countEditText.getText().toString().trim(), producer.getId(),
                     descriptionEditText.getText().toString().trim(),list);
             databaseProduct.child(id).setValue(product);
             Toast.makeText(this, "Surovina pridana do systému", Toast.LENGTH_SHORT).show();
@@ -411,6 +417,35 @@ public class AddIngredientsActivity extends AppCompatActivity {
         date2EditText.setText(formatDateTime.format(dateTime.getTime()));
 
 
+    }
+
+    protected void onStart() {
+        super.onStart();
+
+        databaseProducer.child(IntentConstants.databaseProducer).child(IntentConstants.idProducer).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    //   producer = snapshot.getValue(Producer.class);
+                    //  for (DataSnapshot issue : snapshot.getChildren()) {
+
+                    //    if (issue.exists()){
+                    //    String id = issue.getKey();
+                    //
+
+                    producer = snapshot.getValue(Producer.class);
+                    producer.setId(snapshot.getKey());
+                    producerEditText.setText(producer.getTitle());
+                    //   }}
+
+
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError atabaseError) {
+            }
+        });
     }
 
 }

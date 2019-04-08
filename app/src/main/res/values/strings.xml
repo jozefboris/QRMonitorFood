@@ -30,6 +30,7 @@
     <string name="add_product">Pridať produkt</string>
     <string name="add_ingredient">Pridať surovinu</string>
     <string name="scan_product">Naskenujte potravinu</string>
+    <string name="add_product_sucessful">Potravina úspešne pridaná</string>
     <string name="decription">Popis</string>
     <string name="producer">Výrobca</string>
     <string name="count">Šarš</string>
@@ -44,6 +45,7 @@
     <string name="scan">Naskenujte QR kod výrobku</string>
     <string name="select_producer">Vyberte firmu</string>
     <string name="select_producer_error">Firma nieje vybratá</string>
+    <string name="no_authorization">Nemáte oprávnenie na zmenu tohto produktu</string>
 
     <string name="error_title">Názov musi byť vyplnený.</string>
     <string name="error_date_expiration">Dátum musi byť vyplnený.</string>

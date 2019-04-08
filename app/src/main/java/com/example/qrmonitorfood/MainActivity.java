@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseUser;
     CardView search;
     User user;
+    ProgressBar progressBar;
+    DatabaseReference databaseProducer;
+
+
 
 
     @Override
@@ -62,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 =(FloatingActionButton) (FloatingActionButton) findViewById(R.id.floating_button1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.floating_button2);
-        databaseUser = FirebaseDatabase.getInstance().getReference("Users");
+        databaseUser = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseUser);
+        progressBar = findViewById(R.id.progressBar);
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
         // dialog ak neje zariadenie pripojene k internetu
         if (!isNetworkAvailable()) {
 
@@ -135,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
             materialDesignFAM.setVisibility(View.INVISIBLE);
             search.setVisibility(View.INVISIBLE);
             logoutIcon.setVisible(false);
-           // signInIcon.setVisible(true);
             updateProfilIcon.setVisible(false);
+            progressBar.setVisibility(View.INVISIBLE);
 
 
         } else {
@@ -273,17 +280,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                    //   producer = snapshot.getValue(Producer.class);
-
-
-
-                            //    String id = issue.getKey();
-                            //
-
-                             user = snapshot.getValue(User.class);
+                user = snapshot.getValue(User.class);
+                progressBar.setVisibility(View.GONE);
                 IntentConstants.idProducer = user.getProducerId();
 
-
+    progressBar.setVisibility(View.GONE);
 
 
 
@@ -293,6 +294,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 }

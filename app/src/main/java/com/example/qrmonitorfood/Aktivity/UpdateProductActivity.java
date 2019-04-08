@@ -18,6 +18,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
@@ -59,7 +61,8 @@ public class UpdateProductActivity extends AppCompatActivity {
     private EditText btn_date;
     private  EditText btn_date2;
     private MenuItem saveIcon;
-
+    DatabaseReference databaseProducer;
+    Producer producer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,9 @@ public class UpdateProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        code = getIntent().getStringExtra("idCode");
-        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
+        code = getIntent().getStringExtra(IntentConstants.idCode);
+        databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
         final Activity activity = this;
@@ -126,17 +130,9 @@ public class UpdateProductActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
-        // horizontal RecyclerViewn
-        // keep moviayoutManager = new LinearLayoutManae_list_row.xml width to `wrap_content`
-        //        // RecyclerView.LayoutManager mLger(getApplicationCotext(), LinearLayoutManager.HORIZONTAL, false);
 
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
-        // recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
@@ -145,10 +141,8 @@ public class UpdateProductActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product movie = movieList.get(position);
+                //Product movie = movieList.get(position);
                 movieList.remove(position);
-                // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -217,7 +211,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
 
         if (everythingOK) {
-            DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(code);
+            DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(code);
 
             for (int i=0; i<movieList.size();i++){
                 list.add(movieList.get(i).getProduktId());
@@ -225,15 +219,15 @@ public class UpdateProductActivity extends AppCompatActivity {
             }
 
 
-            Product product = new Product(code, titleEditText.getText().toString().trim(),
+            Product product = new Product(titleEditText.getText().toString().trim(),
                     dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
-                    countEditText.getText().toString().trim(), producerEditText.getText().toString().trim(),
+                    countEditText.getText().toString().trim(), producer.getId(),
                     descriptionEditText.getText().toString().trim(), list);
             dR.setValue(product);
             Toast.makeText(this, R.string.update_product, Toast.LENGTH_SHORT).show();
 
             final Intent intent = new Intent(this, AboutProductActivity.class);
-            intent.putExtra("idCode",code );
+            intent.putExtra(IntentConstants.idCode,code );
             finish();
             startActivity(intent);
 
@@ -263,13 +257,12 @@ public class UpdateProductActivity extends AppCompatActivity {
         dateEditText.setText(product.getDateOfMade());
         date2EditText.setText(product.getDateExpiration());
         countEditText.setText(product.getCount());
-        producerEditText.setText(product.getProducerId());
         descriptionEditText.setText(product.getDecription());
-
+        readProducer(product.getProducerId());
 if (product.getProducts().size() != 0){
         for (int i =0; i<product.getProducts().size();i++) {
 
-            add2(product.getProducts().get(i));
+            readProducts(product.getProducts().get(i));
             }
          }
     }
@@ -281,7 +274,7 @@ if (product.getProducts().size() != 0){
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 String strEditText = data.getStringExtra("editTextValue");
-                add2(strEditText);
+                readProducts(strEditText);
 
             }
         }
@@ -292,7 +285,7 @@ if (product.getProducts().size() != 0){
             }
             else {
 
-                add2(result.getContents().substring(result.getContents().lastIndexOf("id=")+3).trim());
+                readProducts(result.getContents().substring(result.getContents().lastIndexOf("id=")+3).trim());
 
             }
 
@@ -366,7 +359,7 @@ if (product.getProducts().size() != 0){
      * @param id pruduktu
      */
 
-    void add2(final String id) {
+    void readProducts(final String id) {
 
             databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -391,24 +384,21 @@ if (product.getProducts().size() != 0){
                 }
             });
         }
+    public void readProducer(String id) {
 
-
-/*
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
+        // producerText.setText(id);
+        databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                product = snapshot.getValue(Product.class);
+                if (snapshot.exists()) {
 
-                product.setProduktId(code);
-                             //  progressBar.setVisibility(View.GONE);
-                //prints "Do you have data? You'll love Firebase."
-                // product = new Product( snapshot.getValue(Product.class));
-                prepareMovieData();
-                print2();
+                    producer = snapshot.getValue(Producer.class);
+                    producer.setId(snapshot.getKey());
+                    producerEditText.setText(producer.getTitle());
+                    //   }}
+
+
+                }
 
             }
             @Override
@@ -416,7 +406,6 @@ if (product.getProducts().size() != 0){
             }
         });
     }
-    */
 
     /**
      * začiatocne načítanie z databázy

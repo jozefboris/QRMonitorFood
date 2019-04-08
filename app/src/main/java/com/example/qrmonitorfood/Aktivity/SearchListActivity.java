@@ -64,20 +64,15 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         emptyList=findViewById(R.id.emptyText);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         database = FirebaseDatabase.getInstance();
-        databaseProduct = database.getReference("Products");
+        databaseProduct = database.getReference(IntentConstants.databaseProduct);
        progressBar = (ProgressBar) findViewById(R.id.progress);
-        idProducer = getIntent().getStringExtra("idProducer");
+
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
-       //  recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(mAdapter);
         final Intent intent = new Intent(this, AboutProductActivity.class);
+
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -85,11 +80,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
                 if (typList){
                     Product movie = newList.get(position);
-                    intent.putExtra("idCode", movie.getProduktId());
+                    intent.putExtra(IntentConstants.idCode, movie.getProduktId());
                     // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
                 } else {
                     Product movie = movieList.get(position);
-                    intent.putExtra("idCode", movie.getProduktId());
+                    intent.putExtra(IntentConstants.idCode, movie.getProduktId());
                    // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
                 }
 
@@ -169,7 +164,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         if (actionMode == null){
             setActionMode();
             actionMode = startSupportActionMode(callback);
-           // actionMode.setTitle(""+mAdapter.getSelectedItemCount());
         }
 
 
@@ -234,7 +228,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     public void actionDelete(MenuItem item) {
 
   for (int i = 0; i<mAdapter.getSelectedItemCount();i++){
-      DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(mAdapter.getSelectedItems().get(i));
+      DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(mAdapter.getSelectedItems().get(i));
 
       dR.removeValue();
   }

@@ -58,9 +58,9 @@ public class AboutProductActivity extends AppCompatActivity {
     private RecyclerAdapter mAdapter;
     DatabaseReference databaseProduct;
     DatabaseReference databaseProducer;
-    DatabaseReference databaseComponents;
     Producer producer;
     TextView titleText, dateText, date2text, countText, producerText, descriptionText, typeText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,30 +79,18 @@ public class AboutProductActivity extends AppCompatActivity {
         producerText = findViewById(R.id.producertext);
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
-        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
+        databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
         mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         emptyList = findViewById(R.id.emptyList);
 
-       // databaseComponents = FirebaseDatabase.getInstance().getReference("components");
-        // vertical RecyclerView
-        // keep movie_list_row.xml width to `match_parent`
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        // horizontal RecyclerView
-        // keep movie_list_row.xml width to `wrap_content`
-        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
-        // recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
@@ -112,11 +100,9 @@ public class AboutProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Product movie = movieList.get(position);
-              //  final Intent intent = new Intent(this, AboutProductActivity.class);
-                intent.putExtra("idCode", movie.getProduktId());
+                        intent.putExtra(IntentConstants.idCode, movie.getProduktId());
                 startActivity(intent);
-              //  Toast.makeText(getApplicationContext(), movie + " is selected!", Toast.LENGTH_SHORT).show();
-            }
+                         }
 
             @Override
             public void onLongClick(View view, int position) {
@@ -124,7 +110,7 @@ public class AboutProductActivity extends AppCompatActivity {
             }
         }));
 
-        code = getIntent().getStringExtra("idCode");
+        code = getIntent().getStringExtra(IntentConstants.idCode);
 
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -146,10 +132,6 @@ add();
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_about_product, menu);
-      //  deleteIcon = menu.findItem(R.id.action_delete);
-     //   shareIcon = menu.findItem(R.id.action_share);
-     //   updateIcon = menu.findItem(R.id.action_update);
-
         return true;
     }
 
@@ -192,6 +174,9 @@ add();
             AlertDialog alert11 = builder1.create();
             alert11.show();
 
+        } else {
+            Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
+
         }
 
     }
@@ -209,6 +194,9 @@ add();
             intent.putExtra("idCode", code);
 
             startActivity(intent);
+        } else {
+            Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
+
         }
 }
 
@@ -231,7 +219,7 @@ add();
 
 
             try {
-                File file = new File(this.getExternalCacheDir(), "logicchip.png");
+                File file = new File(this.getExternalCacheDir(), product.getTitle() + ".png");
                 FileOutputStream fOut = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();
@@ -239,12 +227,13 @@ add();
                 file.setReadable(true, false);
                 final Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Intent.EXTRA_TEXT, product.getTitle());
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                 intent.setType("image/png");
-                // Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
+
+
                 startActivity(Intent.createChooser(intent, "Share image via"));
             } catch (Exception e) {
-                //  Toast.makeText(this, "Vyber zlozku", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 
@@ -261,12 +250,10 @@ add();
         dateText.setText(product.getDateOfMade());
         date2text.setText(product.getDateExpiration());
         countText.setText(product.getCount());
-     //  producerText.setText(product.getProducerId());
         descriptionText.setText(product.getDecription());
-        typeText.setText("Suroviny");
+        typeText.setText(getString(R.string.ingredients));
         readProducer(product.getProducerId());
         if (product.getProducts().size() != 0){
-            //emptyList.setVisibility(View.INVISIBLE);
             for (int i =0; i<product.getProducts().size();i++) {
 
                 readIngredients(product.getProducts().get(i));
@@ -346,7 +333,7 @@ add();
                 } else {
                     if (testDelete){
                     } else{
-                     //   print();
+                        print();
                         finish();
                     }
 
@@ -392,17 +379,14 @@ add();
 
     public void readProducer(String id) {
 
-       // producerText.setText(id);
-        databaseProducer.child("Producers").child(id).addValueEventListener(new ValueEventListener() {
+        databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
 
                     producer = snapshot.getValue(Producer.class);
                     producer.setId(snapshot.getKey());
-                   producerText.setText(producer.getTitle());
-                    //   }}
-
+                    producerText.setText(producer.getTitle());
 
                 }
 

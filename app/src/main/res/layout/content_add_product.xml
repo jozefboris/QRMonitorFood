@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_add_product">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -23,7 +23,6 @@
             android:layout_margin="5dp"
             android:inputType="textCapWords|textCapSentences"
             />
-
 
         <EditText
             android:id="@+id/date_input"
@@ -97,9 +96,7 @@
                 android:background="@color/colorPrimary"
                 android:text="@string/scan_product"
                 android:layout_margin="5dp"
-
                 />
-
 
         </RelativeLayout>
 
@@ -109,7 +106,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-
             />
 
     </LinearLayout>

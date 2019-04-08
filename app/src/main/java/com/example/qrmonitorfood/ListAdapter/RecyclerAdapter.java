@@ -47,11 +47,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     public List<String> getSelectedItems() {
-     /*   List<Integer> items =
-                new ArrayList<Integer>(selectedItems.size());
-        for (int i = 0; i < selectedItems.size(); i++) {
-            items.add(selectedItems.keyAt(i));
-        }*/
         return selectList;
     }
 
@@ -72,8 +67,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         this.productsList = productsList;
         selectedItemCount = 0;
         selectList = new ArrayList<String>();
-     //relativeLayout.findViewById(R.id.relative); 
-    // relativeLayout.setBackgroundColor(WHITE);
     }
 
     public void onClick(View view, int position, String id) {
@@ -82,8 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             selectedItems.put(position,true);
             selectedItemCount++;
             selectList.add(id);
-            
-           // listener.selectedItemCount(selectedItemCount); // calling the method in main activity Because: in our case mainActivity our created interface for clicklisteners
+
             notifyItemChanged(position);
         }
         else // if clicked item is already selected
@@ -91,7 +83,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             selectedItems.put(position,false);
             selectedItemCount--;
             selectList.remove(id);
-          //  listener.selectedItemCount(selectedItemCount); // calling the method in main activity Because: in our case mainActivity our created interface for clicklisteners
             notifyItemChanged(position);
         }
 
@@ -115,14 +106,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Product movie = productsList.get(position);
         
-        holder.genre.setText(movie.getDateOfMade()+ " - " + movie.getDateExpiration() + " " + IntentConstants.titleProducer);
+        holder.genre.setText(movie.getDateOfMade()+ " - " + movie.getDateExpiration());
         holder.title.setText(movie.getTitle());
-            //holder.title.setText((CharSequence) productsList.get(position));
+
 
         if (selectedItems.get(position))
         {
-            //selectedItemCount++;
-
             holder.itemView.setBackgroundColor(Color.GRAY);
 
         }
@@ -131,11 +120,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
 
         }
-
-
-        // holder.title.setBackgroundColor(GREEN);
-      //  holder.genre.getDrawingCacheBackgroundColor()
-      // holder.title.se productsList.get(position).setProduktId();
 
 
     }

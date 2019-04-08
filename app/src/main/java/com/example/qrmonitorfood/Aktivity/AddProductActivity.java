@@ -79,8 +79,8 @@ public class AddProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imageList = findViewById(R.id.list_image);
-        databaseProduct = FirebaseDatabase.getInstance().getReference("Products");
-        databaseUser = FirebaseDatabase.getInstance().getReference("Users");
+        databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
+       // databaseUser = FirebaseDatabase.getInstance().getReference("Users");
         databaseProducer = FirebaseDatabase.getInstance().getReference();
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
@@ -189,7 +189,7 @@ public class AddProductActivity extends AppCompatActivity {
         final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
-                makeText(this, "You cancelled the scanning", LENGTH_LONG).show();
+                makeText(this, getString(R.string.toast_cancel_scanning), LENGTH_LONG).show();
             }
             else {
 
@@ -252,10 +252,10 @@ public class AddProductActivity extends AppCompatActivity {
                    countEditText.getText().toString().trim(), producer.getId(),
                    descriptionEditText.getText().toString().trim(), list);
                    databaseProduct.child(id).setValue(product);
-                   makeText(this, "Produkt pridaný do systému", LENGTH_SHORT).show();
+                   makeText(this, getString(R.string.add_product_sucessful), LENGTH_SHORT).show();
 
            final Intent intent = new Intent(this, AboutProductActivity.class);
-           intent.putExtra("idCode",id );
+           intent.putExtra(IntentConstants.idCode,id );
            finish();
            startActivity(intent);
        }
@@ -331,44 +331,14 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-  /*  @Override
-    protected void onStart() {
-        super.onStart();
 
-
-        databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                product = snapshot.getValue(Product.class);
-if (snapshot.exists()){
-       product.setProduktId(code);
-
-       movieList.add(product);
-
-               // progressBar.setVisibility(View.GONE);
-                //prints "Do you have data? You'll love Firebase."
-                // product = new Product( snapshot.getValue(Product.class));
-                prepareMovieData(code); } else {
-    print();
-    // makeText(this, "Produkt pridaný  do systému", LENGTH_SHORT).show();
-
-}
-            }
-            @Override
-            public void onCancelled(DatabaseError atabaseError) {
-
-            }
-        });
-    }
-*/
 
   /*
   vypis toustu
    */
 void print(){
 
-    Toast.makeText(this, "Surovina nieje v databáze", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, getString(R.string.database_not_found), Toast.LENGTH_SHORT).show();
 }
 
 
@@ -406,23 +376,13 @@ void print(){
     protected void onStart() {
         super.onStart();
 
-        databaseProducer.child("Producers").child(IntentConstants.idProducer).addValueEventListener(new ValueEventListener() {
+        databaseProducer.child(IntentConstants.databaseProducer).child(IntentConstants.idProducer).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                 //   producer = snapshot.getValue(Producer.class);
-     //  for (DataSnapshot issue : snapshot.getChildren()) {
-
-       //    if (issue.exists()){
-           //    String id = issue.getKey();
-        //
-
                producer = snapshot.getValue(Producer.class);
                producer.setId(snapshot.getKey());
-           producerEditText.setText(producer.getTitle());
-    //   }}
-
-
+               producerEditText.setText(producer.getTitle());
    }
 
             }
