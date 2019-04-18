@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">QRMonitoringFood</string>
+    <string name="app_name">QR Monitoring Food</string>
     <string name="action_settings">Settings</string>
 
     <!-- Strings related to login -->
@@ -17,14 +17,14 @@
 
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="title_activity_add_product">AddProductActivity</string>
-    <string name="title_activity_about_product">AboutProductActivity</string>
-    <string name="title_activity_add_ingredients">AddIngredientsActivity</string>
-    <string name="title_activity_detail_product">DetailProductActivity</string>
+    <string name="title_activity_add_product">Pridať potravinu</string>
+    <string name="title_activity_about_product">O potravine</string>
+    <string name="title_activity_add_ingredients">Pridať surovinu</string>
+    <string name="title_activity_detail_product">Detail potraviny</string>
     <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_update_product">UpdateProductActivity</string>
-    <string name="title_activity_update_ingredients">UpdateIngredientsActivity</string>
-    <string name="title_activity_search_list">SearchListActivity</string>
+    <string name="title_activity_update_product">Upraviť potravinu</string>
+    <string name="title_activity_update_ingredients">Upraviť surovinu </string>
+    <string name="title_activity_search_list">Zoznam potravín</string>
 
     <string name="add_new_product">Pridať novú surovinu</string>
     <string name="add_product">Pridať produkt</string>
@@ -33,7 +33,7 @@
     <string name="add_product_sucessful">Potravina úspešne pridaná</string>
     <string name="decription">Popis</string>
     <string name="producer">Výrobca</string>
-    <string name="count">Šarš</string>
+    <string name="count">Šarža</string>
     <string name="date_of_expiration">Dátum spotreby</string>
     <string name="date_of_made">Dátum výroby</string>
     <string name="title_of_product">Názov produktu</string>
@@ -44,13 +44,13 @@
     <string name="search">Zoznam potravín</string>
     <string name="scan">Naskenujte QR kod výrobku</string>
     <string name="select_producer">Vyberte firmu</string>
-    <string name="select_producer_error">Firma nieje vybratá</string>
+    <string name="select_producer_error">Firma nieje vybraná</string>
     <string name="no_authorization">Nemáte oprávnenie na zmenu tohto produktu</string>
 
-    <string name="error_title">Názov musi byť vyplnený.</string>
-    <string name="error_date_expiration">Dátum musi byť vyplnený.</string>
-    <string name="error_date_made">Dátum musi byť vyplnený.</string>
-    <string name="error_count">Šarš musi byť vyplnená.</string>
+    <string name="error_title">Názov musí byť vyplnený.</string>
+    <string name="error_date_expiration">Dátum musí byť vyplnený.</string>
+    <string name="error_date_made">Dátum musí byť vyplnený.</string>
+    <string name="error_count">Šarža musí byť vyplnená.</string>
     <string name="error_producer">Výrobca musí byť vyplnený</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
@@ -64,18 +64,18 @@
     <string name="toast_password">Zadajte heslo!</string>
     <string name="toast_empty_fields">Prázdne polia!</string>
     <string name="toast_error_sing_in">Chyba prihlásenia</string>
-    <string name="toast_error_registration">Chyba registácie</string>
+    <string name="toast_error_registration">Chyba registrácie</string>
     <string name="toast_set_password">Nastavte heslo</string>
-    <string name="toast_not_sucessfull">Neuspešná registrácia</string>
+    <string name="toast_not_sucessfull">Registrácia neúspešná </string>
     <string name="toast_cancel_scanning">Zrušili ste skenovanie</string>
     <string name="dialog_close">Zatvoriť</string>
     <string name="dialog_closing">Zatvorenie aplikácie</string>
     <string name="dialog_no_connection">Žiadne internetové pripojenie, skontrolujte nastavenia</string>
     <string name="reset_password">Zabudli ste heslo? Resetujte ho tu</string>
-    <string name="new_user">Nový užívateľ? Zaregistrujte sa tu</string>
-    <string name="sign_in">Príhlasiť sa</string>
+    <string name="new_user">Nový používateľ? Zaregistrujte sa tu</string>
+    <string name="sign_in">Prihlásiť sa</string>
     <string name="registration">Registrovať sa</string>
-    <string name="password">Password</string>
+    <string name="password">Heslo</string>
     <string name="email">Email</string>
     <string name="name_company">Názov firmy</string>
     <string name="have_account">Máte už účet? Prihláste sa tu</string>
@@ -89,10 +89,11 @@
     <string name="title_update">Upraviť</string>
     <string name="title_activity_update_profil">UpdateProfilActivity</string>
     <string name="database_not_found">Nie je v databáze</string>
-    <string name="logout_sucessfull">Odhláseny uživateľ</string>
+    <string name="logout_sucessfull">Používateľ je odhlásený</string>
+    <string name="resset_password_button">Resetovať heslo</string>
     <string name="delete_item">Vážne chcete odstrániť položku?</string>
     <string name="delete_product">Potravina vymazaná</string>
-    <string name="delete_select_item">Označené položky vymazane</string>
+    <string name="delete_select_item">Označené položky boli vymazané</string>
     <string name="empty_list">Prázdny zoznam</string>
     <string name="update_product">Produkt upravený</string>
     <string name="toast_set_producer">Nastavte názov firmy</string>
@@ -100,7 +101,7 @@
     <string name="no_connection">Internet nedostupný</string>
     <string name="title_activity_add_producer">AddProducerActivity</string>
     <string name="back">Späť</string>
-    <string name="title_aplication">Qr monitoring</string>
-    <string name="title_aplication2">food</string>
     <string name="no_ingredients">Žiadne suroviny</string>
+
+
 </resources>

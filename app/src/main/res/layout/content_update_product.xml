@@ -60,7 +60,7 @@
             android:hint="@string/producer"
             android:gravity="top"
             android:layout_margin="5dp"
-           android:focusable="false"/>
+            android:enabled="false"/>
 
         <EditText
             android:id="@+id/decription"

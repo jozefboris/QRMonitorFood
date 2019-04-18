@@ -1,6 +1,7 @@
 package com.example.qrmonitorfood.Aktivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public EditText emailId, passwd;
     Button btnSignUp;
-    TextView signIn;
+    ImageButton btnBack;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseUser;
     DatabaseReference databaseProducer;
@@ -53,12 +55,12 @@ public class RegisterActivity extends AppCompatActivity {
         emailId = findViewById(R.id.ETemail);
         passwd = findViewById(R.id.ETpassword);
         btnSignUp = findViewById(R.id.btnSignUp);
-        signIn = findViewById(R.id.TVSignIn);
+        btnBack = findViewById(R.id.back);
         progressBar = findViewById(R.id.progressBar);
         databaseUser = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseUser);
         databaseProducer = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProducer);
         spinner = findViewById(R.id.spinner);
-
+        firebaseAuth.setLanguageCode("sk");
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -78,16 +80,23 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, R.string.toast_empty_fields, LENGTH_SHORT).show();
                 } else if (!(emailID.isEmpty() && paswd.isEmpty())) {
                     progressBar.setVisibility(View.VISIBLE);
+
                     firebaseAuth.createUserWithEmailAndPassword(emailID, paswd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(RegisterActivity.this.getApplicationContext(),
-                                        getString(R.string.toast_not_sucessfull)+ ". " + task.getException().getMessage(),
+
+                                        getString(R.string.toast_not_sucessfull)+ ". " + task.getException().getLocalizedMessage(),
                                         LENGTH_SHORT).show();
                             } else {
+
+                                SharedPreferences.Editor editor = getSharedPreferences("ID", MODE_PRIVATE).edit();
+                                editor.putString("ID", producer.getId() );
+                                editor.apply();
                                 User user = new User(producer.getId()) ;
                                  databaseUser.child(firebaseAuth.getUid()).setValue(user);
+
                                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
 
                             }
@@ -103,11 +112,10 @@ public class RegisterActivity extends AppCompatActivity {
         /**
          * listener pre tlačidlo späť na prihlásenie
          */
-        signIn.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent I = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(I);
+                finish();
             }
         });
 

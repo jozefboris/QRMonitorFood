@@ -91,6 +91,8 @@ public class AddProductActivity extends AppCompatActivity {
         countEditText = findViewById(R.id.count);
         producerEditText = findViewById(R.id.producer);
         descriptionEditText = findViewById(R.id.decription);
+
+
         final Activity activity = this;
 
 

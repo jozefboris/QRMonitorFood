@@ -1,5 +1,6 @@
 package com.example.qrmonitorfood.Aktivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.Database.Zlozky;
 import com.example.qrmonitorfood.ListAdapter.Movie;
 import com.example.qrmonitorfood.ListAdapter.MoviesAdapter;
+import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
 import com.google.firebase.database.DataSnapshot;
@@ -32,11 +34,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public class AddIngredientsActivity extends AppCompatActivity {
     private List<Movie> movieList = new ArrayList<>();
@@ -65,7 +73,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     private EditText btn_date;
     private  EditText btn_date2;
     private MenuItem saveIcon;
-  //  private Spinner spinner;
+    //  private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +82,8 @@ public class AddIngredientsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        buttonAdd2 = (Button) findViewById(R.id.add2);
-        textIn = findViewById(R.id.textin);
+      //  buttonAdd2 = (Button) findViewById(R.id.add2);
+      //  textIn = findViewById(R.id.textin);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
      /*   spinner = findViewById(R.id.spinner);
@@ -140,7 +148,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
         buttonAdd = (Button) findViewById(R.id.add);
-        buttonAdd2 = (Button) findViewById(R.id.add2);
+       // buttonAdd2 = (Button) findViewById(R.id.add2);
         titleEditText = (EditText) findViewById(R.id.title);
         dateEditText = (EditText) findViewById(R.id.date_input);
         date2EditText = findViewById(R.id.date2_input);
@@ -274,7 +282,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
      */
     public void save(MenuItem item) {
 
-         boolean everythingOK = true;
+        boolean everythingOK = true;
 
         if (titleEditText.getText().toString().trim().equals("")) {
             titleEditText.setError(getString(R.string.error_title));
@@ -302,8 +310,8 @@ public class AddIngredientsActivity extends AppCompatActivity {
         if (everythingOK) {
 
             String id = databaseProduct.push().getKey();
-           List<String
-                   > list = null;
+            List<String
+                    > list = null;
             Product product = new Product(titleEditText.getText().toString().trim(),
                     dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
                     countEditText.getText().toString().trim(), producer.getId(),
@@ -334,9 +342,9 @@ public class AddIngredientsActivity extends AppCompatActivity {
                 final Intent intent = new Intent(this, AboutProductActivity.class);
                 intent.putExtra("idCode",id );
                 startActivity(intent);
-
-               }
+                finish();
             }
+        }
 
 
 
@@ -365,7 +373,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
         new TimePickerDialog(this, t, dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE), true).show();
     }*/
 
-  /**
+    /**
      * ddialog pre datum
      */
 

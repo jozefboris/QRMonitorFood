@@ -24,10 +24,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".Aktivity.RegisterActivity"></activity>
         <activity
-            android:name=".Aktivity.UpdateProfilActivity"
-            android:label="@string/title_activity_update_profil"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Aktivity.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -44,11 +40,6 @@
             android:name=".Aktivity.SearchListActivity"
             android:label="@string/title_activity_search_list"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Aktivity.UpdateIngredientsActivity"
-            android:label="@string/title_activity_update_ingredients"
-            android:parentActivityName=".Aktivity.SearchListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.UpdateProductActivity"

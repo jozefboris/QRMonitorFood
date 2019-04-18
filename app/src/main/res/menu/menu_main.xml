@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.qrmonitorfood.MainActivity">
 
-    <item
+  <!--  <item
         android:id="@+id/updateProfil"
         android:orderInCategory="100"
         android:title="@string/update_profil"
         android:onClick="openUpdateProfil"
         app:showAsAction="never" />
-
+-->
 
     <item
         android:id="@+id/logout"
@@ -25,6 +25,6 @@
         android:title="@string/action_settings"
         app:showAsAction="always"
         android:onClick="openAccess"
-        android:icon="@drawable/ic_action_access"/>
+        android:icon="@drawable/ic_action_person"/>
 </menu>
 

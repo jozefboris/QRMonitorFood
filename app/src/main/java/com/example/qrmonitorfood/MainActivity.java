@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
@@ -23,7 +23,6 @@ import com.example.qrmonitorfood.Aktivity.AddProductActivity;
 import com.example.qrmonitorfood.Aktivity.DetailActivity;
 import com.example.qrmonitorfood.Aktivity.LoginActivity;
 import com.example.qrmonitorfood.Aktivity.SearchListActivity;
-import com.example.qrmonitorfood.Aktivity.UpdateProfilActivity;
 import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.Database.User;
 import com.github.clans.fab.FloatingActionButton;
@@ -45,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton1, floatingActionButton2;
     MenuItem logoutIcon;
     MenuItem signInIcon;
-    MenuItem updateProfilIcon;
+  //  MenuItem updateProfilIcon;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseUser;
     CardView search;
     User user;
-    ProgressBar progressBar;
-    DatabaseReference databaseProducer;
+   // ProgressBar progressBar;
+
 
 
 
@@ -68,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton1 =(FloatingActionButton) (FloatingActionButton) findViewById(R.id.floating_button1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.floating_button2);
         databaseUser = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseUser);
-        progressBar = findViewById(R.id.progressBar);
-        databaseProducer = FirebaseDatabase.getInstance().getReference();
+       // progressBar = findViewById(R.id.progressBar);
         // dialog ak neje zariadenie pripojene k internetu
         if (!isNetworkAvailable()) {
 
@@ -134,20 +132,21 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         logoutIcon = menu.findItem(R.id.logout);
         signInIcon = menu.findItem(R.id.signIn);
-        updateProfilIcon = menu.findItem(R.id.updateProfil);
+       // updateProfilIcon = menu.findItem(R.id.updateProfil);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        SharedPreferences prefs = getSharedPreferences("ID", MODE_PRIVATE);
+        IntentConstants.idProducer = prefs.getString("ID", null);
         // ak  uživateľ nieje prihlasený nnemá viditelné tlačidla
         if (firebaseAuth.getCurrentUser() == null) {
             materialDesignFAM.setVisibility(View.INVISIBLE);
             search.setVisibility(View.INVISIBLE);
             logoutIcon.setVisible(false);
-            updateProfilIcon.setVisible(false);
-            progressBar.setVisibility(View.INVISIBLE);
+//            updateProfilIcon.setVisible(false);
+           // progressBar.setVisibility(View.INVISIBLE);
 
 
         } else {
-            addProducer();
+           //  addProducer();
             signInIcon.setVisible(false);
 
         }
@@ -196,11 +195,7 @@ public class MainActivity extends AppCompatActivity {
      * @param item
      */
 
-    public void openUpdateProfil(MenuItem item) {
-        Intent I = new Intent(MainActivity.this, UpdateProfilActivity.class);
-        startActivity(I);
 
-    }
 
     /**
      * otvorí kameru na naskenovanue qr kodu
@@ -281,10 +276,10 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
 
                 user = snapshot.getValue(User.class);
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
                 IntentConstants.idProducer = user.getProducerId();
 
-    progressBar.setVisibility(View.GONE);
+   // progressBar.setVisibility(View.GONE);
 
 
 
