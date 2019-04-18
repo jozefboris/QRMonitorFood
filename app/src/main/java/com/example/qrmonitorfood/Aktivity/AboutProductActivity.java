@@ -52,7 +52,7 @@ public class AboutProductActivity extends AppCompatActivity {
     Product product2 = new Product();
     private ImageView qrImage;
     private String code;
-    final private String url = "https://www.qrmonitoringfood.com/id=";
+    final private String url = IntentConstants.url;
     private List<Product> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;

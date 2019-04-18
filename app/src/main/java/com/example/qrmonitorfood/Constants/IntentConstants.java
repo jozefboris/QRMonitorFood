@@ -7,6 +7,7 @@ public class IntentConstants {
     public static final String databaseProduct = "Products";
     public static final String databaseUser = "Users";
     public static final String idCode = "idCode";
+    public static final String url = "https://www.qrmonitoringfood.com/id=";
 
 }
 

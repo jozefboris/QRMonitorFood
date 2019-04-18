@@ -44,16 +44,8 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton1, floatingActionButton2;
     MenuItem logoutIcon;
     MenuItem signInIcon;
-  //  MenuItem updateProfilIcon;
     FirebaseAuth firebaseAuth;
-    DatabaseReference databaseUser;
     CardView search;
-    User user;
-   // ProgressBar progressBar;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 =(FloatingActionButton) (FloatingActionButton) findViewById(R.id.floating_button1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.floating_button2);
-        databaseUser = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseUser);
-       // progressBar = findViewById(R.id.progressBar);
+
         // dialog ak neje zariadenie pripojene k internetu
         if (!isNetworkAvailable()) {
 
@@ -132,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         logoutIcon = menu.findItem(R.id.logout);
         signInIcon = menu.findItem(R.id.signIn);
-       // updateProfilIcon = menu.findItem(R.id.updateProfil);
         firebaseAuth = FirebaseAuth.getInstance();
         SharedPreferences prefs = getSharedPreferences("ID", MODE_PRIVATE);
         IntentConstants.idProducer = prefs.getString("ID", null);
@@ -141,12 +131,9 @@ public class MainActivity extends AppCompatActivity {
             materialDesignFAM.setVisibility(View.INVISIBLE);
             search.setVisibility(View.INVISIBLE);
             logoutIcon.setVisible(false);
-//            updateProfilIcon.setVisible(false);
-           // progressBar.setVisibility(View.INVISIBLE);
 
 
         } else {
-           //  addProducer();
             signInIcon.setVisible(false);
 
         }
@@ -267,30 +254,5 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    public void addProducer() {
-
-
-        databaseUser.child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                user = snapshot.getValue(User.class);
-                //progressBar.setVisibility(View.GONE);
-                IntentConstants.idProducer = user.getProducerId();
-
-   // progressBar.setVisibility(View.GONE);
-
-
-
-            }
-            @Override
-            public void onCancelled(DatabaseError atabaseError) {
-            }
-        });
-    }
-
-
-
 
 }

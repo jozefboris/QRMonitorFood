@@ -127,7 +127,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, getString(R.string.toast_not_sucessfull_signIn) + ". " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             } else {
                                  finish();
-                                //startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
                             progressBar.setVisibility(View.GONE);
                         }
@@ -145,10 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
     }
-public void  kkk(){
-    Toast.makeText(LoginActivity.this, user.getProducerId(), Toast.LENGTH_SHORT).show();
 
-}
     public void addProducer() {
         firebaseAuth = FirebaseAuth.getInstance();
 

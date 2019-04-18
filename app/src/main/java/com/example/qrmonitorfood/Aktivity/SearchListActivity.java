@@ -44,7 +44,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     DatabaseReference databaseProduct;
     ActionMode actionMode;
     private ActionMode.Callback callback;
-    String idProducer;
+
 
 
     @Override
@@ -81,11 +81,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 if (typList){
                     Product movie = newList.get(position);
                     intent.putExtra(IntentConstants.idCode, movie.getProduktId());
-                    // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+
                 } else {
                     Product movie = movieList.get(position);
                     intent.putExtra(IntentConstants.idCode, movie.getProduktId());
-                   // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+
                 }
 
 

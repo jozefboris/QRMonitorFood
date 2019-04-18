@@ -29,18 +29,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private SparseBooleanArray selectedItems;
     private List<String> selectList;
     int selectedItemCount;
-    RelativeLayout relativeLayout;
-
-   
 
     public void clearSelections() {
         selectedItems.clear();
         selectList.clear();
         notifyDataSetChanged();
     }
-
- 
-
 
     public int getSelectedItemCount() {
         return selectList.size();
@@ -121,7 +115,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         }
 
-
     }
 
     @Override
@@ -164,8 +157,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
             return results;
         }
-
-
 
 
         @Override

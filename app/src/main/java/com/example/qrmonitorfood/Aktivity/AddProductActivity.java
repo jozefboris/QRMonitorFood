@@ -57,7 +57,6 @@ public class AddProductActivity extends AppCompatActivity {
     Producer producer;
     ImageView imageList;
     DatabaseReference databaseProducer;
-    DatabaseReference databaseUser;
     Product product = new Product();
 
     DatabaseReference databaseProduct;
@@ -80,7 +79,6 @@ public class AddProductActivity extends AppCompatActivity {
 
         imageList = findViewById(R.id.list_image);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
-       // databaseUser = FirebaseDatabase.getInstance().getReference("Users");
         databaseProducer = FirebaseDatabase.getInstance().getReference();
         btn_date = (EditText) findViewById(R.id.date_input);
         btn_date2 = (EditText) findViewById(R.id.date2_input);
@@ -138,23 +136,10 @@ public class AddProductActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
 
-        // vertical RecyclerView
-        // keep movie_list_row.xml width to `match_parent`
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-        // horizontal RecyclerView
-        // keep movie_list_row.xml width to `wrap_content`
-        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-
         recyclerView.setLayoutManager(mLayoutManager);
-
-        // adding inbuilt divider line
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // adding custom divider line with padding 16dp
-        // recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(mAdapter);
 
         // row click listener
@@ -163,8 +148,6 @@ public class AddProductActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Product movie = movieList.get(position);
                 movieList.remove(position);
-                // Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -282,9 +265,6 @@ public class AddProductActivity extends AppCompatActivity {
         new DatePickerDialog(this, d2, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-  /*  private void updateTime(){
-        new TimePickerDialog(this, t, dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE), true).show();
-    }*/
 
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -296,14 +276,7 @@ public class AddProductActivity extends AppCompatActivity {
         }
     };
 
-   /* TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            dateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            dateTime.set(Calendar.MINUTE, minute);
-            updateTextLabel();
-        }
-    };*/
+
 
     DatePickerDialog.OnDateSetListener d2 = new DatePickerDialog.OnDateSetListener() {
         @Override

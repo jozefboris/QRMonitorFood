@@ -386,7 +386,6 @@ if (product.getProducts().size() != 0){
         }
     public void readProducer(String id) {
 
-        // producerText.setText(id);
         databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
