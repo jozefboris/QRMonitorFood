@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+        <!-- Využivaju SearchListActivity a SelectedListActivity pre zlusenia action modu -->
         <item
             android:id="@+id/cancel"
             android:title="Zrus mode"
-            app:showAsAction="always"
+            app:showAsAction="never"
             />
 
     </menu>
-</menu>

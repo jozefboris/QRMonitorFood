@@ -3,13 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.qrmonitorfood.MainActivity">
 
-  <!--  <item
-        android:id="@+id/updateProfil"
-        android:orderInCategory="100"
-        android:title="@string/update_profil"
-        android:onClick="openUpdateProfil"
-        app:showAsAction="never" />
--->
+<!-- menu pre hlavnú aktivitu -->
 
     <item
         android:id="@+id/logout"

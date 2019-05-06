@@ -1,47 +1,34 @@
 package com.example.qrmonitorfood.Database;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-    String produktId;
-    String title;
-    String dateOfMade;
-    String dateExpiration;
-    String count;
-    String producerId;
-    String decription;
-    List<String> products;
 
-    public Product(String produktId, String title, String dateOfMade, String dateExpiration, String count, String producerId, String decription, List<String> products) {
-        this.produktId = produktId;
+    private String produktId;
+    private String title;
+    private String dateOfMade;
+    private String dateExpiration;
+    private String batch;
+    private String producerId;
+    private String decription;
+    private List<String> products;
+
+
+    public Product(String title, String dateOfMade, String dateExpiration, String batch, String producerId, String decription, List<String> products) throws ParseException {
         this.title = title;
         this.dateOfMade = dateOfMade;
         this.dateExpiration = dateExpiration;
-        this.count = count;
+        this.batch = batch;
         this.producerId = producerId;
         this.decription = decription;
         this.products = products;
     }
-
-    public Product(String title, String dateOfMade, String dateExpiration, String count, String producerId, String decription, List<String> products) {
-        this.title = title;
-        this.dateOfMade = dateOfMade;
-        this.dateExpiration = dateExpiration;
-        this.count = count;
-        this.producerId = producerId;
-        this.decription = decription;
-        this.products = products;
-    }
-
-
 
     public Product() {
         products = new ArrayList<>();
-
     }
-
-
 
     public String getProduktId() {
         return produktId;
@@ -75,12 +62,12 @@ public class Product {
         this.dateExpiration = dateExpiration;
     }
 
-    public String getCount() {
-        return count;
+    public String getBatch() {
+        return batch;
     }
 
-    public void setCount(String count) {
-        this.count = count;
+    public void setBatch(String batch) {
+        this.batch = batch;
     }
 
     public String getProducerId() {

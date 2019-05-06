@@ -2,18 +2,15 @@ package com.example.qrmonitorfood.Database;
 
 public class Producer {
 
-
-    String title;
-    String producerId;
+   private String title;
+    private String producerId;
 
 
     public Producer( String title) {
         this.title = title;
     }
 
-    public Producer() {
-
-    }
+    public Producer() {}
 
     public Producer(String title, String id) {
         this.title = title;

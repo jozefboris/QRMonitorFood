@@ -8,14 +8,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
+import com.example.qrmonitorfood.InternetConnection.InternetConnectionSnackbar;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
@@ -24,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +32,16 @@ public class DetailActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView emptyList;
     Product product = new Product();
+    Product ingredients = new Product();
     DatabaseReference databaseProducer;
-    private List<Product> movieList = new ArrayList<>();
+    DatabaseReference databaseProduct;
+    private List<Product> elementList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
-    DatabaseReference databaseProduct;
-    Product product2 = new Product();
-    String code;
-    TextView titleText, dateText, date2text, countText, producerText, descriptionText,typeText;
+    private String code;
+    TextView titleText, dateText, dateExpidationtext, batchText, producerText, descriptionText,typeText;
     Producer producer;
+    InternetConnectionSnackbar connectionSnackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,17 +55,19 @@ public class DetailActivity extends AppCompatActivity {
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         titleText = findViewById(R.id.titleText);
         dateText = findViewById(R.id.datetext);
-        date2text = findViewById(R.id.date2text);
-        countText = findViewById(R.id.counttext);
+        dateExpidationtext = findViewById(R.id.dateExpirationtext);
+        batchText = findViewById(R.id.batchtext);
         producerText = findViewById(R.id.producertext);
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        mAdapter = new RecyclerAdapter(movieList);
+        mAdapter = new RecyclerAdapter(elementList,0);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         emptyList = findViewById(R.id.emptyList);
         code = getIntent().getStringExtra(IntentConstants.idCode);
+        connectionSnackbar = new InternetConnectionSnackbar(DetailActivity.this,titleText);
+
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,9 +80,8 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product movie = movieList.get(position);
-                //  final Intent intent = new Intent(this, AboutProductActivity.class);
-                intent.putExtra(IntentConstants.idCode, movie.getProduktId());
+                Product element = elementList.get(position);
+                intent.putExtra(IntentConstants.idCode, element.getProduktId());
                 startActivity(intent);
             }
 
@@ -88,22 +90,33 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         }));
-readProduct();
+
     }
 
     /**
-     * zapis infornacii do edit text
+     * metoda pre tlačidla spät
      */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * zapis infornacii do text view
+     */
     private void writeData(){
 
         titleText.setText(product.getTitle());
         dateText.setText(product.getDateOfMade());
-        date2text.setText(product.getDateExpiration());
-        countText.setText(product.getCount());
+        dateExpidationtext.setText(product.getDateExpiration());
+        batchText.setText(product.getBatch());
         descriptionText.setText(product.getDecription());
         typeText.setText(getString(R.string.ingredients));
-        readProducer(product.getProducerId());
         if (product.getProducts().size() != 0){
             for (int i =0; i<product.getProducts().size();i++) {
                 readIngredients(product.getProducts().get(i));
@@ -116,22 +129,19 @@ readProduct();
     }
 
     /**
-     * načitanie pre pridanie do listu
-     * @param id
+     * načitanie pre pridanie suroviny do listu
+     * @param id produktu
      */
     void readIngredients(final String id) {
         databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                product2 = snapshot.getValue(Product.class);
+                ingredients = snapshot.getValue(Product.class);
                 if (snapshot.exists()) {
-                    product2.setProduktId(id);
-                    movieList.add(product2);
+                    ingredients.setProduktId(id);
+                    elementList.add(ingredients);
                     mAdapter.notifyDataSetChanged();
-
-                } else {
-
                 }
             }
 
@@ -145,19 +155,19 @@ readProduct();
     /**
      * priprava dat pre activitu
      */
-    private void prepareMovieData() {
+    private void prepareElementData() {
+        readProducer(product.getProducerId());
        writeData();
        mAdapter.notifyDataSetChanged();
     }
 
+
+
+
     /**
-     * toast
+     * matoda pre načitanie vyrobcu
+     * @param id vyrobcu
      */
-    void print(){
-
-        Toast.makeText(this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
-    }
-
     public void readProducer(String id) {
 
         databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
@@ -169,7 +179,9 @@ readProduct();
                     producer.setId(snapshot.getKey());
                     producerText.setText(producer.getTitle());
 
-                }
+            } else {
+                Toast.makeText(DetailActivity.this, R.string.error_read_producer, Toast.LENGTH_SHORT).show();
+            }
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
@@ -177,22 +189,29 @@ readProduct();
         });
     }
 
+    /**
+     * metoda pre nacitanie produktu z databazy
+     */
 
-
-    void readProduct(){
+    protected void onStart() {
+        super.onStart();
+        elementList.clear();
+        connectionSnackbar.checkConnection();
         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 product = snapshot.getValue(Product.class);
                 progressBar.setVisibility(View.GONE);
                 if (snapshot.exists()){
-
-                    prepareMovieData();}
+                    prepareElementData();}
                     else {
-                    print();
+                    Toast.makeText(DetailActivity.this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
                     finish();
                 }
+
             }
+
+
             @Override
             public void onCancelled(DatabaseError atabaseError) {
             }

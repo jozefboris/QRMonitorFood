@@ -8,120 +8,125 @@
     tools:context=".Aktivity.DetailActivity"
     tools:showIn="@layout/activity_detail">
 
-
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:focusableInTouchMode="true"
-    >
+    android:focusableInTouchMode="true">
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-
-        />
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:paddingTop="10dp"
-        android:paddingLeft="25dp"
-        android:textSize="20dp"
-
-        android:text="@string/title_of_product"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
-        android:id="@+id/titleText"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
+        android:text="@string/title_of_product" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:id="@+id/titleText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
         android:text="@string/date_of_made" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#000"
+        android:textSize="18sp"
         android:id="@+id/datetext" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
         android:text="@string/date_of_expiration" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
-        android:id="@+id/date2text" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:id="@+id/dateExpirationtext" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
-        android:text="@string/count" />
+        android:paddingRight="20dp"
+        android:textSize="14sp"
+        android:text="@string/batch" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
-        android:id="@+id/counttext" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:textColor="#000"
+        android:textSize="18sp"
+        android:id="@+id/batchtext" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
         android:text="@string/producer" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="18sp"
+        android:textColor="#000"
         android:id="@+id/producertext" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
         android:paddingTop="10dp"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
         android:text="@string/decription" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:textSize="17dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="18sp"
+        android:textColor="#000"
         android:paddingBottom="10dp"
         android:id="@+id/descriptiontext" />
 
@@ -129,12 +134,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textSize="20dp"
+        android:paddingRight="20dp"
+        android:textSize="14sp"
+        android:text="@string/ingredients"
         android:id="@+id/typetext"
         android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/white" />
 
-        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -153,11 +159,8 @@
         android:paddingTop="50dp"
         android:paddingBottom="50dp"
         android:id="@+id/emptyList"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal" />
 
-        />
-
-
-</LinearLayout>
+   </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

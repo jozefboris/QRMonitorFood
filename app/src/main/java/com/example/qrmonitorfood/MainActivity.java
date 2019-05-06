@@ -1,14 +1,9 @@
 package com.example.qrmonitorfood;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +11,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.Aktivity.AboutProductActivity;
 import com.example.qrmonitorfood.Aktivity.AddIngredientsActivity;
 import com.example.qrmonitorfood.Aktivity.AddProductActivity;
@@ -24,18 +18,11 @@ import com.example.qrmonitorfood.Aktivity.DetailActivity;
 import com.example.qrmonitorfood.Aktivity.LoginActivity;
 import com.example.qrmonitorfood.Aktivity.SearchListActivity;
 import com.example.qrmonitorfood.Constants.IntentConstants;
-import com.example.qrmonitorfood.Database.User;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,67 +43,57 @@ public class MainActivity extends AppCompatActivity {
 
         search = findViewById(R.id.button_search);
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButton1 =(FloatingActionButton) (FloatingActionButton) findViewById(R.id.floating_button1);
-        floatingActionButton2 = (FloatingActionButton) findViewById(R.id.floating_button2);
-
-        // dialog ak neje zariadenie pripojene k internetu
-        if (!isNetworkAvailable()) {
-
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(getString(R.string.dialog_closing))
-                    .setMessage(getString(R.string.dialog_no_connection))
-                    .setPositiveButton(getString(R.string.dialog_close), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-
-                    })
-                    .show();
-
-        }
-
-
+        floatingActionButton1 = findViewById(R.id.floating_button1);
+        floatingActionButton2 = findViewById(R.id.floating_button2);
     }
 
     /**
-     * otvorí aktivitu pre pridanie produktu
-     * @param view
+     * onClick na tlačidlo Pridat produkt - metoda otvorí aktivitu pre pridanie produktu AddProductActivity
      */
 
     public void openAddProduct(View view) {
         Intent intent = new Intent(this, AddProductActivity.class);
         startActivity(intent);
+        materialDesignFAM.close(true);
 
     }
 
+
+
     /**
-     * * otvorí aktivitu pre pridanie indegrediencii
+     * onClick na tlačidlo Pridat surovinu - metoda otvorí aktivitu pre pridanie suroviny AddIngredientActivity
+     * posle extra data s hodnotou B, aby nasledujuca aktivita poslala predchadzajucu aktivitu data
      */
 
     public void openAddIngredients(View view) {
         Intent i = new Intent(this, AddIngredientsActivity.class);
         i.putExtra("FROM_ACTIVITY", "B");
         startActivityForResult(i, 1);
+        materialDesignFAM.close(true);
 
 
     }
 
+
     /**
-     * * otvorí aktivitu pre vyhľadávanie potravín
-     * @param view
+     * onClick na tlačidlo Zoznam potravín - metoda otvorí aktivitu pre zobrazenie zoznamu potravín
+     * SearchListActivity ak uživatel nieje rovný null
      */
 
     public void openSearch(View view) {
         if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(this, SearchListActivity.class);
         startActivity(intent);
+            materialDesignFAM.close(true);
     }
     }
 
 
-
+    /**
+     * zobrazenie menu
+     * @param menu menu_main
+     * @return true
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         SharedPreferences prefs = getSharedPreferences("ID", MODE_PRIVATE);
         IntentConstants.idProducer = prefs.getString("ID", null);
-        // ak  uživateľ nieje prihlasený nnemá viditelné tlačidla
         if (firebaseAuth.getCurrentUser() == null) {
             materialDesignFAM.setVisibility(View.INVISIBLE);
             search.setVisibility(View.INVISIBLE);
@@ -137,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
             signInIcon.setVisible(false);
 
         }
-
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -153,11 +129,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     *  otvorí aktivitu pre prihlásenie do aplikácie z ikony v menu
-     * @param item
-     */
 
+    /**
+     * onClick na ikonu person - metoda otvorí aktivitu pre prihlasenie LoginActivity
+     */
     public void openAccess(MenuItem item) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
@@ -165,33 +140,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * * po kliknutí odhlásy uživatela
-     * @param item
+     * onClick na tlačidlo Odhlásiť sa - metoda odhlasy uživatela zo systému
      */
 
     public void openLogout(MenuItem item) {
         FirebaseAuth.getInstance().signOut();
         Toast.makeText(this, R.string.logout_sucessfull, Toast.LENGTH_LONG).show();
-        Intent I = new Intent(MainActivity.this, MainActivity.class);
-        startActivity(I);
-
+        finishAffinity();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
-    /**
-     * * otvorí aktivitu pre upravu účtu použivataľa
-     * @param item
-     */
 
 
 
     /**
-     * otvorí kameru na naskenovanue qr kodu
-     * @param view
+     * onClick na tlačidlo Skenovať surovinu - metoda otvorí kameru a nasnima Qr kod, ktorý spracuje v metode onActivityResult
+     *
      */
-
     public void openScan(View view) {
 
-        if (isNetworkAvailable()){
+
         final Activity activity = this;
         IntentIntegrator integrator = new IntentIntegrator(activity);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
@@ -201,23 +171,26 @@ public class MainActivity extends AppCompatActivity {
         integrator.setOrientationLocked(false);
         integrator.setBarcodeImageEnabled(false);
         integrator.initiateScan();
-        } else {
-            Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show();
+        materialDesignFAM.close(true);
 
-        }
 
 
     }
 
 
+    /**
+     *metoda vezme id potraviny z načitaneho QR kodu a otvory aktivitu ak je uživatel prihlaseny AboutProductActivity
+     * ak nieje uživatel prihlasený otvory intent aktvity DetailActivity
+     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //výsledok skenovania qr kodu
-        if (isNetworkAvailable()){
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, R.string.toast_cancel_scanning, Toast.LENGTH_LONG).show();
+
             } else {
 
                 //     testuje ak je uživatel je prihlasený otvorí aktivitu detailActivity ak nieje prihlaseny otvorí AboutActivity.
@@ -238,21 +211,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    } else {
-            Toast.makeText(this, R.string.no_connection, Toast.LENGTH_LONG).show();
 
-        }
-    }
-
-    /**
-     * metoda testuje dostupnost internetu
-     * @return true, false
-     */
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

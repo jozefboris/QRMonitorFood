@@ -19,10 +19,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
+import com.example.qrmonitorfood.InternetConnection.InternetConnectionSnackbar;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.R;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
@@ -53,13 +53,15 @@ public class AboutProductActivity extends AppCompatActivity {
     private ImageView qrImage;
     private String code;
     final private String url = IntentConstants.url;
-    private List<Product> movieList = new ArrayList<>();
+    private List<Product> elementList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     DatabaseReference databaseProduct;
     DatabaseReference databaseProducer;
     Producer producer;
-    TextView titleText, dateText, date2text, countText, producerText, descriptionText, typeText;
+    TextView titleText, dateText, dateExpidationtext, batchText, producerText, descriptionText, typeText;
+    InternetConnectionSnackbar connectionSnackbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +76,18 @@ public class AboutProductActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         titleText = findViewById(R.id.titleText);
         dateText = findViewById(R.id.datetext);
-        date2text = findViewById(R.id.date2text);
-        countText = findViewById(R.id.counttext);
+        dateExpidationtext = findViewById(R.id.dateExpirationtext);
+        batchText = findViewById(R.id.batchtext);
         producerText = findViewById(R.id.producertext);
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        mAdapter = new RecyclerAdapter(movieList);
+        mAdapter = new RecyclerAdapter(elementList,0);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         emptyList = findViewById(R.id.emptyList);
+        connectionSnackbar = new InternetConnectionSnackbar(AboutProductActivity.this,title);
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -95,13 +98,13 @@ public class AboutProductActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
         final Intent intent = new Intent(this, AboutProductActivity.class);
-        // row click listener
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product movie = movieList.get(position);
-                        intent.putExtra(IntentConstants.idCode, movie.getProduktId());
-                startActivity(intent);
+                        Product element = elementList.get(position);
+                        intent.putExtra(IntentConstants.idCode, element.getProduktId());
+                        startActivity(intent);
                          }
 
             @Override
@@ -124,8 +127,6 @@ public class AboutProductActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         testDelete = false;
-add();
-
     }
 
 
@@ -137,7 +138,7 @@ add();
 
     /**
      * Tlačidlo pre vymazanie potraviny
-     * @param item
+     * @param item menu
      */
 
     public void delete(MenuItem item) {
@@ -150,17 +151,18 @@ add();
             builder1.setPositiveButton(
                     getString(R.string.dialog_yes),
                     new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(code);
-                            dR.removeValue();
 
-                            testDelete = true;
-                            finish();
-                            dialog.cancel();
-                            Toast.makeText(getApplicationContext(), R.string.delete_product, Toast.LENGTH_LONG).show();
+                        public void onClick(DialogInterface dialog, int id) {
+                            if (connectionSnackbar.isNetworkAvailable()) {
+                                DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Products").child(code);
+                                dR.removeValue();
+                                dialog.cancel();
+                                finish();
+                            } else {
+                                Toast.makeText(AboutProductActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-
             );
 
             builder1.setNegativeButton(
@@ -176,50 +178,48 @@ add();
 
         } else {
             Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
-
+            }
         }
 
-    }
+
 
     /**
      * tlačidlo pre upravenie potraviny presmerovanie na updateProductActivity
-     * @param item
+     * @param item menu
      */
 
     public void update(MenuItem item) {
+if (connectionSnackbar.isNetworkAvailable()) {
+    if (product.getProducerId().equals(IntentConstants.idProducer)) {
+        Intent intent = new Intent(this, UpdateProductActivity.class);
 
-        if (product.getProducerId().equals(IntentConstants.idProducer)) {
-            Intent intent = new Intent(this, UpdateProductActivity.class);
+        intent.putExtra("idCode", code);
 
-            intent.putExtra("idCode", code);
+        startActivity(intent);
+    } else {
+        Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
 
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
-
-        }
+    }
+} else{
+    Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+}
 }
 
     /**
      * onClick pre tlačidlo zdieľať, možnosť využiť lubovolnu aplikáciu pre zdiaľanie
-     * @param item
-     * @throws WriterException
+     * @param item menu
      */
 
     public void share(MenuItem item) throws WriterException {
 
-
-
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-
             BitMatrix bitMatrix = multiFormatWriter.encode(url + code, BarcodeFormat.QR_CODE, 200, 200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             qrImage.setImageBitmap(bitmap);
 
-
             try {
-                File file = new File(this.getExternalCacheDir(), product.getTitle() + ".png");
+                File file = new File(this.getExternalCacheDir(), "fff" + ".png");
                 FileOutputStream fOut = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();
@@ -240,18 +240,28 @@ add();
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) // Press Back Icon
+        {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * vyplenie textView po stiahnutí informácii z databázy
      */
-    private void writeData(){
 
+    private void writeData(){
         titleText.setText(product.getTitle());
         dateText.setText(product.getDateOfMade());
-        date2text.setText(product.getDateExpiration());
-        countText.setText(product.getCount());
+        dateExpidationtext.setText(product.getDateExpiration());
+        batchText.setText(product.getBatch());
         descriptionText.setText(product.getDecription());
         typeText.setText(getString(R.string.ingredients));
+
         readProducer(product.getProducerId());
         if (product.getProducts().size() != 0){
             for (int i =0; i<product.getProducts().size();i++) {
@@ -269,107 +279,67 @@ add();
     /**
      * výpis dat a aktualizovanie listu
      */
-    private void prepareMovieData() {
+    private void prepareElementData() {
         writeData();
         mAdapter.notifyDataSetChanged();
 
     }
 
 
-
-
     /**
-     * stiahnutie dat o potravine
+     * metoda pre nacitanie produktu z databazy
      */
-
-    /*
     @Override
     protected void onStart() {
-       super.onStart();
+        super.onStart();
+        elementList.clear();
 
-       // Toast.makeText(this, "ja som on start", Toast.LENGTH_SHORT).show();
-         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                product = snapshot.getValue(Product.class);
-        if (snapshot.exists()){
-
-                product.setProduktId(code);
-                progressBar.setVisibility(View.GONE);
-                prepareMovieData();
-        } else {
-            if (testDelete){
-             } else{
-                     print();
-                     finish();
-                }
-              }
-            }
-            @Override
-            public void onCancelled(DatabaseError atabaseError) {
-            }
-        });
-    }
-
-                      */
-
-    void print(){
-
-        Toast.makeText(this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
-    }
-    void add(){
-        movieList.clear();
         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
                 product = snapshot.getValue(Product.class);
                 if (snapshot.exists()){
-
                     product.setProduktId(code);
                     progressBar.setVisibility(View.GONE);
-                    prepareMovieData();
+                    prepareElementData();
                 } else {
-                    if (testDelete){
-                    } else{
-                        print();
-                        finish();
-                    }
-
+                    Toast.makeText(getApplicationContext(), R.string.delete_product, Toast.LENGTH_LONG).show();
+                    finish();
                 }
+
+                connectionSnackbar.checkConnection();
+
+
 
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
+
             }
         });
 
 
     }
 
+
     /**
      * pridanie potravín do zoznamu
-     * @param id
+     * @param id produktu
      */
 
     void readIngredients(final String id) {
-        movieList.clear();
+        elementList.clear();
         databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 product2 = snapshot.getValue(Product.class);
                 if (snapshot.exists()) {
                     product2.setProduktId(id);
-                    movieList.add(product2);
+                    elementList.add(product2);
                     mAdapter.notifyDataSetChanged();
-
-                } else {
-
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError atabaseError) {
 
@@ -377,6 +347,10 @@ add();
         });
     }
 
+    /**
+     * nači z databazy vyrobcu
+     *
+     */
     public void readProducer(String id) {
 
         databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
@@ -387,14 +361,14 @@ add();
                     producer = snapshot.getValue(Producer.class);
                     producer.setId(snapshot.getKey());
                     producerText.setText(producer.getTitle());
-
+                }else {
+                    Toast.makeText(AboutProductActivity.this, R.string.error_read_producer, Toast.LENGTH_SHORT).show();
                 }
-
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
+
             }
         });
     }
-
 }

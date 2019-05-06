@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.qrmonitorfood">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -16,10 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Aktivity.SelectedListActivity"
+            android:label="@string/title_activity_selected_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Aktivity.AddProducerActivity"
             android:label="@string/title_activity_add_producer"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".Aktivity.RegisterActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
@@ -31,37 +35,30 @@
         <activity
             android:name=".Aktivity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.SearchListActivity"
             android:label="@string/title_activity_search_list"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.UpdateProductActivity"
             android:label="@string/title_activity_update_product"
-            android:parentActivityName=".Aktivity.SearchListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AddIngredientsActivity"
             android:label="@string/title_activity_add_ingredients"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AddProductActivity"
             android:label="@string/title_activity_add_product"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.AboutProductActivity"
             android:label="@string/title_activity_about_product"
-            android:parentActivityName=".Aktivity.SearchListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Aktivity.SplashScreenActivity"

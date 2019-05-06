@@ -1,9 +1,13 @@
 package com.example.qrmonitorfood.Aktivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,12 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
+import com.example.qrmonitorfood.InternetConnection.NetworkChangeReceiver;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
@@ -31,25 +34,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.widget.Toast.LENGTH_LONG;
-import static android.widget.Toast.makeText;
-
 public class UpdateProductActivity extends AppCompatActivity {
 
     Button buttonAdd;
-    private EditText titleEditText;
-    private EditText dateEditText;
-    private  EditText date2EditText;
-    private EditText countEditText;
-    private  EditText descriptionEditText;
-    private  EditText producerEditText;
-    private List<Product> movieList = new ArrayList<>();
+    private TextInputLayout titleInputLayout;
+    private TextInputLayout dateInputLayout;
+    private TextInputLayout dateExpidationInputLayout;
+    private TextInputLayout batchInputLayout;
+    private TextInputLayout descriptionInputLayout;
+    private TextInputLayout producerInputLayout;
+    private List<Product> elementList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     String code;
@@ -58,11 +58,11 @@ public class UpdateProductActivity extends AppCompatActivity {
     DatabaseReference databaseProduct;
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
-    private EditText btn_date;
-    private  EditText btn_date2;
+    private BroadcastReceiver mNetworkReceiver;
     private MenuItem saveIcon;
     DatabaseReference databaseProducer;
     Producer producer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,45 +71,25 @@ public class UpdateProductActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         code = getIntent().getStringExtra(IntentConstants.idCode);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        btn_date = (EditText) findViewById(R.id.date_input);
-        btn_date2 = (EditText) findViewById(R.id.date2_input);
-        final Activity activity = this;
-        buttonAdd = (Button)findViewById(R.id.add);
-        titleEditText = (EditText) findViewById(R.id.title);
-        dateEditText = (EditText) findViewById(R.id.date_input);
-        date2EditText = findViewById(R.id.date2_input);
-        countEditText = findViewById(R.id.count);
-        producerEditText = findViewById(R.id.producer);
-        descriptionEditText = findViewById(R.id.decription);
+        buttonAdd = (Button) findViewById(R.id.add);
+        titleInputLayout = findViewById(R.id.title);
+        dateInputLayout = findViewById(R.id.date_input);
+        dateExpidationInputLayout = findViewById(R.id.dateExpiration_input);
+        batchInputLayout = findViewById(R.id.batch);
+        producerInputLayout = findViewById(R.id.producer);
+        descriptionInputLayout = findViewById(R.id.decription);
 
-// listener pre edit text datum výroby na vybehnutie dialogu nastavenia datumu
-        btn_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                updateDate();
-            }
-        });
-
-  // listener pre edit text datum spotrby na vybehnutie dialogu nastavenia datumu
-        btn_date2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateDate2();
-            }
-        });
 
         // listener pre tlačidlo naskenovat surovinu. Spusti kameru.
 
-        buttonAdd.setOnClickListener(new View.OnClickListener(){
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                IntentIntegrator integrator = new IntentIntegrator(activity);
+                IntentIntegrator integrator = new IntentIntegrator(UpdateProductActivity.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt(getString(R.string.scan));
                 integrator.setCameraId(0);
@@ -122,10 +102,9 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
         // list recycle view
-
+        mAdapter = new RecyclerAdapter(elementList, 1);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new RecyclerAdapter(movieList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -136,16 +115,20 @@ public class UpdateProductActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(mAdapter);
+        mNetworkReceiver = new NetworkChangeReceiver(UpdateProductActivity.this);
+        registerNetworkBroadcast();
 
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+
+
             @Override
             public void onClick(View view, int position) {
-                //Product movie = movieList.get(position);
-                movieList.remove(position);
+                elementList.remove(position);
                 mAdapter.notifyDataSetChanged();
-            }
 
+
+            }
 
 
             @Override
@@ -154,21 +137,39 @@ public class UpdateProductActivity extends AppCompatActivity {
             }
         }));
 
-        start();
-
     }
 
     /**
      * vypis dat a aktualizacia listu
      */
 
-    private void prepareMovieData() {
-       writeData();
+
+    private void prepareElementData() {
+        writeData();
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
+    /**
+     * metoda pre detekciu pripojenia
+     */
+    private void registerNetworkBroadcast() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -179,64 +180,62 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * onClick pre tlačidlo z menu uložiť
-      */
+     * onClick pre ikonu z menu uložiť, ktorá upravi potravinu
+     */
+
     public void save(MenuItem item) {
-        boolean everythingOK = true;
 
-        if (titleEditText.getText().toString().trim().equals("")) {
-            titleEditText.setError(getString(R.string.error_title));
-            everythingOK = false;
-        }
-
-        if (dateEditText.getText().toString().trim().equals("")) {
-            dateEditText.setError(getString(R.string.error_date_made));
-            everythingOK = false;
-        }
-
-        if (date2EditText.getText().toString().trim().equals("")) {
-            date2EditText.setError(getString(R.string.error_date_expiration));
-            everythingOK = false;
-        }
-
-        if (countEditText.getText().toString().trim().equals("")) {
-            countEditText.setError(getString(R.string.error_count));
-            everythingOK = false;
-        }
-        if (producerEditText.getText().toString().trim().equals("")) {
-            producerEditText.setError(getString(R.string.error_producer));
-            everythingOK = false;
+        if (!validateTitle() | !validateDateMade() | !validateDateExpiration() | !validateProducer() | !validateDateBatch()) {
+            return;
         }
 
         List<String> list = new ArrayList<>();
 
-        if (everythingOK) {
-            DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(code);
 
-            for (int i=0; i<movieList.size();i++){
-                list.add(movieList.get(i).getProduktId());
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(code);
 
-            }
-
-
-            Product product = new Product(titleEditText.getText().toString().trim(),
-                    dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
-                    countEditText.getText().toString().trim(), producer.getId(),
-                    descriptionEditText.getText().toString().trim(), list);
-            dR.setValue(product);
-            Toast.makeText(this, R.string.update_product, Toast.LENGTH_SHORT).show();
-
-            final Intent intent = new Intent(this, AboutProductActivity.class);
-            intent.putExtra(IntentConstants.idCode,code );
-            finish();
-            startActivity(intent);
+        for (int i = 0; i < elementList.size(); i++) {
+            list.add(elementList.get(i).getProduktId());
 
         }
+
+
+        Product product = null;
+        try {
+            product = new Product(titleInputLayout.getEditText().getText().toString().trim(),
+                    dateInputLayout.getEditText().getText().toString().trim(), dateExpidationInputLayout.getEditText().getText().toString().trim(),
+                    batchInputLayout.getEditText().getText().toString().trim(), producer.getId(),
+                    descriptionInputLayout.getEditText().getText().toString().trim(), list);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dR.setValue(product);
+        Toast.makeText(this, R.string.update_product, Toast.LENGTH_SHORT).show();
+        finish();
+
+
+
+    }
+
+    /**
+     * pre vyplnenie datumu vyroby
+     */
+    public void openDate1(View view) {
+        updateDate();
+
+    }
+
+    /**
+     * pre vyplnenie datumu spotreby
+     */
+    public void opendateExpidation(View view) {
+        updatedateExpidation();
+
     }
 
     /**
      * otvorí aktivitu pre pridanie suroviny
-     * @param view
+     * posle extra data s hodnotou A, aby nasledujuca aktivita poslala predchadzajucu aktivitu data
      */
     public void addIngre(View view){
         Intent i = new Intent(this, AddIngredientsActivity.class);
@@ -248,16 +247,98 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * zapis dat do editText
+     * testuje spravnost vyplnenia nazvu potraviny
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateTitle() {
+        String titleInput = titleInputLayout.getEditText().getText().toString().trim();
+
+        if (titleInput.isEmpty()) {
+            titleInputLayout.setError(getString(R.string.error_title));
+            return false;
+        } else {
+            titleInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * testuje spravnost vyplnenia datumu výroby
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateMade() {
+        String dateOfMadeInput = dateInputLayout.getEditText().getText().toString().trim();
+
+        if (dateOfMadeInput.isEmpty()) {
+            dateInputLayout.setError(getString(R.string.error_date_made));
+            return false;
+        } else {
+            dateInputLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    /**
+     * testuje spravnost vyplnenia datumu spotreby
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateExpiration() {
+        String dateOfExpirationInput = dateExpidationInputLayout.getEditText().getText().toString().trim();
+
+        if (dateOfExpirationInput.isEmpty()) {
+            dateExpidationInputLayout.setError(getString(R.string.error_date_expiration));
+            return false;
+        } else {
+            dateExpidationInputLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    /**
+     * testuje spravnost vyplnenia šarže
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateBatch() {
+        String batchInput = batchInputLayout.getEditText().getText().toString().trim();
+
+        if (batchInput.isEmpty()) {
+            batchInputLayout.setError(getString(R.string.error_batch));
+            return false;
+        } else {
+            batchInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * testuje či je náčitaný výrobca
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateProducer() {
+        String producerInput = producerInputLayout.getEditText().getText().toString().trim();
+
+        if (producerInput.isEmpty()) {
+            producerInputLayout.setError(getString(R.string.no_read_company));
+            return false;
+        } else {
+            producerInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * metoda pre zapis dat do editText
      */
 
     private void writeData(){
 
-        titleEditText.setText(product.getTitle());
-        dateEditText.setText(product.getDateOfMade());
-        date2EditText.setText(product.getDateExpiration());
-        countEditText.setText(product.getCount());
-        descriptionEditText.setText(product.getDecription());
+        titleInputLayout.getEditText().setText(product.getTitle());
+        dateInputLayout.getEditText().setText(product.getDateOfMade().toString());
+        dateExpidationInputLayout.getEditText().setText(product.getDateExpiration().toString());
+        batchInputLayout.getEditText().setText(product.getBatch());
+        descriptionInputLayout.getEditText().setText(product.getDecription());
         readProducer(product.getProducerId());
 if (product.getProducts().size() != 0){
         for (int i =0; i<product.getProducts().size();i++) {
@@ -266,6 +347,10 @@ if (product.getProducts().size() != 0){
             }
          }
     }
+
+    /**
+     * metoda vezme id suroviny do zoznamu zo skenovania alebo z aktivity Add ingredients
+     */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -277,11 +362,21 @@ if (product.getProducts().size() != 0){
                 readProducts(strEditText);
 
             }
-        }
+        }   if (requestCode == 2) {
+            if(resultCode == RESULT_OK) {
+
+
+                ArrayList array =data.getStringArrayListExtra("strings");
+
+                for(int i = 0 ;i<array.size();i++) {
+                    readProducts(array.get(i).toString());
+                }
+
+
+            } }
         final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
-                makeText(this, R.string.toast_cancel_scanning, LENGTH_LONG).show();
             }
             else {
 
@@ -305,7 +400,7 @@ if (product.getProducts().size() != 0){
      * nastavuje date dialog 2
      */
 
-    private void updateDate2(){
+    private void updatedateExpidation(){
         new DatePickerDialog(this, d2, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
 
@@ -334,28 +429,20 @@ if (product.getProducts().size() != 0){
      * aktualizuje pipis datum
      */
     private void updateTextLabel(){
-        dateEditText.setText(formatDateTime.format(dateTime.getTime()));
+        dateInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
     }
 
     /**
      * aktualizuje popis datum 2
      */
     private void updateTextLabel2(){
-        date2EditText.setText(formatDateTime.format(dateTime.getTime()));
-    }
-
-    /**
-     * vypis toastu
-     */
-
-    void print(){
-
-        Toast.makeText(this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
+        dateExpidationInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
     }
 
 
+
     /**
-     * pridanie do zoznamu
+     * metoda pridanie do zoznamu
      * @param id pruduktu
      */
 
@@ -369,11 +456,11 @@ if (product.getProducts().size() != 0){
                     if (snapshot.exists()) {
 
                         product2.setProduktId(id);
-                        movieList.add(product2);
+                        elementList.add(product2);
                         mAdapter.notifyDataSetChanged();
                     } else {
-                            print();
-
+                        Toast.makeText(getApplicationContext(), R.string.delete_product, Toast.LENGTH_LONG).show();
+                        finish();
 
                     }
                 }
@@ -384,6 +471,19 @@ if (product.getProducts().size() != 0){
                 }
             });
         }
+    public void addFromList(View view){
+        Intent i = new Intent(this, SelectedListActivity.class);
+
+        startActivityForResult(i, 2);
+
+
+
+    }
+
+    /**
+     * metoda pre načitanie vyrobcu z databazy
+     * @param id vyrobcu
+     */
     public void readProducer(String id) {
 
         databaseProducer.child(IntentConstants.databaseProducer).child(id).addValueEventListener(new ValueEventListener() {
@@ -393,7 +493,7 @@ if (product.getProducts().size() != 0){
 
                     producer = snapshot.getValue(Producer.class);
                     producer.setId(snapshot.getKey());
-                    producerEditText.setText(producer.getTitle());
+                    producerInputLayout.getEditText().setText(producer.getTitle());
                     //   }}
 
 
@@ -407,17 +507,22 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     * začiatocne načítanie z databázy
+     *  načítanie potraviny z databázy
      */
-    public void  start(){
+    @Override
+    protected void onStart() {
+        super.onStart();
         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
-                product = snapshot.getValue(Product.class);
-                product.setProduktId(code);
-                prepareMovieData();
-
+                if(snapshot.exists()) {
+                     product = snapshot.getValue(Product.class);
+                     product.setProduktId(code);
+                     prepareElementData();
+                } else {
+                    Toast.makeText(UpdateProductActivity.this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {

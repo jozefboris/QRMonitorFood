@@ -9,104 +9,160 @@
     >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title_of_product"
-            android:gravity="top"
-            android:layout_margin="5dp"
-            android:inputType="textCapWords|textCapSentences"
-            />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            >
 
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title_of_product"
+                android:inputType="textCapWords|textCapSentences"
+                />
 
-        <EditText
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/date_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/date_of_made"
-            android:layout_margin="5dp"
-            android:gravity="top"
-            android:focusable="false"
-            />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+           >
 
-        <EditText
-            android:id="@+id/date2_input"
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:onClick="openDate1"
+                android:hint="@string/date_of_made" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/dateExpiration_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/date_of_expiration"
-            android:gravity="top"
-            android:layout_margin="5dp"
-            android:focusable="false"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
 
-        <EditText
-            android:id="@+id/count"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:onClick="opendateExpidation"
+                android:hint="@string/date_of_expiration" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/batch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/count"
-            android:gravity="top"
-            android:layout_margin="5dp"
-            android:inputType="number"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            >
 
-        <EditText
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/batch"
+                android:inputType="textCapWords|textCapSentences" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/producer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/producer"
-            android:gravity="top"
-            android:layout_margin="5dp"
-            android:enabled="false"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+          >
 
-        <EditText
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="@string/producer" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/decription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/decription"
-            android:gravity="top"
-            android:layout_margin="5dp"
-            android:inputType="textCapWords|textCapSentences"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/decription"
+                android:inputType="textCapWords|textCapSentences" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp">
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="addIngre"
             android:text="@string/add_new_product"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white" />
+
+
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scan_ingredients"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/scan_product"
-                android:layout_margin="5dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/white"
                 />
 
+        <Button
+            android:id="@+id/addList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:onClick="addFromList"
+            android:text="@string/select_from_list"
+            android:layout_marginTop="10dp"
+            />
 
-        </RelativeLayout>
+    </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_margin="5dp"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-
-            />
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 

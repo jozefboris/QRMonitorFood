@@ -2,8 +2,13 @@ package com.example.qrmonitorfood.Aktivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,15 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-
-
 import com.example.qrmonitorfood.Database.Producer;
 import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.InternetConnection.NetworkChangeReceiver;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
 import com.example.qrmonitorfood.R;
@@ -34,39 +35,33 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import static android.widget.Toast.*;
 
 public class AddProductActivity extends AppCompatActivity {
 
     Button buttonAdd;
-    private EditText titleEditText;
-    private EditText dateEditText;
-    private  EditText date2EditText;
-    private EditText countEditText;
-    private  EditText descriptionEditText;
-    private  EditText producerEditText;
-    private List<Product> movieList = new ArrayList<>();
+    private TextInputLayout titleInputLayout;
+    private TextInputLayout dateInputLayout;
+    private  TextInputLayout dateExpidationInputLayout;
+    private TextInputLayout batchInputLayout;
+    private  TextInputLayout descriptionInputLayout;
+    private  TextInputLayout producerInputLayout;
+    private List<Product> elementList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     Producer producer;
-    ImageView imageList;
     DatabaseReference databaseProducer;
     Product product = new Product();
-
     DatabaseReference databaseProduct;
-
     DateFormat formatDateTime = DateFormat.getDateInstance();
     Calendar dateTime = Calendar.getInstance();
-
-    private EditText btn_date;
-    private  EditText btn_date2;
     private MenuItem saveIcon;
+    private BroadcastReceiver mNetworkReceiver;
 
 
     @Override
@@ -77,41 +72,23 @@ public class AddProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        imageList = findViewById(R.id.list_image);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        btn_date = (EditText) findViewById(R.id.date_input);
-        btn_date2 = (EditText) findViewById(R.id.date2_input);
         buttonAdd = (Button)findViewById(R.id.add);
-        titleEditText = (EditText) findViewById(R.id.title);
-        dateEditText = (EditText) findViewById(R.id.date_input);
-        date2EditText = findViewById(R.id.date2_input);
-        countEditText = findViewById(R.id.count);
-        producerEditText = findViewById(R.id.producer);
-        descriptionEditText = findViewById(R.id.decription);
-
-
+        titleInputLayout = findViewById(R.id.title);
+        dateInputLayout =  findViewById(R.id.date_input);
+        dateExpidationInputLayout = findViewById(R.id.dateExpiration_input);
+        batchInputLayout = findViewById(R.id.batch);
+        producerInputLayout = findViewById(R.id.producer);
+        descriptionInputLayout = findViewById(R.id.decription);
         final Activity activity = this;
 
 
 
-        btn_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                updateDate();
-            }
-        });
-        btn_date2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateDate2();
-            }
-        });
-
-
-
-
+/**
+ * listener pre tlačidlo naskenovat potravinu
+ */
         buttonAdd.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -129,10 +106,10 @@ public class AddProductActivity extends AppCompatActivity {
 
 
         // list
-
+        mAdapter = new RecyclerAdapter(elementList,1);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new RecyclerAdapter(movieList);
+
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
 
@@ -142,12 +119,15 @@ public class AddProductActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        mNetworkReceiver = new NetworkChangeReceiver(AddProductActivity.this);
+        registerNetworkBroadcast();
+
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product movie = movieList.get(position);
-                movieList.remove(position);
+                Product element = elementList.get(position);
+                elementList.remove(position);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -162,25 +142,59 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) // Press Back Icon
+        {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * k detekcii pripojenia internetu
+     */
+    private void registerNetworkBroadcast() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    /**
+     * metoda vezme id suroviny do zoznamu zo skenovania alebo z aktivity Add ingredients
+     */
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 String strEditText = data.getStringExtra("editTextValue");
-                add(strEditText);
+                readIndredients(strEditText);
+            }
+         }   if (requestCode == 2) {
+            if(resultCode == RESULT_OK) {
+
+                ArrayList array =data.getStringArrayListExtra("strings");
+
+                for(int i = 0 ;i<array.size();i++) {
+                    readIndredients(array.get(i).toString());
+                }
             }
         }
+
         final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
-                makeText(this, getString(R.string.toast_cancel_scanning), LENGTH_LONG).show();
             }
             else {
 
 
-     add(result.getContents().substring(result.getContents().lastIndexOf("id=")+3).trim());
-
+                readIndredients(result.getContents().substring(result.getContents().lastIndexOf("id=")+3).trim());
 
                 final View.OnClickListener thisListener = new View.OnClickListener(){
                     @Override
@@ -202,50 +216,128 @@ public class AddProductActivity extends AppCompatActivity {
         return true;
     }
 
-    public void save(MenuItem item) {
-         boolean everythingOK = true;
-        if (titleEditText.getText().toString().trim().equals("")) {
-            titleEditText.setError(getString(R.string.error_title));
-               everythingOK = false;
+    /**
+     * listener na tlacidlo uložit v menu
+     * uloži produkt do databazy
+     */
+
+
+    public void save(MenuItem item) throws ParseException {
+        if (!validateTitle() | !validateDateMade() | !validateDateExpiration() | !validateProducer() | !validateDateBatch()    ) {
+            return;
         }
 
-        if (dateEditText.getText().toString().trim().equals("")) {
-            dateEditText.setError(getString(R.string.error_date_made));
-             everythingOK = false;
-        }
 
-        if (date2EditText.getText().toString().trim().equals("")) {
-            date2EditText.setError(getString(R.string.error_date_expiration));
-               everythingOK = false;
-        }
+        List<String> list = new ArrayList<>();
 
-        if (countEditText.getText().toString().trim().equals("")) {
-            countEditText.setError(getString(R.string.error_count));
-             everythingOK = false;
-        }
-
-      List<String> list = new ArrayList<>();
-       if (everythingOK) {
            String id = databaseProduct.push().getKey();
 
-           for (int i=0; i<movieList.size();i++){
-               list.add(movieList.get(i).getProduktId());
+           for (int i=0; i<elementList.size();i++){
+               list.add(elementList.get(i).getProduktId());
 
            }
-           Product product = new Product( titleEditText.getText().toString().trim(),
-                   dateEditText.getText().toString().trim(), date2EditText.getText().toString().trim(),
-                   countEditText.getText().toString().trim(), producer.getId(),
-                   descriptionEditText.getText().toString().trim(), list);
-                   databaseProduct.child(id).setValue(product);
+             Product  product = new Product( titleInputLayout.getEditText().getText().toString().trim(),
+                       dateInputLayout.getEditText().getText().toString().trim(), dateExpidationInputLayout.getEditText().getText().toString().trim(),
+                       batchInputLayout.getEditText().getText().toString().trim(), producer.getId(),
+                       descriptionInputLayout.getEditText().getText().toString().trim(), list);
+
+           databaseProduct.child(id).setValue(product);
                    makeText(this, getString(R.string.add_product_sucessful), LENGTH_SHORT).show();
 
            final Intent intent = new Intent(this, AboutProductActivity.class);
            intent.putExtra(IntentConstants.idCode,id );
            finish();
            startActivity(intent);
-       }
+
+
     }
 
+    /**
+     * testuje spravnost vyplnenia nazvu potraviny
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateTitle() {
+        String titleInput = titleInputLayout.getEditText().getText().toString().trim();
+
+        if (titleInput.isEmpty()) {
+            titleInputLayout.setError(getString(R.string.error_title));
+            return false;
+        } else {
+            titleInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * testuje spravnost vyplnenia datumu výroby
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateMade() {
+        String dateOfMadeInput = dateInputLayout.getEditText().getText().toString().trim();
+
+        if (dateOfMadeInput.isEmpty()) {
+            dateInputLayout.setError(getString(R.string.error_date_made));
+            return false;
+        } else {
+            dateInputLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    /**
+     * testuje spravnost vyplnenia datumu spotreby
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateExpiration() {
+        String dateOfExpirationInput = dateExpidationInputLayout.getEditText().getText().toString().trim();
+
+        if (dateOfExpirationInput.isEmpty()) {
+            dateExpidationInputLayout.setError(getString(R.string.error_date_expiration));
+            return false;
+        } else {
+            dateExpidationInputLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    /**
+     * testuje spravnost vyplnenia šarže
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateDateBatch() {
+        String batchInput = batchInputLayout.getEditText().getText().toString().trim();
+
+        if (batchInput.isEmpty()) {
+            batchInputLayout.setError(getString(R.string.error_batch));
+            return false;
+        } else {
+            batchInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * testuje či je náčitaný výrobca
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+    private boolean validateProducer() {
+        String producerInput = producerInputLayout.getEditText().getText().toString().trim();
+
+        if (producerInput.isEmpty()) {
+            producerInputLayout.setError(getString(R.string.no_read_company));
+            return false;
+        } else {
+            producerInputLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    /**
+     *onClick pre tlacidlo pridat surovinu
+     */
 
     public void addIngre(View view){
         Intent i = new Intent(this, AddIngredientsActivity.class);
@@ -256,12 +348,31 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * listenet tlačidla pridať zo zoznamu
+     * @param view onCLick
+     */
+    public void addFromList(View view){
+        Intent i = new Intent(this, SelectedListActivity.class);
+
+        startActivityForResult(i, 2);
+
+
+
+    }
+
+    /**
+     * zavolenie dialog pre pridanie datumu
+     */
     private void updateDate(){
         new DatePickerDialog(this, d, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
 
     }
 
-    private void updateDate2(){
+    /**
+     * zavolenie dialog pre pridanie datumu
+     */
+    private void updatedateExpidation(){
         new DatePickerDialog(this, d2, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
 
@@ -292,7 +403,7 @@ public class AddProductActivity extends AppCompatActivity {
      * update datum
      */
     private void updateTextLabel(){
-        dateEditText.setText(formatDateTime.format(dateTime.getTime()));
+        dateInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
 
 
     }
@@ -301,7 +412,7 @@ public class AddProductActivity extends AppCompatActivity {
      * update datum
      */
     private void updateTextLabel2(){
-        date2EditText.setText(formatDateTime.format(dateTime.getTime()));
+        dateExpidationInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
 
 
     }
@@ -311,17 +422,14 @@ public class AddProductActivity extends AppCompatActivity {
   /*
   vypis toustu
    */
-void print(){
 
-    Toast.makeText(this, getString(R.string.database_not_found), Toast.LENGTH_SHORT).show();
-}
 
 
     /**
      * pridanie suroviny k produktu
      * @param id suroviny
      */
-    void add(final String id) {
+    void readIndredients(final String id) {
     databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot snapshot) {
@@ -329,11 +437,11 @@ void print(){
             product = snapshot.getValue(Product.class);
             if (snapshot.exists()) {
                 product.setProduktId(id);
-                movieList.add(product);
+                elementList.add(product);
                 mAdapter.notifyDataSetChanged();
 
             } else {
-                print();
+                Toast.makeText(AddProductActivity.this, getString(R.string.database_not_found), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -346,7 +454,7 @@ void print(){
 }
 
     /**
-     * pri starte aktivity
+     * pri starte aktivity načita vyrobcu podla id uživateloveho id vyrobcu
      */
     protected void onStart() {
         super.onStart();
@@ -357,13 +465,33 @@ void print(){
                 if (snapshot.exists()) {
                producer = snapshot.getValue(Producer.class);
                producer.setId(snapshot.getKey());
-               producerEditText.setText(producer.getTitle());
+               producerInputLayout.getEditText().setText(producer.getTitle());
    }
 
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {
+
+                finish();
             }
         });
+    }
+
+    /**
+     * onClick pre text input layout datum výroby
+     *  @param view on click
+     */
+    public void openDate1(View view) {
+        updateDate();
+
+    }
+
+    /**
+     * onClick pre text input layout datum spotreby
+     *  @param view on click
+     */
+    public void opendateExpidation(View view) {
+        updatedateExpidation();
+
     }
 }

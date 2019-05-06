@@ -1,5 +1,6 @@
 package com.example.qrmonitorfood.Aktivity;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,26 +18,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.List;
-import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.Constants.IntentConstants;
+import com.example.qrmonitorfood.Database.Producer;
+import com.example.qrmonitorfood.Database.Product;
 import com.example.qrmonitorfood.InternetConnection.InternetConnectionSnackbar;
 import com.example.qrmonitorfood.ListAdapter.RecyclerAdapter;
-import com.example.qrmonitorfood.R;
 import com.example.qrmonitorfood.ListAdapter.RecyclerTouchListener;
+import com.example.qrmonitorfood.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
+public class SelectedListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-public class SearchListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     List<Product> newList;
     private MenuItem action;
     TextView emptyList;
@@ -46,8 +47,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     ProgressBar progressBar;
     FirebaseDatabase database;
     DatabaseReference databaseProduct;
+    DatabaseReference databaseProducer;
     ActionMode actionMode;
     private ActionMode.Callback callback;
+    Producer producer = new Producer();
     InternetConnectionSnackbar connectionSnackbar;
 
 
@@ -55,20 +58,24 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_list);
+        setContentView(R.layout.activity_selected_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         typList = false;
-        mAdapter = new RecyclerAdapter(elementList,0);
+        mAdapter = new RecyclerAdapter(elementList,2);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-        connectionSnackbar = new InternetConnectionSnackbar(SearchListActivity.this,recyclerView);
+        connectionSnackbar = new InternetConnectionSnackbar(SelectedListActivity.this,recyclerView);
+
+
+
         progressBar = findViewById(R.id.progress);
         emptyList=findViewById(R.id.emptyText);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         database = FirebaseDatabase.getInstance();
         databaseProduct = database.getReference(IntentConstants.databaseProduct);
+        databaseProducer = FirebaseDatabase.getInstance().getReference();
         progressBar = (ProgressBar) findViewById(R.id.progress);
 
         recyclerView.setLayoutManager(mLayoutManager);
@@ -80,50 +87,42 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
 
+
+
             @Override
             public void onClick(View view, int position) {
 
-                if (typList){
-                    Intent intent = new Intent(SearchListActivity.this, AboutProductActivity.class);
-                    Product element = mAdapter.getNew().get(position);
-                    intent.putExtra(IntentConstants.idCode, element.getProduktId());
-                    startActivity(intent);
 
+                if (typList){
+                    Product element = newList.get(position);
+                    startActionMode();
+                    mAdapter.onClick(position,element.getProduktId() );
+
+                    actionMode.setTitle("" + mAdapter.getSelectedCountItem());
+                    if (mAdapter.getSelectedCountItem()==0){
+                        cancelActionMode();
+                    }
                 } else {
-                    Intent intent = new Intent(SearchListActivity.this, AboutProductActivity.class);
+                    startActionMode();
                     Product element = elementList.get(position);
-                    intent.putExtra(IntentConstants.idCode, element.getProduktId());
-                    startActivity(intent);
+                    mAdapter.onClick(position, element.getProduktId());
+                    actionMode.setTitle("" + mAdapter.getSelectedCountItem());
+                    if (mAdapter.getSelectedCountItem()==0){
+                        cancelActionMode();
+                    }
                 }
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                if (typList){
-                    Product element = newList.get(position);
-                    startActionMode();
-                    mAdapter.onClick(position,element.getProduktId() );
-                    actionMode.setTitle("" + mAdapter.getSelectedCountItem());
-                    if (mAdapter.getSelectedCountItem()==0){
-                        cancelActionMode();
-                    }
 
-                } else {
-                    startActionMode();
-                    Product element = elementList.get(position);
-                    mAdapter.onClick(position, element.getProduktId());
-                     actionMode.setTitle("" + mAdapter.getSelectedCountItem());
-                    if (mAdapter.getSelectedCountItem()==0){
-                        cancelActionMode();
-                    }
-            }
             }
         }));
 
 
 
 
-        // aktivacia šipky spet na toolbare.
+        // aktivace šipky zpět na toolbaru.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -133,8 +132,9 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.delete_menu_option, menu);
         action = menu.findItem(R.id.action);
-       MenuItem searchItem = menu.findItem(R.id.action);
-       SearchView searchView = (SearchView) searchItem.getActionView();
+
+        MenuItem searchItem = menu.findItem(R.id.action);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
         return true;
     }
@@ -142,7 +142,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         int id = item.getItemId();
+        if (id == R.id.action){
+        }
 
         if (id == android.R.id.home){
             mAdapter.clearSelections();
@@ -150,9 +153,19 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
             finish();
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
+    public void save(MenuItem item) {
+
+        Intent intent = new Intent();
+        intent.putStringArrayListExtra("strings", (ArrayList<String>) mAdapter.getSelectedItems());
+        setResult(RESULT_OK, intent);
+        finish();
+
+
+    }
 
     /**
      * Nastartuje action mode.
@@ -166,6 +179,33 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     }
 
+    /**
+     * načita položky do listu
+     */
+    public void readProducers(){
+
+        for(int i =0; i<elementList.size();i++){
+            databaseProducer.child(elementList.get(i).getProducerId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+
+                        producer = snapshot.getValue(Producer.class);
+
+
+                    }
+
+                }
+                @Override
+                public void onCancelled(DatabaseError atabaseError) {
+
+                    finish();
+                }
+            });
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
 
     /**
      * Nastartuje action mode.
@@ -174,7 +214,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         callback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                getMenuInflater().inflate(R.menu.menu_search, menu);
+                getMenuInflater().inflate(R.menu.menu_selected, menu);
                 return true;
             }
 
@@ -183,12 +223,14 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 return false;
             }
 
+            /**
+             * click na tlačítko na toolbaru při aktivovaném action modu.
+             */
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-                // click na tlačítko na toolbaru při aktivovaném action modu.
+
                 if (item.getItemId() == R.id.cancel){
-                   // Toast.makeText(SearchListActivity.this, "Neco", Toast.LENGTH_LONG).show();
                     cancelActionMode();
                 }
 
@@ -218,24 +260,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
 
-
-    // action tlačidko pre vymazanie vybratých položiek
-    public void actionDelete(MenuItem item) {
-if(connectionSnackbar.isNetworkAvailable()) {
-    for (int i = 0; i < mAdapter.getSelectedCountItem(); i++) {
-        DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(mAdapter.getSelectedItems().get(i));
-
-        dR.removeValue();
-    }
-    mAdapter.notifyDataSetChanged();
-    mAdapter.clearSelections();
-    cancelActionMode();
-    Toast.makeText(SearchListActivity.this, R.string.delete_select_item, Toast.LENGTH_LONG).show();
-         } else {
-    Toast.makeText(SearchListActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
-}
-    }
-
     /**
      * metoda pre filtrovanie zoznamu
 
@@ -244,6 +268,7 @@ if(connectionSnackbar.isNetworkAvailable()) {
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
+
 
     /**
      * metoda pre filtrovanie zoznamu
@@ -279,9 +304,9 @@ if(connectionSnackbar.isNetworkAvailable()) {
     @Override
     protected void onResume() {
         super.onResume();
-        connectionSnackbar.checkConnection();
+connectionSnackbar.checkConnection();
 
-        databaseProduct.orderByChild("producerId").equalTo(IntentConstants.idProducer).addValueEventListener(new ValueEventListener() {
+        databaseProduct.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -295,12 +320,13 @@ if(connectionSnackbar.isNetworkAvailable()) {
                     mAdapter.notifyDataSetChanged();
                 }
 
-              if (elementList.size()==0){
-             emptyList.setVisibility(View.VISIBLE);
-             progressBar.setVisibility(View.INVISIBLE);
-             mAdapter.notifyDataSetChanged();
+                if (elementList.size()==0){
+                    emptyList.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    mAdapter.notifyDataSetChanged();
 
                 }
+               readProducers();
             }
 
             @Override
@@ -314,10 +340,13 @@ if(connectionSnackbar.isNetworkAvailable()) {
      * dialogove okno pre sortovanie
      * @param item položka z menu
      */
-    public void sort(MenuItem item) {
 
+
+    public void sort(MenuItem item) {
         final AlertDialog.Builder mySortAlertDialog = new AlertDialog.Builder(this);
         mySortAlertDialog.setTitle("Zoradiť podla?");
+
+
         String[] r = {"Názvu A-Z ","Názvu Z-A ", "Dátumu výroby A-Z   ","Dátumu výroby Z-A","Dátumu spotreby A-Z ","Dátumu spotreby Z-A ","Šarše zostupne A-Z ","Šarše zostupne Z-A ",};
         mySortAlertDialog.setSingleChoiceItems(r,0 , null);
 
@@ -365,4 +394,5 @@ if(connectionSnackbar.isNetworkAvailable()) {
         });
         mySortAlertDialog.create().show();
     }
+
 }

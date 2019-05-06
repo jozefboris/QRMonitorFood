@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.Database.User;
+import com.example.qrmonitorfood.InternetConnection.InternetConnectionSnackbar;
 import com.example.qrmonitorfood.MainActivity;
 import com.example.qrmonitorfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    public EditText loginEmailId, logInpasswd;
+    public TextInputLayout emailInputLayout, passwdInputLayout;
     Button btnLogIn;
     ImageButton btnBack;
     TextView signup;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressBar;
     DatabaseReference databaseUser;
     User user = new User();
+    InternetConnectionSnackbar connectionSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +47,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        loginEmailId = findViewById(R.id.loginEmail);
-        logInpasswd = findViewById(R.id.loginpaswd);
+        emailInputLayout = findViewById(R.id.loginEmail);
+        passwdInputLayout = findViewById(R.id.loginpaswd);
         btnLogIn = findViewById(R.id.btnLogIn);
         signup = findViewById(R.id.TVSignIn);
         reset = findViewById(R.id.TVReset);
         btnBack = findViewById(R.id.back);
         progressBar = findViewById(R.id.progressBar);
         databaseUser = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseUser);
-        firebaseAuth.setLanguageCode("sk");
+        connectionSnackbar = new InternetConnectionSnackbar(LoginActivity.this, emailInputLayout);
+
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -63,13 +67,13 @@ public class LoginActivity extends AppCompatActivity {
                     Intent I = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(I);
                 } else {
-                    Toast.makeText(LoginActivity.this, R.string.toast_sing_in, Toast.LENGTH_SHORT).show();
+
                 }
             }
         };
 
         /**
-         * listener pre text registrovať sa
+         * listener pre text registrovať sa otvori RegisterActivity
          */
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         /**
-         * listener pre text resetovat heslo
+         * listener pre text resetovat heslo otvori ResetPasswordActivity
          */
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,48 +106,92 @@ public class LoginActivity extends AppCompatActivity {
 
         /**
          * listener pre tlačidlo prihlasit sa
+         * kontroluje spravny format a vyplnenie formulara
+         * po uspesnom vyplneny prihlasy uzivatela a vrati  hlavnu aktivitu
          */
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userEmail = loginEmailId.getText().toString();
-                String userPaswd = logInpasswd.getText().toString();
-                if (userEmail.isEmpty()) {
-                    loginEmailId.setError(getString(R.string.toast_write_mail));
-                    loginEmailId.requestFocus();
-                } else if (userPaswd.isEmpty()) {
-                    logInpasswd.setError(getString(R.string.toast_password));
-                    logInpasswd.requestFocus();
-                } else if (userEmail.isEmpty() && userPaswd.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, R.string.toast_empty_fields, Toast.LENGTH_SHORT).show();
-                } else if (!(userEmail.isEmpty() && userPaswd.isEmpty())) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    firebaseAuth.signInWithEmailAndPassword(userEmail, userPaswd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
+
+                if (!validateEmail() | !validatePassword()  ) {
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
+                firebaseAuth.signInWithEmailAndPassword(emailInputLayout.getEditText().getText().toString().trim(), passwdInputLayout.getEditText().getText().toString().trim()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.toast_not_sucessfull_signIn) + ". " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
 
                             addProducer();
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, getString(R.string.toast_not_sucessfull_signIn) + ". " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                 finish();
-                            }
-                            progressBar.setVisibility(View.GONE);
+                            finishAffinity();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         }
-                    });
-                } else {
-                    Toast.makeText(LoginActivity.this, R.string.toast_error_sing_in, Toast.LENGTH_SHORT).show();
-                }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
-        });
+        }
+        );
 
     }
+
+    /**
+     * testuje spravnost vyplnenia emailu
+     * @return true/false ak neiej prazdne pole vrati true
+     */
+
+    private boolean validateEmail() {
+        String emailInput = emailInputLayout.getEditText().getText().toString().trim();
+
+        if (TextUtils.isEmpty(emailInput)) {
+            emailInputLayout.setError(getString(R.string.toast_reset_add_email));
+
+            return false;
+
+        } else {
+            emailInputLayout.setError(null);
+            return true;
+        }
+    }
+
+    /**
+     * test spravnosti hesla
+     *
+     * @return true / false
+     */
+    private boolean validatePassword() {
+        String passwordInput = passwdInputLayout.getEditText().getText().toString().trim();
+
+     if (passwordInput.isEmpty()) {
+         passwdInputLayout.setError(getString(R.string.toast_password));
+         return false;
+        } else   if (passwordInput.length()<6) {
+         passwdInputLayout.setError(getString(R.string.password_short));
+            return false;
+        }
+
+        else {
+         passwdInputLayout.setError(null);
+         return true;
+     }
+
+     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+        connectionSnackbar.checkConnection();
         firebaseAuth.addAuthStateListener(authStateListener);
     }
+
+    /**
+     * načitanie firmy pre prihlaseneho uživatela a uloženie do share preferences
+     */
 
     public void addProducer() {
         firebaseAuth = FirebaseAuth.getInstance();

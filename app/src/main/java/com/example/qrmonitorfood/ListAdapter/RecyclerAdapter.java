@@ -1,81 +1,113 @@
 package com.example.qrmonitorfood.ListAdapter;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-
 import com.example.qrmonitorfood.Database.Product;
-import com.example.qrmonitorfood.Constants.IntentConstants;
 import com.example.qrmonitorfood.R;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-import static android.graphics.Color.valueOf;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> implements Filterable {
 
     private List<Product> productsList;
     private List<Product> productsListFull;
     private SparseBooleanArray selectedItems;
-    private List<String> selectList;
-    int selectedItemCount;
+    private ArrayList<String> selectList;
+    private int type;
 
+
+    /**
+     * metoda pre vymazanie výberu
+     */
     public void clearSelections() {
         selectedItems.clear();
         selectList.clear();
         notifyDataSetChanged();
     }
 
-    public int getSelectedItemCount() {
+
+    /**
+     * vrati pocet vybraných
+     * @return vpocet položiek
+     */
+    public int getSelectedCountItem() {
         return selectList.size();
     }
 
+    /**
+     * vrati list s vyberom
+     * @return list dfsf
+     */
     public List<String> getSelectedItems() {
         return selectList;
     }
 
+    /*
+    view holder zobrazenie položky
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, genre;
+        private TextView title, genre;
+        private CheckBox checkBox;
+        private ImageButton imageButton;
 
-        public MyViewHolder(View view) {
+        private MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.titleList);
             genre = (TextView) view.findViewById(R.id.genre);
-        }
-    }
+            imageButton = view.findViewById(R.id.list_image);
+            checkBox = (CheckBox) view.findViewById(R.id.brand_select);
 
-    public RecyclerAdapter(List<Product> productsList)
+
+
+        }
+
+
+
+          }
+
+
+    public RecyclerAdapter(List<Product> productsList, int type)
     {
         selectedItems = new SparseBooleanArray();
         productsListFull = new ArrayList<>(productsList);
         this.productsList = productsList;
-        selectedItemCount = 0;
         selectList = new ArrayList<String>();
+        this.type = type;
     }
 
-    public void onClick(View view, int position, String id) {
+
+    /**
+     * metoda pre manipulaciu so vyberovým zoznamom
+     * @param position položky
+     * @param id položky
+     */
+    public void onClick(int position, String id) {
         if (!selectedItems.get(position))
         {
             selectedItems.put(position,true);
-            selectedItemCount++;
             selectList.add(id);
-
             notifyItemChanged(position);
         }
-        else // if clicked item is already selected
+        else
         {
             selectedItems.put(position,false);
-            selectedItemCount--;
             selectList.remove(id);
             notifyItemChanged(position);
         }
@@ -84,49 +116,235 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
 
+
+
+
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_row,
                 parent, false);
-        
+
         return new MyViewHolder(v);
     }
 
+    /**
+     * vrati celý list produktov
+     * @return list
+     */
+    public List<Product> getNew() {
+        return productsList;
+    }
+
+
+    /**
+     * radenie zoznamu produktov podla datumu výroby vzostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByDateOfMadeAsc(){
+
+        Collections.sort(productsList, new Comparator<Product>() {
+            DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+            @Override
+            public int compare(Product o1, Product o2) {
+                try {
+                    return f.parse(o1.getDateOfMade()).compareTo(f.parse(o2.getDateOfMade()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
 
 
 
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Product movie = productsList.get(position);
-        
-        holder.genre.setText(movie.getDateOfMade()+ " - " + movie.getDateExpiration());
-        holder.title.setText(movie.getTitle());
-
-
-        if (selectedItems.get(position))
-        {
-            holder.itemView.setBackgroundColor(Color.GRAY);
-
-        }
-        else
-        {
-           holder.itemView.setBackgroundColor(Color.TRANSPARENT);
-
-        }
 
     }
+
+    /**
+     * radenie zoznamu produktov podla datumu spotreby vzostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByDateOfExpidationAsc(){
+
+
+        Collections.sort(productsList, new Comparator<Product>() {
+            DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+            @Override
+            public int compare(Product o1, Product o2) {
+                try {
+                    return f.parse(o1.getDateExpiration()).compareTo(f.parse(o2.getDateExpiration()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * radenie zoznamu produktov podla nazvu vzostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByTitleAsc(){
+
+        productsList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+
+
+    }
+
+    /**
+     * radenie zoznamu produktov podla šarže vzostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByBatchAsc(){
+
+        productsList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                return o1.getBatch().compareTo(o2.getBatch());
+            }
+        });
+    }
+
+
+    /**
+     * radenie zoznamu produktov podla datumu výroby zostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByDateOfMadeDesc(){
+
+        Collections.sort(productsList, new Comparator<Product>() {
+            DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+            @Override
+            public int compare(Product o2, Product o1) {
+                try {
+                    return f.parse(o1.getDateOfMade()).compareTo(f.parse(o2.getDateOfMade()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
+
+    /**
+     * radenie zoznamu produktov podla datumu spotreby zostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByDateOfExpidationDesc(){
+
+
+        Collections.sort(productsList, new Comparator<Product>() {
+            DateFormat f = new SimpleDateFormat("dd.MM.yyyy");
+            @Override
+            public int compare(Product o2, Product o1) {
+                try {
+                    return f.parse(o1.getDateExpiration()).compareTo(f.parse(o2.getDateExpiration()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
+
+    /**
+     * radenie zoznamu produktov podla nazvu zostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByTitleDesc(){
+
+        productsList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o2, Product o1) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+    }
+
+    /**
+     * radenie zoznamu produktov podla šarže zostupne
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sortByBatchDesc(){
+
+        productsList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o2, Product o1) {
+                return o1.getBatch().compareTo(o2.getBatch());
+            }
+        });
+    }
+
+
+    /**
+     * zobrazenia položky podla typu aky ma dana aktivita nastavená
+     * @param holder view holder
+     * @param position pozicia položky
+     */
+    @Override
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Product element = productsList.get(position);
+
+
+        holder.genre.setText(element.getDateOfMade()+ " - " + element.getDateExpiration() + String.format("%-20s","  Šarža: "+ element.getBatch()));
+        holder.title.setText(element.getTitle()  );
+
+        if(type == 1){
+            holder.imageButton.setVisibility(View.VISIBLE);
+        }
+
+        if(type == 2){
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.genre.setText(element.getDateOfMade()+ " - " + element.getDateExpiration()  + "  Šarža: "+ element.getBatch());
+            if (selectedItems.get(position))
+            {
+                holder.checkBox.setVisibility(View.VISIBLE);
+                holder.checkBox.setChecked(true);
+
+            } else {
+                holder.checkBox.setChecked(false);
+            }
+
+        }
+
+        if(type == 0) {
+            if (selectedItems.get(position)) {
+                holder.itemView.setBackgroundColor(Color.GRAY);
+            } else {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+    }
+
+    /**
+     * vrati velkost arraylistu zo zoznamom potravín
+     * @return pocet položiek
+     */
 
     @Override
     public int getItemCount() {
         return productsList.size();
     }
 
+    /**
+     * vrati filter vyhladavanie v zozname
+     * @return filter
+     */
     @Override
     public Filter getFilter() {
         return exampleFilter;
     }
 
+
+    /**
+     * aktualizovanie zoznamu potravín
+     * @param list list vsetkých produktov
+     */
     public void updateList(List<Product> list){
 
         productsList = new ArrayList<>();
@@ -135,6 +353,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     }
+
+
+    /**
+     * metod pre filter na vyhladavanie v zozname
+     */
+
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

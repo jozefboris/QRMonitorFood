@@ -2,8 +2,7 @@ package com.example.qrmonitorfood.Database;
 
 public class User {
 
-    String producerId;
-
+   private String producerId;
 
 
     public User(String producerId) {

@@ -2,29 +2,19 @@
     <string name="app_name">QR Monitoring Food</string>
     <string name="action_settings">Settings</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-
 
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_add_product">Pridať potravinu</string>
     <string name="title_activity_about_product">O potravine</string>
     <string name="title_activity_add_ingredients">Pridať surovinu</string>
-    <string name="title_activity_detail_product">Detail potraviny</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Detail potraviny</string>
     <string name="title_activity_update_product">Upraviť potravinu</string>
     <string name="title_activity_update_ingredients">Upraviť surovinu </string>
     <string name="title_activity_search_list">Zoznam potravín</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="title_activity_add_producer">Pridať firmu</string>
 
     <string name="add_new_product">Pridať novú surovinu</string>
     <string name="add_product">Pridať produkt</string>
@@ -33,44 +23,38 @@
     <string name="add_product_sucessful">Potravina úspešne pridaná</string>
     <string name="decription">Popis</string>
     <string name="producer">Výrobca</string>
-    <string name="count">Šarža</string>
+    <string name="batch">Šarža</string>
     <string name="date_of_expiration">Dátum spotreby</string>
     <string name="date_of_made">Dátum výroby</string>
     <string name="title_of_product">Názov produktu</string>
     <string name="ingredients">Suroviny</string>
-    <string name="add_ingredients">Pridať zložku</string>
-    <string name="dialog_no">Nie</string>
-    <string name="dialog_yes">Ano</string>
+    <string name="dialog_no">Zrušiť</string>
+    <string name="dialog_yes">Vymazať</string>
     <string name="search">Zoznam potravín</string>
-    <string name="scan">Naskenujte QR kod výrobku</string>
+    <string name="scan">Naskenujte QR kód výrobku</string>
     <string name="select_producer">Vyberte firmu</string>
     <string name="select_producer_error">Firma nieje vybraná</string>
     <string name="no_authorization">Nemáte oprávnenie na zmenu tohto produktu</string>
-
     <string name="error_title">Názov musí byť vyplnený.</string>
     <string name="error_date_expiration">Dátum musí byť vyplnený.</string>
     <string name="error_date_made">Dátum musí byť vyplnený.</string>
-    <string name="error_count">Šarža musí byť vyplnená.</string>
+    <string name="error_batch">Šarža musí byť vyplnená.</string>
     <string name="error_producer">Výrobca musí byť vyplnený</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_reset_password">ResetPasswordActivity</string>
-    <string name="toast_reset_add_email">Zadajte svoje registrovaný e-mail</string>
-    <string name="toast_send_mail">Poslali sme vám pokyny na obnovenie hesla na váš mail</string>
-    <string name="toast_falled_send_email">Nepodarilo sa odoslať obnovovací e-mail</string>
+
+    <string name="toast_reset_add_email">Zadajte svoj registrovaný e-mail</string>
+    <string name="toast_send_mail">Poslali sme vám pokyny pre obnovenie hesla na váš email</string>
+    <string name="toast_falled_send_email">Nepodarilo sa odoslať obnovovací email</string>
     <string name="toast_sucessfull_sing_in">Používateľ úspešne prihlásený</string>
     <string name="toast_sing_in">Ak chcete pokračovať, prihláste sa</string>
-    <string name="toast_write_mail">Zadajte svoj e-mail!</string>
+    <string name="toast_write_mail">Zadajte svoj email</string>
     <string name="toast_password">Zadajte heslo!</string>
-    <string name="toast_empty_fields">Prázdne polia!</string>
     <string name="toast_error_sing_in">Chyba prihlásenia</string>
     <string name="toast_error_registration">Chyba registrácie</string>
     <string name="toast_set_password">Nastavte heslo</string>
     <string name="toast_not_sucessfull">Registrácia neúspešná </string>
-    <string name="toast_cancel_scanning">Zrušili ste skenovanie</string>
     <string name="dialog_close">Zatvoriť</string>
-    <string name="dialog_closing">Zatvorenie aplikácie</string>
-    <string name="dialog_no_connection">Žiadne internetové pripojenie, skontrolujte nastavenia</string>
+    <string name="dialog_closing">Žiadne internetové pripojenie</string>
+    <string name="dialog_no_connection">Momentálne nemáte prístup na internet. Nemôžete pridávat údaje do databázy</string>
     <string name="reset_password">Zabudli ste heslo? Resetujte ho tu</string>
     <string name="new_user">Nový používateľ? Zaregistrujte sa tu</string>
     <string name="sign_in">Prihlásiť sa</string>
@@ -78,8 +62,7 @@
     <string name="password">Heslo</string>
     <string name="email">Email</string>
     <string name="name_company">Názov firmy</string>
-    <string name="have_account">Máte už účet? Prihláste sa tu</string>
-    <string name="add_email">Zadaj email</string>
+    <string name="have_acbatch">Máte už účet? Prihláste sa tu</string>
     <string name="update_profil">Upraviť profil</string>
     <string name="log_out">Odhlásiť sa</string>
     <string name="title_search">Vyhľadať</string>
@@ -87,8 +70,7 @@
     <string name="title_share">Zdieľať</string>
     <string name="title_delete">Vymazať</string>
     <string name="title_update">Upraviť</string>
-    <string name="title_activity_update_profil">UpdateProfilActivity</string>
-    <string name="database_not_found">Nie je v databáze</string>
+    <string name="database_not_found">Protraviny nie je v databáze</string>
     <string name="logout_sucessfull">Používateľ je odhlásený</string>
     <string name="resset_password_button">Resetovať heslo</string>
     <string name="delete_item">Vážne chcete odstrániť položku?</string>
@@ -98,10 +80,19 @@
     <string name="update_product">Produkt upravený</string>
     <string name="toast_set_producer">Nastavte názov firmy</string>
     <string name="toast_not_sucessfull_signIn">Neúspešné prihlásenie</string>
-    <string name="no_connection">Internet nedostupný</string>
-    <string name="title_activity_add_producer">AddProducerActivity</string>
+    <string name="no_connection">Žiadene intenetové pripojenie</string>
     <string name="back">Späť</string>
     <string name="no_ingredients">Žiadne suroviny</string>
+    <string name="title_company">Názov firmy</string>
+    <string name="scan_ingredients">Naskenovať surovinu</string>
+    <string name="title_activity_selected_list">Vybrať suroviny</string>
+    <string name="try_connection">Skúsiť znova</string>
+    <string name="select_from_list">Vybrať zo zoznamu</string>
+    <string name="qr_code">QR kod</string>
+    <string name="no_read_company">Nenačítana firma</string>
+    <string name="sucessfull_add_company">Firma pridaná do systému</string>
+    <string name="error_read_producer">Výrobca nenačítaný</string>
+    <string name="password_short">Heslo musí mať aspoň 6 znakov</string>
 
 
 </resources>
