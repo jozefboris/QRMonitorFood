@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         search = findViewById(R.id.button_search);
-        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        materialDesignFAM = findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 = findViewById(R.id.floating_button1);
         floatingActionButton2 = findViewById(R.id.floating_button2);
     }
@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * zobrazenie menu
+     * @param item menu
+     * @return true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

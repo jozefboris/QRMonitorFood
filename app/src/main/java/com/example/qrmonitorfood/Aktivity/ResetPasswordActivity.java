@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.example.qrmonitorfood.InternetConnection.InternetConnectionSnackbar;
 import com.example.qrmonitorfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,9 +31,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         emailInputLayout = findViewById(R.id.email);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        btnReset = findViewById(R.id.btn_reset_password);
         btnBack = findViewById(R.id.back);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         auth = FirebaseAuth.getInstance();
         connectionSnackbar = new InternetConnectionSnackbar(ResetPasswordActivity.this,emailInputLayout);
         connectionSnackbar.checkConnection();
@@ -73,7 +72,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * testuje správnosť vyplnenia hesla
+     * @return boolean podla spravnosti vyplnenia
+     */
     private boolean validateEmail() {
         String emailInput = emailInputLayout.getEditText().getText().toString().trim();
 

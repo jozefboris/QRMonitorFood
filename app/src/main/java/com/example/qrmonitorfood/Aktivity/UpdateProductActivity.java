@@ -50,10 +50,10 @@ public class UpdateProductActivity extends AppCompatActivity {
     private TextInputLayout descriptionInputLayout;
     private TextInputLayout producerInputLayout;
     private List<Product> elementList = new ArrayList<>();
-    private RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
     private RecyclerAdapter mAdapter;
     String code;
-    Product product2 = new Product();
+    Product productIngredients = new Product();
     Product product = new Product();
     DatabaseReference databaseProduct;
     DateFormat formatDateTime = DateFormat.getDateInstance();
@@ -62,6 +62,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     private MenuItem saveIcon;
     DatabaseReference databaseProducer;
     Producer producer;
+    Boolean addIngredients = false;
 
 
     @Override
@@ -74,7 +75,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         code = getIntent().getStringExtra(IntentConstants.idCode);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        buttonAdd = (Button) findViewById(R.id.add);
+        buttonAdd = findViewById(R.id.add);
         titleInputLayout = findViewById(R.id.title);
         dateInputLayout = findViewById(R.id.date_input);
         dateExpidationInputLayout = findViewById(R.id.dateExpiration_input);
@@ -103,7 +104,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
         // list recycle view
         mAdapter = new RecyclerAdapter(elementList, 1);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView =  findViewById(R.id.recycler_view);
 
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
@@ -149,6 +150,10 @@ public class UpdateProductActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+
+    /**
+     * tlačidlo spať po ktorom stlačeni sa ukonči aktivita
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
@@ -171,7 +176,9 @@ public class UpdateProductActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * metoda pre nastavenie menu
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_add_product, menu);
@@ -335,17 +342,18 @@ public class UpdateProductActivity extends AppCompatActivity {
     private void writeData(){
 
         titleInputLayout.getEditText().setText(product.getTitle());
-        dateInputLayout.getEditText().setText(product.getDateOfMade().toString());
-        dateExpidationInputLayout.getEditText().setText(product.getDateExpiration().toString());
+        dateInputLayout.getEditText().setText(product.getDateOfMade());
+        dateExpidationInputLayout.getEditText().setText(product.getDateExpiration());
         batchInputLayout.getEditText().setText(product.getBatch());
         descriptionInputLayout.getEditText().setText(product.getDecription());
         readProducer(product.getProducerId());
+        if (!addIngredients){
 if (product.getProducts().size() != 0){
         for (int i =0; i<product.getProducts().size();i++) {
-
+            addIngredients = true;
             readProducts(product.getProducts().get(i));
             }
-         }
+         }}
     }
 
     /**
@@ -452,11 +460,11 @@ if (product.getProducts().size() != 0){
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
 
-                    product2 = snapshot.getValue(Product.class);
+                    productIngredients = snapshot.getValue(Product.class);
                     if (snapshot.exists()) {
 
-                        product2.setProduktId(id);
-                        elementList.add(product2);
+                        productIngredients.setProduktId(id);
+                        elementList.add(productIngredients);
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.delete_product, Toast.LENGTH_LONG).show();
@@ -466,7 +474,7 @@ if (product.getProducts().size() != 0){
                 }
 
                 @Override
-                public void onCancelled(DatabaseError atabaseError) {
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
@@ -501,7 +509,7 @@ if (product.getProducts().size() != 0){
 
             }
             @Override
-            public void onCancelled(DatabaseError atabaseError) {
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
@@ -512,6 +520,7 @@ if (product.getProducts().size() != 0){
     @Override
     protected void onStart() {
         super.onStart();
+
         databaseProduct.child(code).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -519,13 +528,14 @@ if (product.getProducts().size() != 0){
                      product = snapshot.getValue(Product.class);
                      product.setProduktId(code);
                      prepareElementData();
+
                 } else {
                     Toast.makeText(UpdateProductActivity.this, R.string.database_not_found, Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
             @Override
-            public void onCancelled(DatabaseError atabaseError) {
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
 

@@ -63,7 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     view holder zobrazenie položky
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView title, genre;
+        private TextView title, genre, batch;
         private CheckBox checkBox;
         private ImageButton imageButton;
 
@@ -71,6 +71,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(view);
             title = (TextView) view.findViewById(R.id.titleList);
             genre = (TextView) view.findViewById(R.id.genre);
+            batch = (TextView) view.findViewById(R.id.batch);
             imageButton = view.findViewById(R.id.list_image);
             checkBox = (CheckBox) view.findViewById(R.id.brand_select);
 
@@ -290,9 +291,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Product element = productsList.get(position);
 
-
-        holder.genre.setText(element.getDateOfMade()+ " - " + element.getDateExpiration() + String.format("%-20s","  Šarža: "+ element.getBatch()));
+        holder.genre.setText(element.getDateOfMade()+ " - " + element.getDateExpiration() );
         holder.title.setText(element.getTitle()  );
+        holder.batch.setText("Šarža: " + element.getBatch());
+
+        if(type == 4){
+            holder.batch.setVisibility(View.INVISIBLE);
+        }
 
         if(type == 1){
             holder.imageButton.setVisibility(View.VISIBLE);
@@ -300,7 +305,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         if(type == 2){
             holder.checkBox.setVisibility(View.VISIBLE);
-            holder.genre.setText(element.getDateOfMade()+ " - " + element.getDateExpiration()  + "  Šarža: "+ element.getBatch());
             if (selectedItems.get(position))
             {
                 holder.checkBox.setVisibility(View.VISIBLE);

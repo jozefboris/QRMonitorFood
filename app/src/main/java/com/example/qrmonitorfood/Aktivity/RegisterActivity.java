@@ -67,10 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
         databaseProducer = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProducer);
         spinner = findViewById(R.id.spinner);
         connectionSnackbar = new InternetConnectionSnackbar(RegisterActivity.this,emailInputLayout);
-        /**
+        /*
          * listener pre tlačidlo registrovat sa
-         * kontrluje spravny format a vyplnenie formulara
-         * po uspesnom vyplneny registruje a zaroven prihlasy uzivatela a vrati  hlavnu aktivitu
+         * kontroluje spravny format a vyplnenie formulara
+         * po uspesnom vyplneny registruje a zaroven prihlasy pouzivatela a vrati  hlavnu aktivitu
          */
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * listener pre tlačidlo späť na prihlásenie
          */
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * spiner pre výber firmy
          */
 
@@ -167,7 +167,9 @@ protected void onRestart() {
 
 }
 
-
+    /**
+     * radenia listu výrobcov
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByTitle() {
@@ -181,6 +183,11 @@ protected void onRestart() {
 
     }
 
+
+    /**
+     * testuje spravnost vyplnenia emailu
+     * @return true/false ak neiej prazdne pole vrati true
+     */
     private boolean validateEmail() {
         String emailInput = emailInputLayout.getEditText().getText().toString().trim();
 
@@ -195,6 +202,10 @@ protected void onRestart() {
         }
     }
 
+    /**
+     * test spravnosti hesla
+     * @return true / false true ak je dlžka hesla väčšia ako 5 znakov a nieje prázdne pole
+     */
     private boolean validatePassword() {
         String passwordInput = passwdInputLayout.getEditText().getText().toString().trim();
 

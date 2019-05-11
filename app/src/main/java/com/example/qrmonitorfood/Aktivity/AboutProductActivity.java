@@ -49,7 +49,7 @@ public class AboutProductActivity extends AppCompatActivity {
     TextView title;
     Boolean testDelete;
     Product product = new Product();
-    Product product2 = new Product();
+    Product productIngredients = new Product();
     private ImageView qrImage;
     private String code;
     final private String url = IntentConstants.url;
@@ -91,7 +91,7 @@ public class AboutProductActivity extends AppCompatActivity {
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -129,7 +129,11 @@ public class AboutProductActivity extends AppCompatActivity {
         testDelete = false;
     }
 
-
+    /**
+     * nastavenie menu
+     * @param menu menu
+     * @return true
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_about_product, menu);
@@ -333,10 +337,10 @@ if (connectionSnackbar.isNetworkAvailable()) {
         databaseProduct.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                product2 = snapshot.getValue(Product.class);
+                productIngredients = snapshot.getValue(Product.class);
                 if (snapshot.exists()) {
-                    product2.setProduktId(id);
-                    elementList.add(product2);
+                    productIngredients.setProduktId(id);
+                    elementList.add(productIngredients);
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -348,7 +352,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     }
 
     /**
-     * nači z databazy vyrobcu
+     * načita z databazy vyrobcu
      *
      */
     public void readProducer(String id) {

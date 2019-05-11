@@ -59,7 +59,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
         mNetworkReceiver = new NetworkChangeReceiver(AddIngredientsActivity.this);
         registerNetworkBroadcast();
-        buttonAdd = (Button) findViewById(R.id.add);
+        buttonAdd = findViewById(R.id.add);
         titleEditText =  findViewById(R.id.title);
         dateEditText =  findViewById(R.id.date_input);
         dateExpidationEditText = findViewById(R.id.dateExpiration_input);
@@ -83,6 +83,11 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * tlačidlo späť
+     * @param item menu
+     * @return menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
@@ -94,6 +99,11 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * vytvorenie menu
+     * @param menu menu
+     * @return true
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_add_product, menu);
@@ -118,7 +128,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
      * onClick pre tlačidlo uložiť v menu, uloži surovinu do databazy
      * ak je predchadzajuca aktivita A otvori vrati id vytvorenej potraviny a ukonci aktivitu
      * ak je predchadzajuca aktivita B otvori aktivitu AboutProductActivity
-     * @param item
+     * @param item menu
      */
 
     public void save(MenuItem item) throws ParseException {

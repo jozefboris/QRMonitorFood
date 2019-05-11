@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -59,9 +60,9 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         typList = false;
         mAdapter = new RecyclerAdapter(elementList,2);
         recyclerView.setNestedScrollingEnabled(false);
@@ -76,7 +77,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         database = FirebaseDatabase.getInstance();
         databaseProduct = database.getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        progressBar = (ProgressBar) findViewById(R.id.progress);
+        progressBar = findViewById(R.id.progress);
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -120,9 +121,6 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         }));
 
 
-
-
-        // aktivace šipky zpět na toolbaru.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -139,6 +137,11 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         return true;
     }
 
+    /**
+     * pre stlačeni tlačidla späť
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -157,6 +160,10 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onclick tlačila uložiť v action menu
+     * @param item menu
+     */
     public void save(MenuItem item) {
 
         Intent intent = new Intent();
@@ -191,10 +198,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
                     if (snapshot.exists()) {
 
                         producer = snapshot.getValue(Producer.class);
-
-
                     }
-
                 }
                 @Override
                 public void onCancelled(DatabaseError atabaseError) {
@@ -229,17 +233,19 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-
                 if (item.getItemId() == R.id.cancel){
                     cancelActionMode();
                 }
-
                 return false;
             }
 
+            /**
+             * voláno pokud uživatel klikne na action modu na tlačítko zpět.
+             * @param mode action mode
+             */
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                // voláno pokud uživatel klikne na action modu na tlačítko zpět.
+
                 mAdapter.clearSelections();
                 actionMode = null;
             }
@@ -276,20 +282,15 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
      */
     @Override
     public boolean onQueryTextChange(String newText) {
-        String input = newText.toLowerCase();
 
+        String input = newText.toLowerCase();
         newList = new ArrayList<>();
         typList = true;
-
-
-
         for (int i = 0; i < elementList.size();i++) {
 
             if(elementList.get(i).getTitle().toLowerCase().contains(input))
             {
                 newList.add(elementList.get(i));
-
-
             }
         }
 

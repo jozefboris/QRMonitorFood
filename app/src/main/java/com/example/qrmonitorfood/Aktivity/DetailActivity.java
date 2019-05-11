@@ -32,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView emptyList;
     Product product = new Product();
-    Product ingredients = new Product();
+    Product productIngredients = new Product();
     DatabaseReference databaseProducer;
     DatabaseReference databaseProduct;
     private List<Product> elementList = new ArrayList<>();
@@ -50,8 +50,8 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        recyclerView =  findViewById(R.id.recycler_view);
+        progressBar =  findViewById(R.id.progressBar);
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         titleText = findViewById(R.id.titleText);
         dateText = findViewById(R.id.datetext);
@@ -61,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         descriptionText = findViewById(R.id.descriptiontext);
         typeText = findViewById(R.id.typetext);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        mAdapter = new RecyclerAdapter(elementList,0);
+        mAdapter = new RecyclerAdapter(elementList,4);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
         emptyList = findViewById(R.id.emptyList);
@@ -137,10 +137,10 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                ingredients = snapshot.getValue(Product.class);
+                productIngredients = snapshot.getValue(Product.class);
                 if (snapshot.exists()) {
-                    ingredients.setProduktId(id);
-                    elementList.add(ingredients);
+                    productIngredients.setProduktId(id);
+                    elementList.add(productIngredients);
                     mAdapter.notifyDataSetChanged();
                 }
             }

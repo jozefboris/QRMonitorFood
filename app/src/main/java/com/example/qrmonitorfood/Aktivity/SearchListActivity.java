@@ -56,9 +56,9 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         typList = false;
         mAdapter = new RecyclerAdapter(elementList,0);
         recyclerView.setNestedScrollingEnabled(false);
@@ -69,7 +69,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         database = FirebaseDatabase.getInstance();
         databaseProduct = database.getReference(IntentConstants.databaseProduct);
-        progressBar = (ProgressBar) findViewById(R.id.progress);
+        progressBar = findViewById(R.id.progress);
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -120,15 +120,16 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
             }
         }));
 
-
-
-
-        // aktivacia šipky spet na toolbare.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
+    /**
+     * vytvoti menu
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.delete_menu_option, menu);
@@ -139,6 +140,10 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
         return true;
     }
 
+    /**
+     * tlačidlo späť
+     * @param item menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -146,7 +151,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
         if (id == android.R.id.home){
             mAdapter.clearSelections();
-            // pokud uzivatel klikne na sipku zpet tak se ukonci soucasna aktivita.
             finish();
         }
 
@@ -162,8 +166,6 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
             setActionMode();
             actionMode = startSupportActionMode(callback);
         }
-
-
     }
 
 
@@ -188,16 +190,18 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
                 // click na tlačítko na toolbaru při aktivovaném action modu.
                 if (item.getItemId() == R.id.cancel){
-                   // Toast.makeText(SearchListActivity.this, "Neco", Toast.LENGTH_LONG).show();
                     cancelActionMode();
                 }
 
                 return false;
             }
 
+            /**
+             * voláno pokud uživatel klikne na action modu na tlačítko zpět.
+             * @param mode action mode
+             */
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                // voláno pokud uživatel klikne na action modu na tlačítko zpět.
                 mAdapter.clearSelections();
                 actionMode = null;
             }
@@ -218,22 +222,26 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
 
+    /**
+     * action tlačidko pre vymazanie vybratých položiek
+      */
 
-    // action tlačidko pre vymazanie vybratých položiek
     public void actionDelete(MenuItem item) {
-if(connectionSnackbar.isNetworkAvailable()) {
+
+        if(connectionSnackbar.isNetworkAvailable()) {
     for (int i = 0; i < mAdapter.getSelectedCountItem(); i++) {
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct).child(mAdapter.getSelectedItems().get(i));
 
         dR.removeValue();
     }
-    mAdapter.notifyDataSetChanged();
-    mAdapter.clearSelections();
-    cancelActionMode();
-    Toast.makeText(SearchListActivity.this, R.string.delete_select_item, Toast.LENGTH_LONG).show();
-         } else {
-    Toast.makeText(SearchListActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
-}
+         mAdapter.notifyDataSetChanged();
+         mAdapter.clearSelections();
+         cancelActionMode();
+         Toast.makeText(SearchListActivity.this, R.string.delete_select_item, Toast.LENGTH_LONG).show();
+
+       } else {
+            Toast.makeText(SearchListActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -251,20 +259,15 @@ if(connectionSnackbar.isNetworkAvailable()) {
      */
     @Override
     public boolean onQueryTextChange(String newText) {
-        String input = newText.toLowerCase();
 
+        String input = newText.toLowerCase();
         newList = new ArrayList<>();
         typList = true;
-
-
-
         for (int i = 0; i < elementList.size();i++) {
 
             if(elementList.get(i).getTitle().toLowerCase().contains(input))
             {
                 newList.add(elementList.get(i));
-
-
             }
         }
 

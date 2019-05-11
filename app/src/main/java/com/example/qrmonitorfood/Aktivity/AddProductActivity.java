@@ -1,6 +1,5 @@
 package com.example.qrmonitorfood.Aktivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -74,26 +73,22 @@ public class AddProductActivity extends AppCompatActivity {
 
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
-        buttonAdd = (Button)findViewById(R.id.add);
+        buttonAdd = findViewById(R.id.add);
         titleInputLayout = findViewById(R.id.title);
         dateInputLayout =  findViewById(R.id.date_input);
         dateExpidationInputLayout = findViewById(R.id.dateExpiration_input);
         batchInputLayout = findViewById(R.id.batch);
         producerInputLayout = findViewById(R.id.producer);
         descriptionInputLayout = findViewById(R.id.decription);
-        final Activity activity = this;
 
-
-
-
-/**
+/*
  * listener pre tlačidlo naskenovat potravinu
  */
         buttonAdd.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
-                IntentIntegrator integrator = new IntentIntegrator(activity);
+                IntentIntegrator integrator = new IntentIntegrator(AddProductActivity.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt(getString(R.string.scan));
                 integrator.setCameraId(0);
@@ -107,7 +102,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         // list
         mAdapter = new RecyclerAdapter(elementList,1);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView =  findViewById(R.id.recycler_view);
 
 
         recyclerView.setNestedScrollingEnabled(false);
@@ -126,7 +121,6 @@ public class AddProductActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Product element = elementList.get(position);
                 elementList.remove(position);
                 mAdapter.notifyDataSetChanged();
             }
@@ -141,6 +135,11 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * tlačidlo späť v menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) // Press Back Icon
@@ -196,18 +195,16 @@ public class AddProductActivity extends AppCompatActivity {
 
                 readIndredients(result.getContents().substring(result.getContents().lastIndexOf("id=")+3).trim());
 
-                final View.OnClickListener thisListener = new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-
-                     }
-                };
-
             }
 
         }
     }
 
+    /**
+     * mastavenia menu
+     * @param menu menu
+     * @return true
+     */
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -416,13 +413,6 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     }
-
-
-
-  /*
-  vypis toustu
-   */
-
 
 
     /**

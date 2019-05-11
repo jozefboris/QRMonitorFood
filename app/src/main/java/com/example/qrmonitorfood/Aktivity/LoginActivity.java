@@ -66,13 +66,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, R.string.toast_sucessfull_sing_in, Toast.LENGTH_SHORT).show();
                     Intent I = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(I);
-                } else {
-
                 }
             }
         };
 
-        /**
+        /*
          * listener pre text registrovať sa otvori RegisterActivity
          */
         signup.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * listener pre tlačidlo späť na mainActivity
          */
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * listener pre text resetovat heslo otvori ResetPasswordActivity
          */
         reset.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /**
+        /*
          * listener pre tlačidlo prihlasit sa
          * kontroluje spravny format a vyplnenie formulara
          * po uspesnom vyplneny prihlasy uzivatela a vrati  hlavnu aktivitu
@@ -160,8 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * test spravnosti hesla
-     *
-     * @return true / false
+     * @return true / false true ak je dlžka hesla väčšia ako 5 znakov a nieje prázdne pole
      */
     private boolean validatePassword() {
         String passwordInput = passwdInputLayout.getEditText().getText().toString().trim();
@@ -181,7 +178,9 @@ public class LoginActivity extends AppCompatActivity {
 
      }
 
-
+    /**
+     * kontrluje pripojenie a nastavi prihlasovaci posluchač stavu
+     */
     @Override
     protected void onStart() {
         super.onStart();
