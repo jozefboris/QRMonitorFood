@@ -47,7 +47,6 @@ public class AboutProductActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView emptyList;
     TextView title;
-    Boolean testDelete;
     Product product = new Product();
     Product productIngredients = new Product();
     private ImageView qrImage;
@@ -126,7 +125,6 @@ public class AboutProductActivity extends AppCompatActivity {
         catch (WriterException e){
             e.printStackTrace();
         }
-        testDelete = false;
     }
 
     /**
