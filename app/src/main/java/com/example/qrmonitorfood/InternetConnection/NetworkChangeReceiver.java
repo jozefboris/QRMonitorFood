@@ -21,7 +21,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     }
 
     /**
-     * testuje dostupnost pripojenia a podla toho zavola metodu s dialogom
+     * Testuje dostupnost pripojenia a podla toho zavola metodu s dialogom
      * @param context aktivity
      */
 
@@ -57,7 +57,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
 
     /**
-     * dialog na zobrazenie v priapde edostupnosti internetu
+     * Dialog na zobrazenie v pripapde nedostupnosti internetu
      */
 
     public void dialog(){

@@ -73,7 +73,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje správnosť vyplnenia hesla
+     * Testuje správnosť vyplnenia hesla
      * @return boolean podla spravnosti vyplnenia
      */
     private boolean validateEmail() {

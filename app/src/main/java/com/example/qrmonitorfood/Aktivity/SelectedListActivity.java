@@ -126,6 +126,11 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
 
     }
 
+    /**
+     * Nastaví menu
+     * @param menu menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.delete_menu_option, menu);
@@ -138,7 +143,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * pre stlačeni tlačidla späť
+     * Pri stlačeni tlačidla späť
      * @param item
      * @return
      */
@@ -161,7 +166,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * onclick tlačila uložiť v action menu
+     * Onclick tlačila uložiť v action menu
      * @param item menu
      */
     public void save(MenuItem item) {
@@ -187,7 +192,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * načita položky do listu
+     * Načita položky do listu
      */
     public void readProducers(){
 
@@ -240,7 +245,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
             }
 
             /**
-             * voláno pokud uživatel klikne na action modu na tlačítko zpět.
+             * Voláne ak použivatel klikne na action modu na tlačítko späť.
              * @param mode action mode
              */
             @Override
@@ -267,7 +272,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
 
 
     /**
-     * metoda pre filtrovanie zoznamu
+     * Metoda pre filtrovanie zoznamu
 
      */
     @Override
@@ -277,8 +282,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
 
 
     /**
-     * metoda pre filtrovanie zoznamu
-
+     * Metoda pre filtrovanie zoznamu
      */
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -299,7 +303,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * metoda po stusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
+     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
      */
 
     @Override
@@ -338,7 +342,7 @@ connectionSnackbar.checkConnection();
     }
 
     /**
-     * dialogove okno pre sortovanie
+     * Dialogove okno pre sortovanie
      * @param item položka z menu
      */
 

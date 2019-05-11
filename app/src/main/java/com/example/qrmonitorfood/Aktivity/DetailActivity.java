@@ -94,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda pre tlačidla spät
+     * Metoda pre tlačidla spät
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -107,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * zapis infornacii do text view
+     * Zapis infornacii do text view
      */
     private void writeData(){
 
@@ -129,7 +129,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * načitanie pre pridanie suroviny do listu
+     * Načitanie pre pridanie suroviny do listu
      * @param id produktu
      */
     void readIngredients(final String id) {
@@ -153,7 +153,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * priprava dat pre activitu
+     * Vloženie dat do TextInputLayout
      */
     private void prepareElementData() {
         readProducer(product.getProducerId());
@@ -165,7 +165,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     /**
-     * matoda pre načitanie vyrobcu
+     * Metoda pre načitanie vyrobcu
      * @param id vyrobcu
      */
     public void readProducer(String id) {
@@ -190,7 +190,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda pre nacitanie produktu z databazy
+     * Metoda pre nacitanie produktu z databazy
      */
 
     protected void onStart() {

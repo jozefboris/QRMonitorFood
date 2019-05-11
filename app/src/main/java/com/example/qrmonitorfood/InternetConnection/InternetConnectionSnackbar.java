@@ -20,7 +20,7 @@ public InternetConnectionSnackbar(Context context, View view){
 }
 
     /**
-     * zobrazí snackbar pri nedostupnosti internetu
+     * Zobrazí snackbar pri nedostupnosti internetu
      */
 
 public void checkConnection(){
@@ -35,7 +35,7 @@ public void checkConnection(){
 
 
     /**
-     * metoda testuje dostupnost internetu
+     * Metoda testuje dostupnost internetu
      * @return vrati frue/false podla dostupnosti internetu
      */
 

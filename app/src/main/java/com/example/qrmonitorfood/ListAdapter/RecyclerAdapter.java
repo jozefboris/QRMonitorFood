@@ -34,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * metoda pre vymazanie výberu
+     * Metoda pre vymazanie výberu
      */
     public void clearSelections() {
         selectedItems.clear();
@@ -44,15 +44,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * vrati pocet vybraných
-     * @return vpocet položiek
+     * Vrati pocet vybraných
+     * @return pocet položiek
      */
     public int getSelectedCountItem() {
         return selectList.size();
     }
 
     /**
-     * vrati list s vyberom
+     * Vrati list s vyberom
      * @return list dfsf
      */
     public List<String> getSelectedItems() {
@@ -60,7 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /*
-    view holder zobrazenie položky
+    View holder pre zobrazenie položky
      */
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title, genre, batch;
@@ -95,7 +95,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * metoda pre manipulaciu so vyberovým zoznamom
+     * Metoda pre manipulaciu so vyberovým zoznamom
      * @param position položky
      * @param id položky
      */
@@ -131,7 +131,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * vrati celý list produktov
+     * Vrati celý list produktov
      * @return list
      */
     public List<Product> getNew() {
@@ -140,7 +140,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * radenie zoznamu produktov podla datumu výroby vzostupne
+     * Radenie zoznamu produktov podla datumu výroby vzostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByDateOfMadeAsc(){
@@ -163,7 +163,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla datumu spotreby vzostupne
+     * Radenie zoznamu produktov podla datumu spotreby vzostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByDateOfExpidationAsc(){
@@ -184,7 +184,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla nazvu vzostupne
+     * Radenie zoznamu produktov podla nazvu vzostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByTitleAsc(){
@@ -200,7 +200,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla šarže vzostupne
+     * Radenie zoznamu produktov podla šarže vzostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByBatchAsc(){
@@ -215,7 +215,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * radenie zoznamu produktov podla datumu výroby zostupne
+     * Radenie zoznamu produktov podla datumu výroby zostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByDateOfMadeDesc(){
@@ -234,7 +234,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla datumu spotreby zostupne
+     * Radenie zoznamu produktov podla datumu spotreby zostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByDateOfExpidationDesc(){
@@ -254,7 +254,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla nazvu zostupne
+     * Radenie zoznamu produktov podla nazvu zostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByTitleDesc(){
@@ -268,7 +268,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * radenie zoznamu produktov podla šarže zostupne
+     * Radenie zoznamu produktov podla šarže zostupne
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void sortByBatchDesc(){
@@ -283,7 +283,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * zobrazenia položky podla typu aky ma dana aktivita nastavená
+     * Zobrazenia položky podla typu, aky ma dana aktivita nastavené
      * @param holder view holder
      * @param position pozicia položky
      */
@@ -326,7 +326,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * vrati velkost arraylistu zo zoznamom potravín
+     * Vrati velkost arraylistu zo zoznamom potravín
      * @return pocet položiek
      */
 
@@ -336,7 +336,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     /**
-     * vrati filter vyhladavanie v zozname
+     * Vrati filter vyhladavanie v zozname
      * @return filter
      */
     @Override
@@ -346,7 +346,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * aktualizovanie zoznamu potravín
+     * Aktualizovanie zoznamu potravín
      * @param list list vsetkých produktov
      */
     public void updateList(List<Product> list){
@@ -360,7 +360,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * metod pre filter na vyhladavanie v zozname
+     * Metoda pre filter na vyhladavanie v zozname
      */
 
     private Filter exampleFilter = new Filter() {

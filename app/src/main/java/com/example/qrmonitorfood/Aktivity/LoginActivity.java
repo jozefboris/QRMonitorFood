@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * test spravnosti hesla
+     * Test spravnosti hesla
      * @return true / false true ak je dlžka hesla väčšia ako 5 znakov a nieje prázdne pole
      */
     private boolean validatePassword() {
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
      }
 
     /**
-     * kontrluje pripojenie a nastavi prihlasovaci posluchač stavu
+     * Kontroluje pripojenie a nastavi prihlasovaci posluchač stavu
      */
     @Override
     protected void onStart() {
@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * načitanie firmy pre prihlaseneho uživatela a uloženie do share preferences
+     * Načitanie firmy pre prihlaseneho uživatela a uloženie do share preferences
      */
 
     public void addProducer() {

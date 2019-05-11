@@ -84,7 +84,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * tlačidlo späť
+     * Tlačidlo späť v menu
      * @param item menu
      * @return menu
      */
@@ -100,7 +100,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * vytvorenie menu
+     * Vytvorenie menu
      * @param menu menu
      * @return true
      */
@@ -112,7 +112,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * k detekcii pripojenia internetu
+     * K detekcii pripojenia internetu
      */
     private void registerNetworkBroadcast() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -125,9 +125,9 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * onClick pre tlačidlo uložiť v menu, uloži surovinu do databazy
-     * ak je predchadzajuca aktivita A otvori vrati id vytvorenej potraviny a ukonci aktivitu
-     * ak je predchadzajuca aktivita B otvori aktivitu AboutProductActivity
+     * OnClick pre tlačidlo uložiť v menu, uloži surovinu do databazy
+     * Ak je predchadzajuca aktivita A otvori vrati id vytvorenej potraviny a ukonci aktivitu
+     * Ak je predchadzajuca aktivita B otvori aktivitu AboutProductActivity
      * @param item menu
      */
 
@@ -170,7 +170,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje spravnost vyplnenia nazvu potraviny
+     * Testuje spravnost vyplnenia nazvu potraviny
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateTitle() {
@@ -186,7 +186,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje spravnost vyplnenia datumu výroby
+     * Testuje spravnost vyplnenia datumu výroby
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateDateMade() {
@@ -203,7 +203,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * testuje spravnost vyplnenia datumu spotreby
+     * Testuje spravnost vyplnenia datumu spotreby
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateDateExpiration() {
@@ -220,7 +220,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * testuje spravnost vyplnenia šarže
+     * Testuje spravnost vyplnenia šarže
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateDateBatch() {
@@ -236,7 +236,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje či je náčitaný výrobca
+     * Testuje či je náčitaný výrobca
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateProducer() {
@@ -253,7 +253,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * metoda aktualizuje datum vyroby
+     * Metoda aktualizuje datum vyroby
      */
 
     private void updateDate(){
@@ -261,7 +261,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda aktualizuje datum spotreby
+     * Metoda aktualizuje datum spotreby
      */
     private void updatedateExpidation(){
         new DatePickerDialog(this, d2, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
@@ -291,7 +291,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     };
 
     /**
-     * upravý editText datum výroby
+     * Upravý textInputLayout datum výroby
      */
     private void updateTextLabel(){
         dateEditText.getEditText().setText(formatDateTime.format(dateTime.getTime()));
@@ -300,7 +300,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * upravy editView datum spotreby
+     * Upravy textInputLayout datum spotreby
      */
     private void updateTextLabel2(){
         dateExpidationEditText.getEditText().setText(formatDateTime.format(dateTime.getTime()));
@@ -309,7 +309,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * načita vyrobcu z databazy
+     * Načita vyrobcu z databazy
      */
 
     protected void onStart() {
@@ -336,7 +336,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * onClick pre text input layout datum vyroby
+     * OnClick pre textInputLayout datum vyroby
      * @param view on click
      */
     public void openDate1(View view) {
@@ -345,7 +345,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
     }
 
     /**
-     * onClick pre text input layout datum spotreby
+     * OnClick pre textInputLayout datum spotreby
      *  @param view on click
      */
     public void opendateExpidation(View view) {

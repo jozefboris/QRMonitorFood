@@ -84,7 +84,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         descriptionInputLayout = findViewById(R.id.decription);
 
 
-        // listener pre tlačidlo naskenovat surovinu. Spusti kameru.
+        // Listener pre tlačidlo naskenovat surovinu. Spusti kameru.
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +141,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * vypis dat a aktualizacia listu
+     * Vypis dat a aktualizacia listu
      */
 
 
@@ -152,7 +152,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     /**
-     * tlačidlo spať po ktorom stlačeni sa ukonči aktivita
+     * Tlačidlo spať, po ktorom stlačeni sa ukonči aktivita
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -165,7 +165,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda pre detekciu pripojenia
+     * Metoda pre detekciu pripojenia
      */
     private void registerNetworkBroadcast() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -177,7 +177,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda pre nastavenie menu
+     * Metoda pre nastavenie menu
      */
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -187,7 +187,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * onClick pre ikonu z menu uložiť, ktorá upravi potravinu
+     * OnClick pre ikonu z menu uložiť, ktorá upravi potravinu
      */
 
     public void save(MenuItem item) {
@@ -225,7 +225,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * pre vyplnenie datumu vyroby
+     * Pre vyplnenie datumu vyroby
      */
     public void openDate1(View view) {
         updateDate();
@@ -233,7 +233,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * pre vyplnenie datumu spotreby
+     * Pre vyplnenie datumu spotreby
      */
     public void opendateExpidation(View view) {
         updatedateExpidation();
@@ -241,8 +241,8 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * otvorí aktivitu pre pridanie suroviny
-     * posle extra data s hodnotou A, aby nasledujuca aktivita poslala predchadzajucu aktivitu data
+     * Otvorí aktivitu pre pridanie suroviny
+     * posle extra data s hodnotou A, aby nasledujuca aktivita poslala predchadzajucej aktivite data
      */
     public void addIngre(View view){
         Intent i = new Intent(this, AddIngredientsActivity.class);
@@ -254,7 +254,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje spravnost vyplnenia nazvu potraviny
+     * Testuje spravnost vyplnenia nazvu potraviny
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateTitle() {
@@ -270,8 +270,8 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje spravnost vyplnenia datumu výroby
-     * @return true/false ak neiej prazdne pole vrati true
+     * Testuje spravnost vyplnenia datumu výroby
+     * @return true/false ak nieje prazdne pole vrati true
      */
     private boolean validateDateMade() {
         String dateOfMadeInput = dateInputLayout.getEditText().getText().toString().trim();
@@ -287,8 +287,8 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     /**
-     * testuje spravnost vyplnenia datumu spotreby
-     * @return true/false ak neiej prazdne pole vrati true
+     * Testuje spravnost vyplnenia datumu spotreby
+     * @return true/false ak niejE prazdne pole vrati true
      */
     private boolean validateDateExpiration() {
         String dateOfExpirationInput = dateExpidationInputLayout.getEditText().getText().toString().trim();
@@ -304,7 +304,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     /**
-     * testuje spravnost vyplnenia šarže
+     * Testuje spravnost vyplnenia šarže
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateDateBatch() {
@@ -320,7 +320,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje či je náčitaný výrobca
+     * Testuje či je náčitaný výrobca
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateProducer() {
@@ -336,7 +336,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * metoda pre zapis dat do editText
+     * Metoda pre zapis dat do InputTextLayout
      */
 
     private void writeData(){
@@ -357,7 +357,7 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     * metoda vezme id suroviny do zoznamu zo skenovania alebo z aktivity Add ingredients
+     * Metoda vloží id suroviny do zoznamu zo skenovania alebo z aktivity Add ingredients alebo z aktivity SelectedListActivity
      */
 
     @Override
@@ -396,7 +396,7 @@ if (product.getProducts().size() != 0){
 
 
     /**
-     * nastavuje date dialog
+     * Nastavuje date dialog
      */
     private void updateDate(){
         new DatePickerDialog(this, d, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
@@ -405,7 +405,7 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     * nastavuje date dialog 2
+     * Nastavuje date dialog
      */
 
     private void updatedateExpidation(){
@@ -434,14 +434,14 @@ if (product.getProducts().size() != 0){
     };
 
     /**
-     * aktualizuje pipis datum
+     * Aktualizuje datum výroby
      */
     private void updateTextLabel(){
         dateInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
     }
 
     /**
-     * aktualizuje popis datum 2
+     * Aktualizuje  datum spotreby
      */
     private void updateTextLabel2(){
         dateExpidationInputLayout.getEditText().setText(formatDateTime.format(dateTime.getTime()));
@@ -489,7 +489,7 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     * metoda pre načitanie vyrobcu z databazy
+     * Metoda pre načitanie vyrobcu z databazy
      * @param id vyrobcu
      */
     public void readProducer(String id) {
@@ -515,7 +515,7 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     *  načítanie potraviny z databázy
+     *  Načítanie potraviny z databázy
      */
     @Override
     protected void onStart() {

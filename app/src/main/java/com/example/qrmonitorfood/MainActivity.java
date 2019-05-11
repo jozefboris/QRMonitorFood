@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * onClick na tlačidlo Pridat produkt - metoda otvorí aktivitu pre pridanie produktu AddProductActivity
+     * OnClick na tlačidlo Pridat produkt - metoda otvorí aktivitu pre pridanie produktu AddProductActivity
      */
 
     public void openAddProduct(View view) {
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * onClick na tlačidlo Pridat surovinu - metoda otvorí aktivitu pre pridanie suroviny AddIngredientActivity
-     * posle extra data s hodnotou B, aby nasledujuca aktivita poslala predchadzajucu aktivitu data
+     * OnClick na tlačidlo Pridat surovinu - metoda otvorí aktivitu pre pridanie suroviny AddIngredientActivity
+     * posle extra data s hodnotou B, aby nasledujuca aktivita vedela v ktorej aktivita sa spusta
      */
 
     public void openAddIngredients(View view) {
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * onClick na tlačidlo Zoznam potravín - metoda otvorí aktivitu pre zobrazenie zoznamu potravín
+     * OnClick na tlačidlo Zoznam potravín - metoda otvorí aktivitu pre zobrazenie zoznamu potravín
      * SearchListActivity ak uživatel nieje rovný null
      */
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * zobrazenie menu
+     * Zobrazenie menu
      * @param menu menu_main
      * @return true
      */
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * zobrazenie menu
+     * Zobrazenie menu
      * @param item menu
      * @return true
      */
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * onClick na ikonu person - metoda otvorí aktivitu pre prihlasenie LoginActivity
+     * OnClick na ikonu person - metoda otvorí aktivitu pre prihlasenie LoginActivity
      */
     public void openAccess(MenuItem item) {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * onClick na tlačidlo Odhlásiť sa - metoda odhlasy uživatela zo systému
+     * OnClick na tlačidlo Odhlásiť sa - metoda odhlasy uživatela zo systému
      */
 
     public void openLogout(MenuItem item) {
@@ -161,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * onClick na tlačidlo Skenovať surovinu - metoda otvorí kameru a nasnima Qr kod, ktorý spracuje v metode onActivityResult
+     * OnClick na tlačidlo Skenovať surovinu - metoda otvorí kameru a nasnima Qr kod, ktorý spracuje v
+     * metode onActivityResult
      *
      */
     public void openScan(View view) {
@@ -184,13 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     *metoda vezme id potraviny z načitaneho QR kodu a otvory aktivitu ak je uživatel prihlaseny AboutProductActivity
+     *Metoda vezme id potraviny z načitaneho QR kodu a otvory aktivitu ak je použivatel prihlaseny AboutProductActivity
      * ak nieje uživatel prihlasený otvory intent aktvity DetailActivity
      */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //výsledok skenovania qr kodu
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {

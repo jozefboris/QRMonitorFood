@@ -126,7 +126,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * vytvoti menu
+     * Vytvoti menu
      * @param menu
      * @return true
      */
@@ -141,7 +141,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * tlačidlo späť
+     * Tlačidlo späť v menu
      * @param item menu
      */
     @Override
@@ -185,10 +185,13 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 return false;
             }
 
+            /**
+             * click na tlačítko na toolbaru při aktivovaném action modu.
+             */
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-                // click na tlačítko na toolbaru při aktivovaném action modu.
+
                 if (item.getItemId() == R.id.cancel){
                     cancelActionMode();
                 }
@@ -196,8 +199,8 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                 return false;
             }
 
-            /**
-             * voláno pokud uživatel klikne na action modu na tlačítko zpět.
+             /**
+             * Voláne ak použivatel klikne na action modu na tlačítko späť.
              * @param mode action mode
              */
             @Override
@@ -223,7 +226,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
 
     /**
-     * action tlačidko pre vymazanie vybratých položiek
+     * Action tlačidko pre vymazanie vybratých položiek
       */
 
     public void actionDelete(MenuItem item) {
@@ -245,7 +248,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * metoda pre filtrovanie zoznamu
+     * Metoda pre filtrovanie zoznamu
 
      */
     @Override
@@ -254,7 +257,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * metoda pre filtrovanie zoznamu
+     * Metoda pre filtrovanie zoznamu
 
      */
     @Override
@@ -276,7 +279,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * metoda po stusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
+     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
      */
 
     @Override
@@ -314,7 +317,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * dialogove okno pre sortovanie
+     * Dialogove okno pre sortovanie
      * @param item položka z menu
      */
     public void sort(MenuItem item) {

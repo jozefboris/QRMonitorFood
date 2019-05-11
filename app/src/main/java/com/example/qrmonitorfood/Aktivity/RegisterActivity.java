@@ -155,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
 }
 
     /**
-     * metoda pre aktualizovanie zoznamu firiem
+     * Metoda pre aktualizovanie zoznamu firiem
      */
 @Override
 protected void onRestart() {
@@ -168,7 +168,7 @@ protected void onRestart() {
 }
 
     /**
-     * radenia listu výrobcov
+     * Radenie listu výrobcov
      */
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -185,7 +185,7 @@ protected void onRestart() {
 
 
     /**
-     * testuje spravnost vyplnenia emailu
+     * Testuje spravnost vyplnenia emailu
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateEmail() {
@@ -203,7 +203,7 @@ protected void onRestart() {
     }
 
     /**
-     * test spravnosti hesla
+     * Test spravnosti hesla
      * @return true / false true ak je dlžka hesla väčšia ako 5 znakov a nieje prázdne pole
      */
     private boolean validatePassword() {
@@ -224,7 +224,7 @@ protected void onRestart() {
 
     }
     /**
-     * metoda pre aktualizovanie zoznamu firiem
+     * Metoda pre aktualizovanie zoznamu firiem
      */
     @Override
     protected void onStart() {

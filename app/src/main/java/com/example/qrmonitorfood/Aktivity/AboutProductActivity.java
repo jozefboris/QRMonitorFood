@@ -128,7 +128,7 @@ public class AboutProductActivity extends AppCompatActivity {
     }
 
     /**
-     * nastavenie menu
+     * Nastavenie menu
      * @param menu menu
      * @return true
      */
@@ -186,7 +186,7 @@ public class AboutProductActivity extends AppCompatActivity {
 
 
     /**
-     * tlačidlo pre upravenie potraviny presmerovanie na updateProductActivity
+     * Tlačidlo pre upravenie potraviny presmerovanie na updateProductActivity
      * @param item menu
      */
 
@@ -208,7 +208,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
 }
 
     /**
-     * onClick pre tlačidlo zdieľať, možnosť využiť lubovolnu aplikáciu pre zdiaľanie
+     * OnClick pre tlačidlo zdieľať, možnosť využiť lubovolnu aplikáciu pre zdiaľanie
      * @param item menu
      */
 
@@ -242,6 +242,12 @@ if (connectionSnackbar.isNetworkAvailable()) {
 
     }
 
+
+    /**
+     * Tlačidlo späť v menu
+     * @param item menu
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) // Press Back Icon
@@ -253,7 +259,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     }
 
     /**
-     * vyplenie textView po stiahnutí informácii z databázy
+     * Vyplenie textView po stiahnutí informácii z databázy
      */
 
     private void writeData(){
@@ -279,7 +285,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     }
 
     /**
-     * výpis dat a aktualizovanie listu
+     * Výpis dat do textInputLayout a aktualizovanie listu
      */
     private void prepareElementData() {
         writeData();
@@ -289,7 +295,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
 
 
     /**
-     * metoda pre nacitanie produktu z databazy
+     * Metoda pre nacitanie produktu z databazy
      */
     @Override
     protected void onStart() {
@@ -326,7 +332,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
 
 
     /**
-     * pridanie potravín do zoznamu
+     * Pridanie surovín do zoznamu
      * @param id produktu
      */
 
@@ -350,7 +356,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     }
 
     /**
-     * načita z databazy vyrobcu
+     * Načita z databazy vyrobcu
      *
      */
     public void readProducer(String id) {
