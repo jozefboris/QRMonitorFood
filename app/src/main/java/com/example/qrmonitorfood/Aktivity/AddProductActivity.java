@@ -136,7 +136,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     /**
-     * tlačidlo späť v menu
+     * Tlačidlo späť v menu
      * @param item menu
      * @return menu
      */
@@ -300,7 +300,7 @@ public class AddProductActivity extends AppCompatActivity {
 
 
     /**
-     * testuje spravnost vyplnenia šarže
+     * Testuje spravnost vyplnenia šarže
      * @return true/false ak neiej prazdne pole vrati true
      */
     private boolean validateDateBatch() {
@@ -346,7 +346,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     /**
-     * Listenet tlačidla pridať zo zoznamu
+     * Listener tlačidla pridať zo zoznamu
      * @param view onCLick
      */
     public void addFromList(View view){
@@ -444,7 +444,7 @@ public class AddProductActivity extends AppCompatActivity {
 }
 
     /**
-     * pri starte aktivity načita vyrobcu podla použivatela
+     * Pri starte aktivity načita vyrobcu podla použivatela
      */
     protected void onStart() {
         super.onStart();

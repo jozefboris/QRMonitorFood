@@ -141,7 +141,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * Vypis dat a aktualizacia listu
+     * Vypis dat a aktualizacia listu zo zonamon surovín
      */
 
 
@@ -396,7 +396,7 @@ if (product.getProducts().size() != 0){
 
 
     /**
-     * Nastavuje date dialog
+     * Nastavuje date dialog pre datum výroby
      */
     private void updateDate(){
         new DatePickerDialog(this, d, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
@@ -405,7 +405,7 @@ if (product.getProducts().size() != 0){
     }
 
     /**
-     * Nastavuje date dialog
+     * Nastavuje date dialog pre datum spotreby
      */
 
     private void updatedateExpidation(){
@@ -450,7 +450,7 @@ if (product.getProducts().size() != 0){
 
 
     /**
-     * metoda pridanie do zoznamu
+     * Metoda pre pridanie do zoznamu surovín
      * @param id pruduktu
      */
 

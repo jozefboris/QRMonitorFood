@@ -94,7 +94,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Metoda pre tlačidla spät
+     * Metoda pre tlačidlo spät
+     * @param item položka menu
+     * @return item
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

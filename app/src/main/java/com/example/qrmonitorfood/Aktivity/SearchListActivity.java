@@ -142,7 +142,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
     /**
      * Tlačidlo späť v menu
-     * @param item menu
+     * @param item  položka menu
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -279,7 +279,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
+     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho použivatela
      */
 
     @Override

@@ -118,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Zobrazenie menu
-     * @param item menu
+     * Zobrazenie v menu
+     * @param item položka menu
      * @return true
      */
     @Override
@@ -161,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * OnClick na tlačidlo Skenovať surovinu - metoda otvorí kameru a nasnima Qr kod, ktorý spracuje v
-     * metode onActivityResult
-     *
+     * OnClick na tlačidlo Skenovať surovinu - metoda otvorí kameru a nasnima Qr kod, ktorý spracuje v metode onActivityResult
      */
     public void openScan(View view) {
 

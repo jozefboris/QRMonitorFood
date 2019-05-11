@@ -253,7 +253,7 @@ protected void onRestart() {
     }
 
     /**
-     * onClick pre tlačidlo + na pridanie firmy AddProducerActivity
+     * OnClick pre tlačidlo + na pridanie firmy AddProducerActivity
      */
     public void openAddPruducer(View view) {
 

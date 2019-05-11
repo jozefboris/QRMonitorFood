@@ -246,7 +246,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     /**
      * Tlačidlo späť v menu
      * @param item menu
-     * @return
+     * @return item
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
