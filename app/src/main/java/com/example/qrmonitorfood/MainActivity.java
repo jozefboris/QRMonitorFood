@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * OnClick na tlačidlo Pridat surovinu - metoda otvorí aktivitu pre pridanie suroviny AddIngredientActivity
-     * posle extra data s hodnotou B, aby nasledujuca aktivita vedela v ktorej aktivita sa spusta
+     * posle extra data s hodnotou B, aby nasledujuca aktivita vedela z ktorej aktivity sa spusta
      */
 
     public void openAddIngredients(View view) {
@@ -76,16 +76,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * OnClick na tlačidlo Zoznam potravín - metoda otvorí aktivitu pre zobrazenie zoznamu potravín
-     * SearchListActivity ak uživatel nieje rovný null
+     * OnClick na tlačidlo Zoznam potravín - metoda otvorí aktivitu pre zobrazenie zoznamu potravín SearchListActivity
      */
 
     public void openSearch(View view) {
-        if (firebaseAuth.getCurrentUser() != null){
             Intent intent = new Intent(this, SearchListActivity.class);
-        startActivity(intent);
+            startActivity(intent);
             materialDesignFAM.close(true);
-    }
+
     }
 
 
@@ -120,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Zobrazenie v menu
      * @param item položka menu
-     * @return true
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -145,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * OnClick na tlačidlo Odhlásiť sa - metoda odhlasy uživatela zo systému
+     * OnClick na tlačidlo Odhlásiť sa - metoda odhlasy použivatela zo systému
      */
 
     public void openLogout(MenuItem item) {

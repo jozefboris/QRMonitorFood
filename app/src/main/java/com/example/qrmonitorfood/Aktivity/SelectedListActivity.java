@@ -68,8 +68,6 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         recyclerView.setHasFixedSize(true);
         connectionSnackbar = new InternetConnectionSnackbar(SelectedListActivity.this,recyclerView);
 
-
-
         progressBar = findViewById(R.id.progress);
         emptyList=findViewById(R.id.emptyText);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -83,15 +81,12 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-
         // row click listener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
 
 
-
             @Override
             public void onClick(View view, int position) {
-
 
                 if (typList){
                     Product element = newList.get(position);
@@ -119,7 +114,6 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
             }
         }));
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -142,7 +136,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * Pri stlačeni tlačidla späť
+     * Pokudpouzivatel klikne na sipku späť tak sa ukonci soucasna aktivita.
      * @param item položka menu
      * @return item
      */
@@ -156,7 +150,6 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
 
         if (id == android.R.id.home){
             mAdapter.clearSelections();
-            // pokud uzivatel klikne na sipku zpet tak se ukonci soucasna aktivita.
             finish();
         }
 
@@ -191,7 +184,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * Načita položky do listu
+     * Načita suroviny do listu
      */
     public void readProducers(){
 
@@ -232,7 +225,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
             }
 
             /**
-             * click na tlačítko na toolbaru při aktivovaném action modu.
+             * Click na tlačítko na toolbaru pri aktivovanom action mode.
              */
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -302,7 +295,7 @@ public class SelectedListActivity extends AppCompatActivity implements SearchVie
     }
 
     /**
-     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho uživatela
+     * Metoda po spusteni  načíta zoznam potravín s id vyrobcom prihlaseneho použivatela
      */
 
     @Override
@@ -347,14 +340,13 @@ connectionSnackbar.checkConnection();
 
 
     public void sort(MenuItem item) {
+
         final AlertDialog.Builder mySortAlertDialog = new AlertDialog.Builder(this);
-        mySortAlertDialog.setTitle("Zoradiť podla?");
-
-
-        String[] r = {"Názvu A-Z ","Názvu Z-A ", "Dátumu výroby A-Z   ","Dátumu výroby Z-A","Dátumu spotreby A-Z ","Dátumu spotreby Z-A ","Šarše zostupne A-Z ","Šarše zostupne Z-A ",};
+        mySortAlertDialog.setTitle(getString(R.string.sort_by));
+        String[] r = {getString(R.string.sort_by_title) + String.format("%33s", "A - Z") ,getString(R.string.sort_by_title) + String.format("%33s", "Z - A"), getString(R.string.sort_by_batch) + String.format("%34s", "A - Z"),getString(R.string.sort_by_batch) + String.format("%34s", "Z - A"), getString(R.string.sort_by_date_made) + String.format("%17s", "A - Z"), getString(R.string.sort_by_date_made) + String.format("%17s", "Z - A"),getString(R.string.sort_by_date_expiration) + String.format("%13s", "A - Z"),getString(R.string.sort_by_date_expiration) + String.format("%13s", "Z - A")};
         mySortAlertDialog.setSingleChoiceItems(r,0 , null);
 
-        mySortAlertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        mySortAlertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -366,29 +358,29 @@ connectionSnackbar.checkConnection();
                     mAdapter.sortByTitleDesc();
                     mAdapter.notifyDataSetChanged();
                 } else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==2) {
-                    mAdapter.sortByDateOfMadeAsc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==3) {
-                    mAdapter.sortByDateOfMadeDesc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==4) {
-                    mAdapter.sortByDateOfExpidationAsc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==5) {
-                    mAdapter.sortByDateOfExpidationDesc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==6) {
                     mAdapter.sortByBatchAsc();
                     mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==7) {
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==3) {
                     mAdapter.sortByBatchDesc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==4) {
+                    mAdapter.sortByDateOfMadeAsc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==5) {
+                    mAdapter.sortByDateOfMadeDesc();
+                    mAdapter.notifyDataSetChanged();;
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==6) {
+                    mAdapter.sortByDateOfExpidationAsc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==7) {
+                    mAdapter.sortByDateOfExpidationDesc();
                     mAdapter.notifyDataSetChanged();
                 }
 
             }
         });
 
-        mySortAlertDialog.setNegativeButton("Zrušiť", new DialogInterface.OnClickListener() {
+        mySortAlertDialog.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -398,5 +390,4 @@ connectionSnackbar.checkConnection();
         });
         mySortAlertDialog.create().show();
     }
-
 }

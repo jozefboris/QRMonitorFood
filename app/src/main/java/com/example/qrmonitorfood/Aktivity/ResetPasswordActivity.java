@@ -44,7 +44,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
 
-
+// Listener pre tlačidlo resetovať heslo
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -77,8 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
                 if (!validateEmail() | !validatePassword()  ) {
                     return;
                 }

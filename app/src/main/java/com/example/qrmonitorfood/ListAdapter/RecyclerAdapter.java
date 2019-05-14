@@ -44,8 +44,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
 
     /**
-     * Vrati pocet vybraných
-     * @return pocet položiek
+     * Vrati velkost listu selectList
+     * @return pocet označených položiek
      */
     public int getSelectedCountItem() {
         return selectList.size();
@@ -53,7 +53,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     /**
      * Vrati list s vyberom
-     * @return list dfsf
+     * @return list
      */
     public List<String> getSelectedItems() {
         return selectList;
@@ -74,13 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             batch = (TextView) view.findViewById(R.id.batch);
             imageButton = view.findViewById(R.id.list_image);
             checkBox = (CheckBox) view.findViewById(R.id.brand_select);
-
-
-
-        }
-
-
-
+             }
           }
 
 
@@ -114,11 +108,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         }
 
     }
-
-
-
-
-
 
 
     @NonNull
@@ -386,7 +375,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             return results;
         }
 
-
+        /**
+         * Metóda pre vysledky vyhladavania
+         * @param constraint cast vyhladavaneho slova
+         * @param results  vysledok filtra
+         */
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             productsList.clear();

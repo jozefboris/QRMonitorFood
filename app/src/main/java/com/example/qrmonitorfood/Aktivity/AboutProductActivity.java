@@ -139,7 +139,7 @@ public class AboutProductActivity extends AppCompatActivity {
     }
 
     /**
-     * Tlačidlo pre vymazanie potraviny
+     * OnClick tlačidla pre vymazanie potraviny
      * @param item menu
      */
 
@@ -186,7 +186,8 @@ public class AboutProductActivity extends AppCompatActivity {
 
 
     /**
-     * Tlačidlo pre upravenie potraviny presmerovanie na updateProductActivity
+     *OnClick tlačidla pre upravenie potraviny, presmerovanie na updateProductActivity
+     * metoda posle do dalšej aktivity id potraviny pre upravu
      * @param item menu
      */
 
@@ -208,7 +209,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
 }
 
     /**
-     * OnClick pre tlačidlo zdieľať, možnosť využiť lubovolnu aplikáciu pre zdiaľanie
+     * OnClick pre tlačidlo zdieľať, zobrazi sa okno pre výber aplikacie pre zdielnie obrazka s popisom
      * @param item menu
      */
 
@@ -221,7 +222,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
             qrImage.setImageBitmap(bitmap);
 
             try {
-                File file = new File(this.getExternalCacheDir(), "fff" + ".png");
+                File file = new File(this.getExternalCacheDir(), product.getTitle() + ".png");
                 FileOutputStream fOut = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();
@@ -275,6 +276,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
             for (int i =0; i<product.getProducts().size();i++) {
 
                 readIngredients(product.getProducts().get(i));
+                emptyList.setVisibility(View.INVISIBLE);
             }
         } else {
             emptyList.setVisibility(View.VISIBLE);
@@ -285,7 +287,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     }
 
     /**
-     * Výpis dat do textInputLayout a aktualizovanie listu
+     * Spušta meódy pre výpis dat do textInputLayout a aktualizovanie listu
      */
     private void prepareElementData() {
         writeData();
@@ -317,9 +319,6 @@ if (connectionSnackbar.isNetworkAvailable()) {
                 }
 
                 connectionSnackbar.checkConnection();
-
-
-
             }
             @Override
             public void onCancelled(DatabaseError atabaseError) {

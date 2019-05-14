@@ -189,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Načitanie firmy pre prihlaseneho uživatela a uloženie do share preferences
+     * Načitanie firmy pre prihlaseneho použivatela a uloženie do share preferences
      */
 
     public void addProducer() {

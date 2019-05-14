@@ -94,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Metoda pre tlačidlo spät
+     * Metoda pre tlačidlo spät v menu
      * @param item položka menu
      * @return item
      */
@@ -131,7 +131,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Načitanie pre pridanie suroviny do listu
+     * Načitanie  surovin do listu
      * @param id produktu
      */
     void readIngredients(final String id) {
@@ -155,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Vloženie dat do TextInputLayout
+     * Volá metódy pre načitanie dat do TextInputLayout, načitanie výrobcu a aktualizovanie zoznamu
      */
     private void prepareElementData() {
         readProducer(product.getProducerId());
@@ -167,7 +167,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     /**
-     * Metoda pre načitanie vyrobcu
+     * Metoda pre načitanie vyrobcu potraviny
      * @param id vyrobcu
      */
     public void readProducer(String id) {
@@ -192,7 +192,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Metoda pre nacitanie produktu z databazy
+     * Metoda pre nacitanie produktu z databazy po spustení aktivity
      */
 
     protected void onStart() {
@@ -213,13 +213,10 @@ public class DetailActivity extends AppCompatActivity {
 
             }
 
-
             @Override
             public void onCancelled(DatabaseError atabaseError) {
             }
         });
-
-
     }
 
 }

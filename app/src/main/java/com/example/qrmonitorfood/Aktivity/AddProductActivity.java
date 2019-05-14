@@ -217,8 +217,6 @@ public class AddProductActivity extends AppCompatActivity {
      * Listener na tlacidlo uložit v menu
      * uloži produkt do databazy
      */
-
-
     public void save(MenuItem item) throws ParseException {
         if (!validateTitle() | !validateDateMade() | !validateDateExpiration() | !validateProducer() | !validateDateBatch()    ) {
             return;
@@ -444,7 +442,7 @@ public class AddProductActivity extends AppCompatActivity {
 }
 
     /**
-     * Pri starte aktivity načita vyrobcu podla použivatela
+     * Pri starte aktivity načita vyrobcu podla použivatelovho id firmy
      */
     protected void onStart() {
         super.onStart();

@@ -42,12 +42,12 @@
     <string name="error_producer">Výrobca musí byť vyplnený</string>
 
     <string name="toast_reset_add_email">Zadajte svoj registrovaný e-mail</string>
-    <string name="toast_send_mail">Poslali sme vám pokyny pre obnovenie hesla na váš email</string>
-    <string name="toast_falled_send_email">Nepodarilo sa odoslať obnovovací email</string>
+    <string name="toast_send_mail">Poslali sme vám pokyny pre obnovenie hesla na váš e-mail</string>
+    <string name="toast_falled_send_email">Nepodarilo sa odoslať obnovovací e-mail</string>
     <string name="toast_sucessfull_sing_in">Používateľ úspešne prihlásený</string>
     <string name="toast_sing_in">Ak chcete pokračovať, prihláste sa</string>
-    <string name="toast_write_mail">Zadajte svoj email</string>
-    <string name="toast_password">Zadajte heslo!</string>
+    <string name="toast_write_mail">Zadajte svoj e-mail</string>
+    <string name="toast_password">Zadajte heslo</string>
     <string name="toast_error_sing_in">Chyba prihlásenia</string>
     <string name="toast_error_registration">Chyba registrácie</string>
     <string name="toast_set_password">Nastavte heslo</string>
@@ -60,7 +60,7 @@
     <string name="sign_in">Prihlásiť sa</string>
     <string name="registration">Registrovať sa</string>
     <string name="password">Heslo</string>
-    <string name="email">Email</string>
+    <string name="email">E-mail</string>
     <string name="name_company">Názov firmy</string>
     <string name="have_acbatch">Máte už účet? Prihláste sa tu</string>
     <string name="update_profil">Upraviť profil</string>
@@ -89,10 +89,17 @@
     <string name="try_connection">Skúsiť znova</string>
     <string name="select_from_list">Vybrať zo zoznamu</string>
     <string name="qr_code">QR kod</string>
-    <string name="no_read_company">Nenačítana firma</string>
+    <string name="no_read_company">Nenačítaná firma</string>
     <string name="sucessfull_add_company">Firma pridaná do systému</string>
     <string name="error_read_producer">Výrobca nenačítaný</string>
     <string name="password_short">Heslo musí mať aspoň 6 znakov</string>
+    <string name="ok">Ok</string>
+    <string name="sort_by">Zoradiť podľa?</string>
+    <string name="sort_by_title">Názvu</string>
+    <string name="sort_by_date_expiration">Dátumu spotreby</string>
+    <string name="sort_by_date_made">Dátumu výroby</string>
+    <string name="sort_by_batch">Šarže</string>
+    <string name="successful_add_ingredients">Surovina pridaná do systému</string>
 
 
 </resources>

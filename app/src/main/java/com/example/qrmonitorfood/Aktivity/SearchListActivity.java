@@ -126,7 +126,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * Vytvoti menu
+     * Metóda pre vytvorenie menu
      * @param menu
      * @return true
      */
@@ -170,7 +170,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
 
     /**
-     * Nastartuje action mode.
+     * Nastavenie action modu.
      */
     private void setActionMode(){
         callback = new ActionMode.Callback() {
@@ -186,7 +186,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
             }
 
             /**
-             * click na tlačítko na toolbaru při aktivovaném action modu.
+             * click na tlačítko na toolbaru pri aktivovanom action mode.
              */
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -226,7 +226,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
 
 
     /**
-     * Action tlačidko pre vymazanie vybratých položiek
+     * Onclick tlačidla pre vymazanie vybratých položiek v action mode
       */
 
     public void actionDelete(MenuItem item) {
@@ -279,7 +279,7 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     }
 
     /**
-     * Metoda po spusteni pre načítanie zoznamu potravín s id vyrobcom prihlaseneho použivatela
+     * Metoda po spusteni aktivity načíta zoznam potravín, ktoré maju zhodné s id vyrobcu s id firmou prihlaseneho použivatela
      */
 
     @Override
@@ -323,11 +323,11 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
     public void sort(MenuItem item) {
 
         final AlertDialog.Builder mySortAlertDialog = new AlertDialog.Builder(this);
-        mySortAlertDialog.setTitle("Zoradiť podla?");
-        String[] r = {"Názvu A-Z ","Názvu Z-A ", "Dátumu výroby A-Z   ","Dátumu výroby Z-A","Dátumu spotreby A-Z ","Dátumu spotreby Z-A ","Šarše zostupne A-Z ","Šarše zostupne Z-A ",};
+        mySortAlertDialog.setTitle(getString(R.string.sort_by));
+        String[] r = {getString(R.string.sort_by_title) + String.format("%33s", "A - Z") ,getString(R.string.sort_by_title) + String.format("%33s", "Z - A"), getString(R.string.sort_by_batch) + String.format("%34s", "A - Z"),getString(R.string.sort_by_batch) + String.format("%34s", "Z - A"), getString(R.string.sort_by_date_made) + String.format("%17s", "A - Z"), getString(R.string.sort_by_date_made) + String.format("%17s", "Z - A"),getString(R.string.sort_by_date_expiration) + String.format("%13s", "A - Z"),getString(R.string.sort_by_date_expiration) + String.format("%13s", "Z - A")};
         mySortAlertDialog.setSingleChoiceItems(r,0 , null);
 
-        mySortAlertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        mySortAlertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -339,29 +339,29 @@ public class SearchListActivity extends AppCompatActivity implements SearchView.
                     mAdapter.sortByTitleDesc();
                     mAdapter.notifyDataSetChanged();
                 } else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==2) {
-                    mAdapter.sortByDateOfMadeAsc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==3) {
-                    mAdapter.sortByDateOfMadeDesc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==4) {
-                    mAdapter.sortByDateOfExpidationAsc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==5) {
-                    mAdapter.sortByDateOfExpidationDesc();
-                    mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==6) {
                     mAdapter.sortByBatchAsc();
                     mAdapter.notifyDataSetChanged();
-                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==7) {
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==3) {
                     mAdapter.sortByBatchDesc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==4) {
+                    mAdapter.sortByDateOfMadeAsc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==5) {
+                    mAdapter.sortByDateOfMadeDesc();
+                    mAdapter.notifyDataSetChanged();;
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==6) {
+                    mAdapter.sortByDateOfExpidationAsc();
+                    mAdapter.notifyDataSetChanged();
+                }else if (((AlertDialog)dialog).getListView().getCheckedItemPosition() ==7) {
+                    mAdapter.sortByDateOfExpidationDesc();
                     mAdapter.notifyDataSetChanged();
                 }
 
             }
         });
 
-        mySortAlertDialog.setNegativeButton("Zrušiť", new DialogInterface.OnClickListener() {
+        mySortAlertDialog.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(DialogInterface dialog, int which) {

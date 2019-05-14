@@ -126,8 +126,8 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
     /**
      * OnClick pre tlačidlo uložiť v menu, uloži surovinu do databazy
-     * Ak je predchadzajuca aktivita A otvori vrati id vytvorenej potraviny a ukonci aktivitu
-     * Ak je predchadzajuca aktivita B otvori aktivitu AboutProductActivity
+     * Ak je predchadzajuca aktivita A, čiže Update alebo addProductActivity otvori vrati id vytvorenej potraviny a ukonci aktivitu
+     * Ak je predchadzajuca aktivita B, čiže mainActivity otvori aktivitu AboutProductActivity
      * @param item menu
      */
 
@@ -137,20 +137,16 @@ public class AddIngredientsActivity extends AppCompatActivity {
             return;
         }
 
-
-
             String id = databaseProduct.push().getKey();
             Product product = new Product(titleEditText.getEditText().getText().toString().trim(),
                     dateEditText.getEditText().getText().toString().trim(), dateExpidationEditText.getEditText().getText().toString().trim(),
                     batchEditText.getEditText().getText().toString().trim(), producer.getId(),
                     descriptionEditText.getEditText().getText().toString().trim(),null);
-            databaseProduct.child(id).setValue(product);
-            Toast.makeText(this, "Surovina pridana do systému", Toast.LENGTH_SHORT).show();
-
+                    databaseProduct.child(id).setValue(product);
+                    Toast.makeText(this, R.string.successful_add_ingredients, Toast.LENGTH_SHORT).show();
 
             Intent mIntent = getIntent();
             String previousActivity= mIntent.getStringExtra("FROM_ACTIVITY");
-
 
 
             if (previousActivity.equals("A")) {

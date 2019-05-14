@@ -128,9 +128,7 @@ public class UpdateProductActivity extends AppCompatActivity {
                 elementList.remove(position);
                 mAdapter.notifyDataSetChanged();
 
-
             }
-
 
             @Override
             public void onLongClick(View view, int position) {
@@ -141,7 +139,7 @@ public class UpdateProductActivity extends AppCompatActivity {
     }
 
     /**
-     * Vypis dat a aktualizacia listu zo zonamon surovín
+     * Spusti metody pre vypis dat a aktualizacia listu zo zoznamom surovín
      */
 
 
@@ -152,7 +150,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
 
     /**
-     * Tlačidlo spať, po ktorom stlačeni sa ukonči aktivita
+     * Tlačidlo spať v menu, po ktorom stlačeni sa ukonči aktivita
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -242,7 +240,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
     /**
      * Otvorí aktivitu pre pridanie suroviny
-     * posle extra data s hodnotou A, aby nasledujuca aktivita poslala predchadzajucej aktivite data
+     * posle extra data s hodnotou A, aby nasledujuca aktivita poslala tejto aktivite id pridanej suroviny
      */
     public void addIngre(View view){
         Intent i = new Intent(this, AddIngredientsActivity.class);
@@ -347,13 +345,15 @@ public class UpdateProductActivity extends AppCompatActivity {
         batchInputLayout.getEditText().setText(product.getBatch());
         descriptionInputLayout.getEditText().setText(product.getDecription());
         readProducer(product.getProducerId());
+
         if (!addIngredients){
-if (product.getProducts().size() != 0){
+            if (product.getProducts().size() != 0){
         for (int i =0; i<product.getProducts().size();i++) {
             addIngredients = true;
             readProducts(product.getProducts().get(i));
-            }
-         }}
+              }
+           }
+        }
     }
 
     /**
@@ -450,7 +450,7 @@ if (product.getProducts().size() != 0){
 
 
     /**
-     * Metoda pre pridanie do zoznamu surovín
+     * Metoda pre pridanie surovin do zoznamu
      * @param id pruduktu
      */
 
@@ -479,12 +479,14 @@ if (product.getProducts().size() != 0){
                 }
             });
         }
+
+    /**
+     * OnClick pre tlačidlo pridať zo zoznamu, otvorí aktivitu SelectedListActivity
+     * @param view
+     */
     public void addFromList(View view){
         Intent i = new Intent(this, SelectedListActivity.class);
-
         startActivityForResult(i, 2);
-
-
 
     }
 
