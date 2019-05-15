@@ -194,11 +194,11 @@ public class AboutProductActivity extends AppCompatActivity {
     public void update(MenuItem item) {
 if (connectionSnackbar.isNetworkAvailable()) {
     if (product.getProducerId().equals(IntentConstants.idProducer)) {
+
         Intent intent = new Intent(this, UpdateProductActivity.class);
-
         intent.putExtra(IntentConstants.idCode, code);
-
         startActivity(intent);
+
     } else {
         Toast.makeText(this, getString(R.string.no_authorization), Toast.LENGTH_SHORT).show();
 
