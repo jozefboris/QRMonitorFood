@@ -100,7 +100,7 @@ public class AddIngredientsActivity extends AppCompatActivity {
 
 
     /**
-     * Vytvorenie menu
+     * Nastavenie menu
      * @param menu menu
      * @return true
      */

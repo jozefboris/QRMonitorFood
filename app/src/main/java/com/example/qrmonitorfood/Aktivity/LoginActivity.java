@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         /*
          * listener pre tlačidlo prihlasit sa
          * kontroluje spravny format a vyplnenie formulara
-         * po uspesnom vyplneny prihlasy uzivatela a vrati  hlavnu aktivitu
+         * po uspesnom vyplneny prihlasy pouzivatela a vrati  hlavnu aktivitu
          */
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * testuje spravnost vyplnenia emailu
+     * Testuje spravnost vyplnenia emailu
      * @return true/false ak neiej prazdne pole vrati true
      */
 
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
      }
 
     /**
-     * Kontroluje pripojenie a nastavi prihlasovaci posluchač stavu
+     * Kontroluje pripojenie a nastavi prihlasovací posluchač stavu
      */
     @Override
     protected void onStart() {

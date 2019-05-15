@@ -70,7 +70,6 @@ public class AddProductActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         databaseProduct = FirebaseDatabase.getInstance().getReference(IntentConstants.databaseProduct);
         databaseProducer = FirebaseDatabase.getInstance().getReference();
         buttonAdd = findViewById(R.id.add);
@@ -466,7 +465,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     /**
-     * OnClick pre text input layout datum výroby
+     * OnClick pre text inputLayout datum výroby
      *  @param view on click
      */
     public void openDate1(View view) {
@@ -475,7 +474,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     /**
-     * OnClick pre text input layout datum spotreby
+     * OnClick pre text inputLayout datum spotreby
      *  @param view on click
      */
     public void opendateExpidation(View view) {

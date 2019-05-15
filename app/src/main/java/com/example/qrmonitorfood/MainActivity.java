@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
 
-                //     testuje ak je uživatel je prihlasený otvorí aktivitu detailActivity ak nieje prihlaseny otvorí AboutActivity.
                 if (firebaseAuth.getCurrentUser() == null) {
 
                     final Intent intent = new Intent(this, DetailActivity.class);

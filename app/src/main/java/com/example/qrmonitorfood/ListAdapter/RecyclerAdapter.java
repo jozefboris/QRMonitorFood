@@ -377,7 +377,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         /**
          * Metóda pre vysledky vyhladavania
-         * @param constraint cast vyhladavaneho slova
+         * @param constraint čast vyhladavaneho slova
          * @param results  vysledok filtra
          */
         @Override

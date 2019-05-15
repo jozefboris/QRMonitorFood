@@ -6,7 +6,7 @@
         <!-- Využivaju SearchListActivity a SelectedListActivity pre zlusenia action modu -->
         <item
             android:id="@+id/cancel"
-            android:title="Zrus mode"
+            android:title="@string/delete_mode"
             app:showAsAction="never"
             />
 
