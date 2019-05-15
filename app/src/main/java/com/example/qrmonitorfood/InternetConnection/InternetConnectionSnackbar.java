@@ -28,7 +28,7 @@ public void checkConnection(){
     if(!isNetworkAvailable()) {
 
         Snackbar snackbar = Snackbar
-                .make(view, R.string.dialog_closing, Snackbar.LENGTH_LONG);
+                .make(view, R.string.no_connection, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 }

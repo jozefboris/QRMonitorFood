@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.toast_not_sucessfull_signIn) + ". " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.toast_not_sucessfull_signIn) + ". " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         } else {
 
                             addProducer();

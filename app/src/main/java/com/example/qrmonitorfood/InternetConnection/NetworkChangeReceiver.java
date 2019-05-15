@@ -64,7 +64,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setCancelable(false);
-        alertDialog.setTitle(R.string.dialog_closing);
+        alertDialog.setTitle(R.string.no_connection);
         alertDialog.setMessage(R.string.dialog_no_connection);
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
         alertDialog.setOnKeyListener(new Dialog.OnKeyListener() {

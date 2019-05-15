@@ -93,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this.getApplicationContext(),
 
                                         getString(R.string.toast_not_sucessfull)+ ". " + task.getException().getMessage(),
-                                        LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             } else {
 
                                 SharedPreferences.Editor editor = getSharedPreferences("ID", MODE_PRIVATE).edit();

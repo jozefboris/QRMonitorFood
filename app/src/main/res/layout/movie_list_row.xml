@@ -23,14 +23,14 @@
 
     <TextView
         android:id="@+id/genre"
-        android:layout_width="215dp"
+        android:layout_width="219dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="25dp" />
 
     <TextView
         android:id="@+id/batch"
-        android:layout_width="164dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
