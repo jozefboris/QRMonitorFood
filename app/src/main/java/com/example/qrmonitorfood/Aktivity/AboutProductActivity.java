@@ -196,7 +196,7 @@ if (connectionSnackbar.isNetworkAvailable()) {
     if (product.getProducerId().equals(IntentConstants.idProducer)) {
         Intent intent = new Intent(this, UpdateProductActivity.class);
 
-        intent.putExtra("idCode", code);
+        intent.putExtra(IntentConstants.idCode, code);
 
         startActivity(intent);
     } else {
